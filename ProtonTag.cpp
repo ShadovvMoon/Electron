@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Paul Whitcomb. All rights reserved.
 //
 
-#define SPARKY "butthole"
-
 #include <new>
 #include <string>
 #include <iostream>

@@ -48,7 +48,8 @@ uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_ar
 }
 
 void ProtonTagArray::DeleteTag(unsigned int tag) {
-    #warning TODO: Tag deletion isn't added/finished yet.
+    #warning TODO: Tag deletion isn't added/finished yet, neither is recursive deletion.
+    
 }
 
 
