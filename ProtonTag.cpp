@@ -215,8 +215,12 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
             }
         }
     }
+    else if(strncmp(this->tag_classes, "rtna", 4) == 0) {
+        addDependencyFromReflexive(0x54, 0, 20, this);
+    }
     else {
-        for(size_t i=0;i < this->DataLength() - sizeof(HaloTagDependency) + 1;i++) {
+        const uint32_t iterate = 2;
+        for(uint32_t i=0;i < this->DataLength() - sizeof(HaloTagDependency) + iterate;i += iterate) {
             const HaloTagDependency *tag_dependency = (const HaloTagDependency *)(data + i);
             uint16_t index = tag_dependency->tag_id.tag_index;
             uint16_t expected_id = index + 0xE174;
@@ -232,8 +236,6 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
             break;
         }
     }
-    char tagclass[5] = {};
-    memcpy(tagclass, this->tag_classes, 4);
 }
 
 
@@ -269,7 +271,7 @@ void ProtonTag::AlignDataToAddress(uint32_t new_address) {
         uint32_t min_address = this->tag_magic;
         uint32_t max_address = this->tag_magic + (uint32_t)this->tag_data_length;
         uint32_t difference = new_address - this->tag_magic;
-        for(uint32_t i=0;i<this->tag_data_length - sizeof(HaloTagReflexive) + iterate; i++) {
+        for(uint32_t i=0;i<this->tag_data_length - sizeof(HaloTagReflexive) + iterate; i+= iterate) {
             HaloTagReflexive *reflexive = (HaloTagReflexive *)(this->Data() + i);
             if(reflexive->address < min_address || reflexive->address >= max_address) continue;
             if(reflexive->reserved_data != 0) continue;

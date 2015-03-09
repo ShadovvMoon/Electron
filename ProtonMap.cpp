@@ -311,9 +311,6 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
                     memcpy(dep->tag_class, tagArray[dependency->tag].tag_class_a, 4);
                 }
             }
-            else {
-                std::cout << "ProtonMap::ToCacheFile(): Tried to copy an invalid dependency type. Tag " << tag->Name() << " (" << i << ") may be broken in resulting map.\n";
-            }
         }
     }
     
