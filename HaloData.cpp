@@ -47,8 +47,8 @@ HaloCacheFileHeader HaloCacheFileHeaderDemo::asStandardHeader() {
 HaloTagID::HaloTagID() {}
 HaloTagID::HaloTagID(uint16_t tagIndex) {
     this->tag_index = tagIndex;
-    if(tagIndex == HALO_TAGID_NULL)
-        this->table_id = tagIndex;
+    if(tagIndex == NULLED_TAG_ID)
+        this->table_id = NULLED_TAG_ID;
     else
         this->table_id = tagIndex + 0xE174;
 }

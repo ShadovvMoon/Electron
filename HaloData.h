@@ -28,7 +28,6 @@ typedef enum HaloMapType : uint16_t {
     HALO_MAP_TYPE_CUSTOM_PROTON_TAG_ARRAY = 0xFF01
 } HaloMapType;
 
-#define HALO_TAGID_NULL 0xFFFF
 struct HaloTagID {
     uint16_t tag_index;
     uint16_t table_id;

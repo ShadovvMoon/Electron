@@ -311,7 +311,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
             else if(dependency->type == PROTON_TAG_DEPENDENCY_DEPENDENCY) {
                 HaloTagDependency *dep = (HaloTagDependency *)(tag->Data() + dependency->offset);
                 dep->tag_id = HaloTagID(dependency->tag);
-                if(dependency->tag == 0xFFFF) {
+                if(dependency->tag == NULLED_TAG_ID) {
                     dep->name_address = 0;
                 }
                 else {

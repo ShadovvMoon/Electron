@@ -86,7 +86,7 @@ static inline void addDependencyFromReflexive(uint32_t reflexive_offset,uint32_t
     for(uint32_t i=0;i<reflexive->count;i++) {
         uint32_t offset = (uint32_t)(reflexive->address - tag->tag_magic + i * size_of_chunk + dependency_offset);
         HaloTagDependency *dependency = (HaloTagDependency *)(tag->Data() + offset);
-        if(dependency->tag_id.tag_index == 0xFFFF) continue;
+        if(dependency->tag_id.tag_index == NULLED_TAG_ID) continue;
         std::unique_ptr<ProtonTagDependency> newDependency(new ProtonTagDependency(offset,*dependency));
         tag->dependencies.push_back(std::move(newDependency));
     }
@@ -98,7 +98,7 @@ static inline void addPredictedResources(uint32_t reflexive_offset, ProtonTag *t
     for(uint32_t i=0;i<reflexive->count;i++) {
         uint32_t offset = (uint32_t)(reflexive->address - tag->tag_magic + i * 8 + 4);
         HaloTagID *dependency = (HaloTagID *)(tag->Data() + offset);
-        if(dependency->tag_index == 0xFFFF) continue;
+        if(dependency->tag_index == NULLED_TAG_ID) continue;
         std::unique_ptr<ProtonTagDependency> newDependency(new ProtonTagDependency(offset,*dependency));
         tag->dependencies.push_back(std::move(newDependency));
     }
