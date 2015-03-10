@@ -14,29 +14,6 @@
 #include "ProtonTagArray.h"
 
 
-// This function clones the tag. Cloning may be illegal in some countries, so know the law before you use this function.
-ProtonTag::ProtonTag(ProtonTag *original_tag, ProtonTagArray *parent_tag_array) {
-    
-    memcpy(this->tag_classes,original_tag->tag_classes,sizeof(this->tag_classes));
-    
-    if(original_tag->resources_data_length > 0) {
-        this->resources_data_length = original_tag->resources_data_length;
-        this->resources_data = std::unique_ptr<char []>(new char[this->resources_data_length]);
-        memcpy(this->resources_data.get(),original_tag->resources_data.get(),this->resources_data_length);
-    }
-    
-    this->resource_index = original_tag->resource_index;
-    
-    if(original_tag->tag_data_length > 0) {
-        this->tag_magic = original_tag->tag_magic;
-        this->tag_data_length = original_tag->tag_data_length;
-        this->tag_data = std::unique_ptr<char []>(new char[this->tag_data_length]);
-        memcpy(this->tag_data.get(),original_tag->tag_data.get(),this->tag_data_length);
-        this->ScanDependencies(parent_tag_array);
-    }
-}
-
-
 // This function initializes an indexed tag. Only Halo CE has these kinds of tags. The variable resource_index is the index for a tag in bitmaps.map, sounds.map, or loc.map, depending on class.
 ProtonTag::ProtonTag(const char *name, const char tag_classes[12], uint32_t resource_index) {
     
@@ -223,8 +200,7 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
         for(uint32_t i=0;i < this->DataLength() - sizeof(HaloTagDependency) + iterate;i += iterate) {
             const HaloTagDependency *tag_dependency = (const HaloTagDependency *)(data + i);
             uint16_t index = tag_dependency->tag_id.tag_index;
-            uint16_t expected_id = index + 0xE174;
-            if(tag_dependency->tag_id.tag_index < array_size && tag_dependency->reserved_data == 0 && tag_dependency->tag_id.table_id == expected_id) {
+            if(index < array_size && memcmp(tag_dependency->tag_class, parent_tag_array->tags.at(index).get()->tag_classes, 4) == 0 && tag_dependency->reserved_data == 0) {
                 std::unique_ptr<ProtonTagDependency> new_dependency(new ProtonTagDependency(i, *tag_dependency));
                 this->dependencies.push_back(std::move(new_dependency));
             }
