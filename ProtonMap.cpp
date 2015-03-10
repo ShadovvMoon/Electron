@@ -66,12 +66,19 @@ ProtonMap::ProtonMap(const void *cache_file) {
             tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,tagArray[t].dataAddress));
         }
         else if(memcmp(tagArray[t].tagClassA,"psbs",4) == 0) {
-            const char *scenarioData = baseData + tagArray[index->principalScenarioTag.tag_index].dataAddress;
-            HaloTagReflexive *sbsps = (HaloTagReflexive *)(scenarioData + 0x5A4);
-            HaloScnrBSPIndex *sbspIndices = (HaloScnrBSPIndex *)(baseData + sbsps->address);
-            for(uint32_t b=0;b<sbsps->count;b++) {
-                if(sbspIndices[b].sbsp.tag_id.tag_index != t) continue;
-                tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,(const char *)(cache_file_c + sbspIndices[b].sbspFileOffset),sbspIndices[b].sbspSize,sbspIndices[b].sbspAddress,NULL,0,NULL));
+            if(index->principalScenarioTag.tag_index == NULLED_TAG_ID) {
+                // No scenario tag - SBSP tag is invalid.
+                tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,NULL,0,0,NULL,0,NULL));
+            }
+            else {
+                const char *scenarioData = baseData + tagArray[index->principalScenarioTag.tag_index].dataAddress;
+                HaloTagReflexive *sbsps = (HaloTagReflexive *)(scenarioData + 0x5A4);
+                HaloScnrBSPIndex *sbspIndices = (HaloScnrBSPIndex *)(baseData + sbsps->address);
+                for(uint32_t b=0;b<sbsps->count;b++) {
+                    if(sbspIndices[b].sbsp.tag_id.tag_index != t) continue;
+                    tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,(const char *)(cache_file_c + sbspIndices[b].sbspFileOffset),sbspIndices[b].sbspSize,sbspIndices[b].sbspAddress,NULL,0,NULL));
+                    break;
+                }
             }
         }
         else if(memcmp(tagArray[t].tagClassA,"2dom",4) == 0) {
@@ -216,6 +223,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
             tagDataLength += tag->DataLength();
         }
         if(memcmp(tag->tag_classes, "psbs", 4) == 0) {
+            if(map.principal_tag == NULLED_TAG_ID) continue; // No scenario tag. Cannot save sbsp tag.
             const char *scenarioData = map.tags.at(map.principal_tag).get()->Data();
             uint32_t scenarioMagic = map.tags.at(map.principal_tag).get()->tag_magic;
             const HaloTagReflexive *sbsps = (HaloTagReflexive *)(scenarioData + 0x5A4);
@@ -382,20 +390,22 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     
     
     // SBSP data copying
-    uint32_t sbspOffset = 0;
-    for(uint32_t i=0;i<metaHeader.tagCount;i++) {
-        ProtonTag *tag = map.tags.at(i).get();
-        if(memcmp(tag->tag_classes,"psbs",4) == 0) {
-            char *scenarioData = map.tags.at(map.principal_tag).get()->Data();
-            uint32_t scenarioMagic = map.tags.at(map.principal_tag).get()->tag_magic;
-            HaloTagReflexive *sbsps = (HaloTagReflexive *)(scenarioData + 0x5A4);
-            HaloScnrBSPIndex *sbspIndices = (HaloScnrBSPIndex *)(scenarioData + sbsps->address - scenarioMagic);
-            for(uint32_t b=0;b<sbsps->count;b++) {
-                if(sbspIndices[b].sbsp.tag_id.tag_index != i) continue;
-                sbspIndices[b].sbspSize = (uint32_t)tag->DataLength();
-                memcpy(sbspData + sbspOffset, tag->Data(), tag->DataLength());
-                sbspIndices[b].sbspFileOffset = sizeof(HaloCacheFileHeader) + sbspOffset;
-                sbspOffset += sbspIndices[b].sbspSize;
+    if(map.principal_tag != NULLED_TAG_ID) {
+        uint32_t sbspOffset = 0;
+        for(uint32_t i=0;i<metaHeader.tagCount;i++) {
+            ProtonTag *tag = map.tags.at(i).get();
+            if(memcmp(tag->tag_classes,"psbs",4) == 0) {
+                char *scenarioData = map.tags.at(map.principal_tag).get()->Data();
+                uint32_t scenarioMagic = map.tags.at(map.principal_tag).get()->tag_magic;
+                HaloTagReflexive *sbsps = (HaloTagReflexive *)(scenarioData + 0x5A4);
+                HaloScnrBSPIndex *sbspIndices = (HaloScnrBSPIndex *)(scenarioData + sbsps->address - scenarioMagic);
+                for(uint32_t b=0;b<sbsps->count;b++) {
+                    if(sbspIndices[b].sbsp.tag_id.tag_index != i) continue;
+                    sbspIndices[b].sbspSize = (uint32_t)tag->DataLength();
+                    memcpy(sbspData + sbspOffset, tag->Data(), tag->DataLength());
+                    sbspIndices[b].sbspFileOffset = sizeof(HaloCacheFileHeader) + sbspOffset;
+                    sbspOffset += sbspIndices[b].sbspSize;
+                }
             }
         }
     }
@@ -443,7 +453,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     else {
         memcpy(finalData,&header,sizeof(HaloCacheFileHeader));
     }
-        
+    
     
     memcpy(finalData + writeOffset,sbspData,sbspLength);
     writeOffset += sbspLength;

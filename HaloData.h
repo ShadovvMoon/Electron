@@ -11,7 +11,7 @@
 
 #include <cstdlib>
 
-#define TAG_DATA_ADDRESS 0x40440000
+#define NULLED_TAG_ID 0xFFFF
 
 typedef enum HaloMapGame : uint32_t {
     HALO_MAP_GAME_PC = 7,
