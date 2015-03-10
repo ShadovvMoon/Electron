@@ -9,7 +9,7 @@
 #include "ProtonTagArray.h"
 
 
-// Importing tags is fun, right?
+// Recursive importation...
 uint32_t ProtonTagArray::ImportTag(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates) {
     uint32_t tag_indices[tag_array->tags.size()];
     for(std::vector<int>::size_type i=0;i<tag_array->tags.size();i++) {
@@ -18,6 +18,7 @@ uint32_t ProtonTagArray::ImportTag(uint32_t tag, ProtonTagArray *tag_array, bool
     return this->ProtonTagArray::RecursiveTagImport(tag, tag_array, allow_duplicates, tag_indices);
 }
 
+// Imports tag from tag_array. Returns the tag ID of the newly imported tag. If allow_duplicates is false and it finds a tag with the same name, it returns that tag instead and does not import the tag.
 uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates, uint32_t *tag_indices) {
     if(tag_indices[tag] != 0xFFFFFFFF) return tag_indices[tag];
     ProtonTag *original_tag = tag_array->tags.at(tag).get();
