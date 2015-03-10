@@ -17,12 +17,15 @@
 class ProtonTagArray {
 public:
     uint32_t ImportTag(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates);
-    void DeleteTag(unsigned int tag);
+    uint32_t DuplicateTag(uint32_t tag);
+    void DeleteTag(uint32_t tag, bool recursive_deletion);
     std::vector<std::unique_ptr<ProtonTag>> tags;
     uint16_t principal_tag = NULLED_TAG_ID;
+    ProtonTagArray();
+    ProtonTagArray& operator=(const ProtonTagArray &tagarray);
+    ProtonTagArray(const ProtonTagArray& tagarray);
     
 private:
-    void InsertTag(ProtonTag tag);
     uint32_t RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates, uint32_t *tag_indices);
 };
 

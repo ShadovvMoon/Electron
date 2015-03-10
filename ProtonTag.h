@@ -23,7 +23,6 @@ class ProtonTagArray;
 
 class ProtonTag {
 public:
-    ProtonTag(ProtonTag *original_tag, ProtonTagArray *parent_tag_array);
     ProtonTag(const char *name, const char tag_classes[12], uint32_t resource_index);
     ProtonTag(const char *name, const char tag_classes[12], const char *tag_data, uint32_t tag_data_length, uint32_t tag_magic, const char *resources_data, uint32_t resources_data_length, ProtonTagArray *parent_tag_array);
     

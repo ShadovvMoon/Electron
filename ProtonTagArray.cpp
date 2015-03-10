@@ -48,12 +48,88 @@ uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_ar
     return tag_indices[tag];
 }
 
-void ProtonTagArray::DeleteTag(unsigned int tag) {
-    #warning TODO: Tag deletion isn't added/finished yet, neither is recursive deletion.
+// Duplicates a single tag. The tag dependencies and tag data are copied as well. This function also returns the tag index of the new tag.
+uint32_t ProtonTagArray::DuplicateTag(uint32_t tag) {
+    std::unique_ptr<ProtonTag> duplicateTagPtr(new ProtonTag());
+    *duplicateTagPtr.get() = *this->tags.at(tag).get();
+    this->tags.push_back(std::move(duplicateTagPtr));
+    return (uint32_t)this->tags.size() - 1;
+}
+
+// Deletes the tag. If recursive_delete is true, then any tags that this tag references will also be deleted unless they are referenced by additional tags. Know that since dependencies aren't mapped out, deleting stock tags might break the map.
+void ProtonTagArray::DeleteTag(uint32_t tag, bool recursive_deletion) {
+    if(tag >= this->tags.size()) return;
     
+    // Decrease all of the tags after it by 1 and also remove all references to this tag.
+    for(std::vector<int>::size_type i=0;i<this->tags.size();i++) {
+        ProtonTag *tag_dep = this->tags.at(i).get();
+        for(std::vector<int>::size_type d=0;d<tag_dep->dependencies.size();d++) {
+            ProtonTagDependency *dependency = tag_dep->dependencies.at(d).get();
+            
+            if(dependency->tag == tag) {
+                dependency->tag = NULLED_TAG_ID;
+            }
+            else if(dependency->tag > tag && dependency->tag != NULLED_TAG_ID) {
+                dependency->tag --;
+            }
+            
+            if(dependency->type == PROTON_TAG_DEPENDENCY_DEPENDENCY) {
+                ((HaloTagDependency *)(tag_dep->Data() + dependency->offset))->tag_id = HaloTagID(dependency->tag);
+            }
+            else if(dependency->type == PROTON_TAG_DEPENDENCY_TAGID) {
+                *((HaloTagID *)(tag_dep->Data() + dependency->offset)) = HaloTagID(dependency->tag);
+            }
+        }
+        
+    }
+    ProtonTag copiedTag = *(this->tags.at(tag).get());
+    
+    this->tags.erase(this->tags.begin() + tag);
+    
+    if(this->principal_tag == tag) this->principal_tag = NULLED_TAG_ID;
+    else if(this->principal_tag > tag) this->principal_tag --;
+    
+    
+    if(!recursive_deletion) return;
+    for(std::vector<int>::size_type e=0;e<copiedTag.dependencies.size();e++) {
+        ProtonTagDependency *dependency = copiedTag.dependencies.at(e).get();
+        bool recursive_remove = true;
+        
+        for(std::vector<int>::size_type i=0;i<this->tags.size();i++) {
+            
+            if(i==dependency->tag) continue;
+            
+            ProtonTag *tag_dep = this->tags.at(i).get();
+            for(std::vector<int>::size_type d=0;d<tag_dep->dependencies.size();d++) {
+                if(tag_dep->dependencies.at(d).get()->tag == dependency->tag)
+                    recursive_remove = false;
+            }
+            if(!recursive_remove) break;
+        }
+        
+        if(recursive_remove) {
+            this->DeleteTag(dependency->tag, true);
+        }
+    }
 }
 
 
-void ProtonTagArray::InsertTag(ProtonTag tag) {
+ProtonTagArray& ProtonTagArray::operator=(const ProtonTagArray &tagarray) {
+    if(&tagarray == this) return *this;
+    this->principal_tag = tagarray.principal_tag;
     
+    for(std::vector<int>::size_type i=0;i<tagarray.tags.size();i++) {
+        std::unique_ptr<ProtonTag> tag(new ProtonTag);
+        *(tag.get()) = *(tagarray.tags.at(i).get());
+        this->tags.push_back(std::move(tag));
+    }
+    
+    return *this;
 }
+
+
+ProtonTagArray::ProtonTagArray(const ProtonTagArray& tagarray) {
+    this->operator=(tagarray);
+}
+
+ProtonTagArray::ProtonTagArray() {}
