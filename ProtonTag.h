@@ -12,9 +12,10 @@
 
 #define NO_RESOURCE_INDEX 0xFFFFFFFF
 
-
-#include <vector>
 #include <cstdlib>
+#include <vector>
+#include <memory>
+#include <string.h>
 
 #include "ProtonTagDependency.h"
 

@@ -10,8 +10,8 @@
 #define __Proton__ProtonTagDependency__
 
 #include <cstdlib>
-#include <string>
-#include <stdio.h>
+#include <vector>
+#include <memory>
 #include "HaloData.h"
 
 

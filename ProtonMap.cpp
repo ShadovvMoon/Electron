@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Paul Whitcomb. All rights reserved.
 //
 
-#include <iostream>
 #include "ProtonMap.h"
 #include "BitmSndMap.h"
 

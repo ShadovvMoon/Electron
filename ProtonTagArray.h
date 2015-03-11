@@ -10,8 +10,9 @@
 #ifndef __Proton__ProtonTagArray__
 #define __Proton__ProtonTagArray__
 
-#include <stdio.h>
-#include <memory.h>
+#include <cstdlib>
+#include <vector>
+#include <memory>
 #include "ProtonTag.h"
 
 class ProtonTagArray {

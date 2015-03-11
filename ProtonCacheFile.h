@@ -9,7 +9,9 @@
 #ifndef __Proton__ProtonCacheFile__
 #define __Proton__ProtonCacheFile__
 
-#include <stdio.h>
+#include <cstdlib>
+#include <vector>
+#include <memory>
 #include <vector>
 
 struct ProtonCacheFile {

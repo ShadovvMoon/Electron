@@ -9,7 +9,12 @@
 #ifndef __Proton__ProtonMap__
 #define __Proton__ProtonMap__
 
-#include <stdio.h>
+#include <cstdlib>
+#include <vector>
+#include <iostream>
+#include <memory>
+#include <string.h>
+
 #include "ProtonTagArray.h"
 #include "ProtonCacheFile.h"
 #include "HaloData.h"

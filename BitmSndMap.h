@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Paul Whitcomb. All rights reserved.
 //
 
-#include <stdint.h>
+#include <cstdlib>
 #include "HaloData.h"
 
 #ifndef Resource_Imploder_BitmSndMap_h
