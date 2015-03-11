@@ -58,8 +58,8 @@ struct HaloMapBitmTag {
 // Same as above
 struct HaloMapBitmBitmaps {
     char offset[0xF];
-    int not_internalized : 1;
-    int offset2 : 7;
+    char not_internalized : 1;
+    char offset2 : 7;
     char offset3[0x8];
     uint32_t data_offset;
     uint32_t length;
@@ -82,8 +82,8 @@ struct HaloMapSndTagRange {
 struct HaloMapSndTagPermutation {
     char offset[0x40];
     uint32_t length;
-    int not_internalized : 1;
-    int offset1 : 7;
+    char not_internalized : 1;
+    char offset1 : 7;
     char offset2[3];
     uint32_t data_offset;
     char offset3[0x30];
