@@ -510,8 +510,8 @@ ProtonMap& ProtonMap::operator=(const ProtonMap &map) {
 }
 
 
-ProtonMap::ProtonMap(const ProtonMap& map) {
-    this->operator=(map);
+ProtonMap::ProtonMap(const ProtonMap& map) : ProtonTagArray() {
+    *this = map;
 }
 
 const char *ProtonMap::Name() const {

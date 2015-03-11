@@ -129,7 +129,7 @@ ProtonTagArray& ProtonTagArray::operator=(const ProtonTagArray &tagarray) {
 
 
 ProtonTagArray::ProtonTagArray(const ProtonTagArray& tagarray) {
-    this->operator=(tagarray);
+    *this = tagarray;
 }
 
 ProtonTagArray::ProtonTagArray() {}

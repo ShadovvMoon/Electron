@@ -297,5 +297,5 @@ ProtonTag& ProtonTag:: operator=(const ProtonTag& tag) {
 }
 
 ProtonTag::ProtonTag(const ProtonTag& tag) {
-    this->operator=(tag);
+    *this = tag;
 }
