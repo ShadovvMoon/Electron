@@ -64,8 +64,7 @@ static inline void addDependencyFromReflexive(uint32_t reflexive_offset,uint32_t
         uint32_t offset = (uint32_t)(reflexive->address - tag->tag_magic + i * size_of_chunk + dependency_offset);
         HaloTagDependency *dependency = (HaloTagDependency *)(tag->Data() + offset);
         if(dependency->tag_id.tag_index == NULLED_TAG_ID) continue;
-        std::unique_ptr<ProtonTagDependency> newDependency(new ProtonTagDependency(offset,*dependency));
-        tag->dependencies.push_back(std::move(newDependency));
+        tag->dependencies.emplace_back(new ProtonTagDependency(offset,*dependency));
     }
 }
 
@@ -76,8 +75,7 @@ static inline void addPredictedResources(uint32_t reflexive_offset, ProtonTag *t
         uint32_t offset = (uint32_t)(reflexive->address - tag->tag_magic + i * 8 + 4);
         HaloTagID *dependency = (HaloTagID *)(tag->Data() + offset);
         if(dependency->tag_index == NULLED_TAG_ID) continue;
-        std::unique_ptr<ProtonTagDependency> newDependency(new ProtonTagDependency(offset,*dependency));
-        tag->dependencies.push_back(std::move(newDependency));
+        tag->dependencies.emplace_back(new ProtonTagDependency(offset,*dependency));
     }
 }
 
@@ -137,8 +135,7 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
     }
     else if(strncmp(this->tag_classes, "psbs", 4) == 0) {
         HaloTagDependency *lightmaps = (HaloTagDependency *)(data + 0x18);
-        std::unique_ptr<ProtonTagDependency> lightmaps_ptr(new ProtonTagDependency(0x18, *lightmaps));
-        this->dependencies.push_back(std::move(lightmaps_ptr));
+        this->dependencies.emplace_back(new ProtonTagDependency(0x18, *lightmaps));
         addDependencyFromReflexive(0xBC, 0, 20, this);
         
         HaloTagReflexive *lightmaps_reflexive = (HaloTagReflexive *)(data + 0x11C);
@@ -165,15 +162,13 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
         for(uint32_t i=0;i<bitmaps_ref->count;i++) {
             uint32_t data_offset = bitmaps_ref->address - this->tag_magic + i * 0x30 + 0x20;
             HaloTagID *bitmSelfReference = (HaloTagID *)(data + data_offset);
-            std::unique_ptr<ProtonTagDependency> new_dependency(new ProtonTagDependency(data_offset, *bitmSelfReference));
-            this->dependencies.push_back(std::move(new_dependency));
+            this->dependencies.emplace_back(new ProtonTagDependency(data_offset, *bitmSelfReference));
         }
     }
     else if(strncmp(this->tag_classes, "!dns", 4) == 0) {
         const HaloTagDependency *promo_sound = (HaloTagDependency *)(data + 0x70);
         if(promo_sound->tag_id.tag_index != 0xFFFF) {
-            std::unique_ptr<ProtonTagDependency> new_dependency(new ProtonTagDependency(0x70, *promo_sound));
-            this->dependencies.push_back(std::move(new_dependency));
+            this->dependencies.emplace_back(new ProtonTagDependency(0x70, *promo_sound));
         }
         const char *baseData = data - this->tag_magic;
         const HaloTagReflexive *ranges = (HaloTagReflexive *)(data + 0x98);
@@ -184,11 +179,9 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
                 const char *permutation = baseData + permutations->address + p * 0x7C;
                 uint32_t offset = (uint32_t)(permutation - data);
                 HaloTagID *tagID1 = (HaloTagID *)(permutation + 0x34);
-                std::unique_ptr<ProtonTagDependency> new_dependency1(new ProtonTagDependency(offset + 0x34, *tagID1));
                 HaloTagID *tagID2 = (HaloTagID *)(permutation + 0x3C);
-                std::unique_ptr<ProtonTagDependency> new_dependency2(new ProtonTagDependency(offset + 0x3C, *tagID2));
-                this->dependencies.push_back(std::move(new_dependency1));
-                this->dependencies.push_back(std::move(new_dependency2));
+                this->dependencies.emplace_back(new ProtonTagDependency(offset + 0x34, *tagID1));
+                this->dependencies.emplace_back(new ProtonTagDependency(offset + 0x3C, *tagID2));
             }
         }
     }
@@ -201,8 +194,7 @@ void ProtonTag::ScanDependencies(ProtonTagArray *parent_tag_array) {
             const HaloTagDependency *tag_dependency = (const HaloTagDependency *)(data + i);
             uint16_t index = tag_dependency->tag_id.tag_index;
             if(index < array_size && memcmp(tag_dependency->tag_class, parent_tag_array->tags.at(index).get()->tag_classes, 4) == 0 && tag_dependency->reserved_data == 0) {
-                std::unique_ptr<ProtonTagDependency> new_dependency(new ProtonTagDependency(i, *tag_dependency));
-                this->dependencies.push_back(std::move(new_dependency));
+                this->dependencies.emplace_back(new ProtonTagDependency(i, *tag_dependency));
             }
         }
     }

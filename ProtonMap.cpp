@@ -36,7 +36,6 @@ ProtonMap::ProtonMap(const void *cache_file) {
     const char *index_offset = cache_file_c + index->modelDataOffset + index->vertexSize;
     
     for(uint32_t t=0;t<index->tagCount;t++) {
-        std::unique_ptr<ProtonTag> tag;
         char tagClasses[12];
         memcpy(tagClasses,tagArray + t,12);
         const char *tagNamePtr = baseData + tagArray[t].nameAddress;
@@ -62,12 +61,12 @@ ProtonMap::ProtonMap(const void *cache_file) {
         }
         
         if(tagArray[t].notInMap == 1) {
-            tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,tagArray[t].dataAddress));
+            this->tags.emplace_back(new ProtonTag(tagName,tagClasses,tagArray[t].dataAddress));
         }
         else if(memcmp(tagArray[t].tagClassA,"psbs",4) == 0) {
             if(index->principalScenarioTag.tag_index == NULLED_TAG_ID) {
                 // No scenario tag - SBSP tag is invalid.
-                tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,NULL,0,0,NULL,0,NULL));
+                this->tags.emplace_back(new ProtonTag(tagName,tagClasses,NULL,0,0,NULL,0,NULL));
             }
             else {
                 const char *scenarioData = baseData + tagArray[index->principalScenarioTag.tag_index].dataAddress;
@@ -75,7 +74,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 HaloScnrBSPIndex *sbspIndices = (HaloScnrBSPIndex *)(baseData + sbsps->address);
                 for(uint32_t b=0;b<sbsps->count;b++) {
                     if(sbspIndices[b].sbsp.tag_id.tag_index != t) continue;
-                    tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,(const char *)(cache_file_c + sbspIndices[b].sbspFileOffset),sbspIndices[b].sbspSize,sbspIndices[b].sbspAddress,NULL,0,NULL));
+                    this->tags.emplace_back(new ProtonTag(tagName,tagClasses,(const char *)(cache_file_c + sbspIndices[b].sbspFileOffset),sbspIndices[b].sbspSize,sbspIndices[b].sbspAddress,NULL,0,NULL));
                     break;
                 }
             }
@@ -114,7 +113,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 }
             }
             
-            tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,newTagData.get(),tagDataLength,tagArray[t].dataAddress,resourceData.get(),resource_length,NULL));
+            this->tags.emplace_back(new ProtonTag(tagName,tagClasses,newTagData.get(),tagDataLength,tagArray[t].dataAddress,resourceData.get(),resource_length,NULL));
             
         }
         else if(memcmp(tagArray[t].tagClassA,"mtib",4) == 0) {
@@ -140,7 +139,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 resource_offset += bitmaps[b].length;
             }
             
-            tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,newTagData.get(),tagDataLength,tagArray[t].dataAddress,newResourceData.get(),resource_length,NULL));
+            this->tags.emplace_back(new ProtonTag(tagName,tagClasses,newTagData.get(),tagDataLength,tagArray[t].dataAddress,newResourceData.get(),resource_length,NULL));
             
         }
         else if(memcmp(tagArray[t].tagClassA,"!dns",4) == 0) {
@@ -172,12 +171,11 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 }
             }
             
-            tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,newTagData.get(),tagDataLength,tagArray[t].dataAddress,newResourceData.get(),resource_length,NULL));
+            this->tags.emplace_back(new ProtonTag(tagName,tagClasses,newTagData.get(),tagDataLength,tagArray[t].dataAddress,newResourceData.get(),resource_length,NULL));
         }
         else {
-            tag = std::unique_ptr<ProtonTag>(new ProtonTag(tagName,tagClasses,tagData,tagDataLength,tagArray[t].dataAddress,NULL,0,NULL));
+            this->tags.emplace_back(new ProtonTag(tagName,tagClasses,tagData,tagDataLength,tagArray[t].dataAddress,NULL,0,NULL));
         }
-        this->tags.push_back(std::move(tag));
     }
     
     for(uint32_t t=0;t<index->tagCount;t++) {
