@@ -230,13 +230,14 @@ uint32_t ProtonTag::DataLength() {
     return this->tag_data_length;
 }
 
-// This function is used to align data to a new base address value.
-void ProtonTag::AlignDataToAddress(uint32_t new_address) {
-    if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive) || this->tag_magic == new_address) return;
-    if(memcmp(this->tag_classes, "rocs", 4) == 0) {
-        #warning TODO: Scenario tag's reflexives are not mapped out yet. Due to the complexity of this tag, using the brute-force algorithm might break the tag on some maps.
-    }
-    else if(memcmp(this->tag_classes,"psbs",4) == 0) {
+
+void ProtonTag::OffsetData(uint32_t offset, uint32_t size) {
+    if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive)) return;
+    
+    //if(memcmp(this->tag_classes, "rncs", 4) == 0) {
+#warning TODO: Scenario tag's reflexives are not mapped out yet. Due to the complexity of this tag, using the brute-force algorithm might break the tag on some maps.
+    //}
+    /* else */ if(memcmp(this->tag_classes,"psbs",4) == 0) {
         // SBSP tag must use mapped out reflexives, or else holes might occur in the map.
         std::cout << "ProtonTag::AlignDataToAddress WARNING: This function does not support sbsp tags yet.\n";
         return;
@@ -244,17 +245,67 @@ void ProtonTag::AlignDataToAddress(uint32_t new_address) {
     else {
         // Default brute force algorithm.
         uint32_t iterate = 2;
-        uint32_t min_address = this->tag_magic;
+        uint32_t min_address = this->tag_magic + offset;
         uint32_t max_address = this->tag_magic + (uint32_t)this->tag_data_length;
-        uint32_t difference = new_address - this->tag_magic;
         for(uint32_t i=0;i<this->tag_data_length - sizeof(HaloTagReflexive) + iterate; i+= iterate) {
             HaloTagReflexive *reflexive = (HaloTagReflexive *)(this->Data() + i);
             if(reflexive->address < min_address || reflexive->address >= max_address) continue;
             if(reflexive->reserved_data != 0) continue;
-            reflexive->address += difference;
+            reflexive->address += size;
         }
-        this->tag_magic = new_address;
     }
+}
+
+// This function is used to align data to a new base address value.
+void ProtonTag::AlignDataToAddress(uint32_t new_address) {
+    if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive) || this->tag_magic == new_address) return;
+    this->OffsetData(0, new_address - this->tag_magic);
+    this->tag_magic = new_address;
+}
+
+// This function inserts data at an address.
+void ProtonTag::AppendData(uint32_t offset, uint32_t size) {
+    this->OffsetData(offset, size);
+    
+    for(std::vector<int>::size_type i=0;i<this->dependencies.size();i++) {
+        if(this->dependencies.at(i).get()->offset >= offset) {
+            this->dependencies.at(i).get()->offset += size;
+        }
+    }
+    
+    uint32_t new_size = size + this->DataLength();
+    
+    std::unique_ptr<char []>newdata = std::unique_ptr<char []>(new char[new_size]);
+    memcpy(newdata.get(),this->Data(),offset);
+    memcpy(newdata.get() + offset + size,this->Data() + offset,this->DataLength() - offset);
+    this->SetData(newdata.get(), this->DataLength() + size);
+}
+
+// This function deletes data at an address.
+void ProtonTag::DeleteData(uint32_t offset, uint32_t size) {
+    
+    for(std::vector<int>::size_type i = this->dependencies.size() - 1;i < this->dependencies.size(); i--) {
+        if(this->dependencies.at(i).get()->offset >= offset && this->dependencies.at(i).get()->offset < offset + size) {
+            this->dependencies.erase(this->dependencies.begin() + i);
+        }
+    }
+    
+    for(std::vector<int>::size_type i=0;i<this->dependencies.size();i++) {
+        if(this->dependencies.at(i).get()->offset >= offset) {
+            this->dependencies.at(i).get()->offset -= size;
+        }
+    }
+    
+    this->OffsetData(offset, -size);
+    
+    uint32_t new_size = this->DataLength() - size;
+    
+    std::unique_ptr<char []>newdata = std::unique_ptr<char []>(new char[new_size]);
+    
+    memcpy(newdata.get(),this->Data(),offset);
+    memcpy(newdata.get() + offset,this->Data() + offset + size,this->DataLength() - offset - size);
+    
+    this->SetData(newdata.get(), this->DataLength() - size);
 }
 
 
@@ -272,6 +323,7 @@ char *ProtonTag::ResourcesData() {
 uint32_t ProtonTag::ResourcesDataLength() {
     return this->resources_data_length;
 }
+
 
 
 ProtonTag::ProtonTag() {}
