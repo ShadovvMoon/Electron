@@ -255,7 +255,7 @@ void ProtonTag::AlignDataToAddress(uint32_t new_address) {
     this->tag_magic = new_address;
 }
 
-// This function inserts data at an address.
+// This function adds data at an offset.
 void ProtonTag::AppendData(uint32_t offset, uint32_t size) {
     this->OffsetData(offset, size);
     
@@ -273,7 +273,14 @@ void ProtonTag::AppendData(uint32_t offset, uint32_t size) {
     this->SetData(newdata.get(), this->DataLength() + size);
 }
 
-// This function deletes data at an address.
+// This function inserts data at an offset. Like AppendData, it adds data to a specific offset, but you also provide a buffer that is copied over.
+void ProtonTag::InsertData(uint32_t offset, const char *data, uint32_t size) {
+    this->AppendData(offset, size);
+    if(data == NULL) return;
+    memcpy(this->Data() + offset, data, size);
+}
+
+// This function deletes data at an offset.
 void ProtonTag::DeleteData(uint32_t offset, uint32_t size) {
     
     for(std::vector<int>::size_type i = this->dependencies.size() - 1;i < this->dependencies.size(); i--) {

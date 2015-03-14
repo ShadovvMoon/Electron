@@ -37,6 +37,7 @@ public:
     void OffsetData(uint32_t offset, uint32_t size);
     void AppendData(uint32_t offset, uint32_t size);
     void DeleteData(uint32_t offset, uint32_t size);
+    void InsertData(uint32_t offset, const char *data, uint32_t size);
     
     void SetName(const char *name);
     const char *Name() const;
