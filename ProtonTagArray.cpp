@@ -10,18 +10,18 @@
 
 
 // Recursive importation...
-uint32_t ProtonTagArray::ImportTag(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates) {
-    uint32_t tag_indices[tag_array->tags.size()];
-    for(std::vector<int>::size_type i=0;i<tag_array->tags.size();i++) {
+uint32_t ProtonTagArray::ImportTag(uint32_t tag, const ProtonTagArray &parent_tag_array, bool allow_duplicates) {
+    uint32_t tag_indices[parent_tag_array.tags.size()];
+    for(std::vector<int>::size_type i=0;i<parent_tag_array.tags.size();i++) {
         tag_indices[i] = 0xFFFFFFFF;
     }
-    return this->ProtonTagArray::RecursiveTagImport(tag, tag_array, allow_duplicates, tag_indices);
+    return this->RecursiveTagImport(tag, parent_tag_array, allow_duplicates, tag_indices);
 }
 
 // Imports tag from tag_array. Returns the tag ID of the newly imported tag. If allow_duplicates is false and it finds a tag with the same name, it returns that tag instead and does not import the tag.
-uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates, uint32_t *tag_indices) {
+uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, const ProtonTagArray &parent_tag_array, bool allow_duplicates, uint32_t *tag_indices) {
     if(tag_indices[tag] != 0xFFFFFFFF) return tag_indices[tag];
-    ProtonTag *original_tag = tag_array->tags.at(tag).get();
+    const ProtonTag *original_tag = parent_tag_array.tags.at(tag).get();
     uint32_t duplicates = 0;
     for(std::vector<int>::size_type i=0;i<this->tags.size();i++) {
         ProtonTag *against = this->tags.at(i).get();
@@ -42,7 +42,7 @@ uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_ar
     }
     for(std::vector<int>::size_type i=0;i<original_tag->dependencies.size();i++) {
         ProtonTagDependency *dependency = importedTag->dependencies.at(i).get();
-        uint32_t newTag = this->RecursiveTagImport(dependency->tag, tag_array, allow_duplicates,tag_indices);
+        uint32_t newTag = this->RecursiveTagImport(dependency->tag, parent_tag_array, allow_duplicates,tag_indices);
         importedTag->dependencies.at(i).get()->tag = newTag;
     }
     return tag_indices[tag];

@@ -17,7 +17,7 @@
 
 class ProtonTagArray {
 public:
-    uint32_t ImportTag(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates);
+    uint32_t ImportTag(uint32_t tag, const ProtonTagArray &parent_tag_array, bool allow_duplicates);
     uint32_t DuplicateTag(uint32_t tag);
     void DeleteTag(uint32_t tag, bool recursive_deletion);
     std::vector<std::unique_ptr<ProtonTag>> tags;
@@ -27,7 +27,7 @@ public:
     ProtonTagArray(const ProtonTagArray& tagarray);
     
 private:
-    uint32_t RecursiveTagImport(uint32_t tag, ProtonTagArray *tag_array, bool allow_duplicates, uint32_t *tag_indices);
+    uint32_t RecursiveTagImport(uint32_t tag, const ProtonTagArray &parent_tag_array, bool allow_duplicates, uint32_t *tag_indices);
 };
 
 #endif /* defined(__Proton__ProtonTagArray__) */
