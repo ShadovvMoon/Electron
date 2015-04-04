@@ -225,7 +225,7 @@ uint32_t ProtonTag::DataLength() {
 
 void ProtonTag::OffsetData(uint32_t offset, uint32_t size) {
     if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive)) return;
-    
+    if(size == 0) return;
     //if(memcmp(this->tag_classes, "rncs", 4) == 0) {
 #warning TODO: Scenario tag's reflexives are not mapped out yet. Due to the complexity of this tag, using the brute-force algorithm might break the tag on some maps.
     //}
