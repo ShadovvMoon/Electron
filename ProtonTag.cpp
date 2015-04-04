@@ -222,6 +222,12 @@ uint32_t ProtonTag::DataLength() {
     return this->tag_data_length;
 }
 
+static inline void IncreaseReflexiveIfPossible(uint32_t ref_offset, uint32_t offset_data_offset, uint32_t offset_size, uint32_t tag_magic, void *data) {
+    HaloTagReflexive *ref = (HaloTagReflexive *)((char *)data + ref_offset);
+    if(ref->count > 0 && (ref->address - tag_magic) >= offset_data_offset) {
+        ref->address += offset_size;
+    }
+}
 
 void ProtonTag::OffsetData(uint32_t offset, uint32_t size) {
     if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive)) return;
@@ -233,6 +239,15 @@ void ProtonTag::OffsetData(uint32_t offset, uint32_t size) {
         // SBSP tag must use mapped out reflexives, or else holes might occur in the map.
         std::cout << "ProtonTag::AlignDataToAddress WARNING: This function does not support sbsp tags yet.\n";
         return;
+    }
+    else if(memcmp(this->tag_classes,"mtib",4) == 0) {
+        HaloTagReflexive *reflexive = (HaloTagReflexive *)(this->Data() + 0x54);
+        for(uint32_t i=0;i<reflexive->count;i++) {
+            uint32_t current_offset = reflexive->address - this->tag_magic + i * 64;
+            IncreaseReflexiveIfPossible(current_offset + 0x34, offset, size, this->tag_magic, this->Data());
+        }
+        IncreaseReflexiveIfPossible(0x54, offset, size, this->tag_magic, this->Data());
+        IncreaseReflexiveIfPossible(0x60, offset, size, this->tag_magic, this->Data());
     }
     else {
         // Default brute force algorithm.
