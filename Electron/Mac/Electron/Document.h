@@ -7,9 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ERenderView.h"
 
 @interface Document : NSDocument
-
+{
+    IBOutlet ERenderView *renderView;
+}
 
 @end
 

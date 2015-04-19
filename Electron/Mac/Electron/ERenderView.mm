@@ -41,8 +41,6 @@ ERenderer *renderer;
 }
 
 -(id)initWithFrame:(NSRect)frameRect {
-    renderer = new ERenderer();
-    
     self = [super initWithFrame:frameRect pixelFormat:[ERenderView pixelFormat]];
     if (self) {
         [self setPostsFrameChangedNotifications: YES];
@@ -50,13 +48,39 @@ ERenderer *renderer;
         [[self openGLContext] makeCurrentContext];
         [[self openGLContext] setView:self];
         
+        renderer = new ERenderer();
         renderer->setup();
+        
+        // Start the draw timer
+        int fps = 100;
+        drawTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0/fps) target:self selector:@selector(timerTick:) userInfo:nil repeats:YES];
     }
     return self;
 }
 
+- (void)timerTick:(NSTimer *)timer
+{
+    [[self openGLContext] update];
+    
+    NSSize sceneBounds = [self bounds].size;
+    renderer->resize(sceneBounds.width, sceneBounds.height);
+    
+    [self setNeedsDisplay:YES];
+}
+
+-(void)awakeFromNib {
+    
+}
+
+-(void)setData:(NSData*)data {
+    ProtonMap *map = new ProtonMap([data bytes]);
+    renderer->setMap(map);
+}
+
 - (void)drawRect:(NSRect)dirtyRect {
+    [[self openGLContext] makeCurrentContext];
     renderer->render();
+    [[self openGLContext] flushBuffer];
 }
 
 @end

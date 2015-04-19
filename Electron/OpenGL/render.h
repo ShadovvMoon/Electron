@@ -11,10 +11,19 @@
 
 #include <stdio.h>
 #include "ProtonMap.h"
+#include "tags/ZZTHaloScenarioTag.h"
 
 class ERenderer {
+private:
+    ProtonMap *map;
+    const void *data;
+    bool ready;
+    
+    void *map2mem(uint32_t pointer);
+    void renderBSP(Reflexive bsp);
 public:
     void setup();
+    void resize(float width, float height);
     void render();
     void setMap(ProtonMap *map);
 };

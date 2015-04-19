@@ -11,7 +11,7 @@
 
 @interface ERenderView : NSOpenGLView
 {
-    
+    NSTimer *drawTimer;
 }
-
+-(void)setData:(NSData*)data;
 @end

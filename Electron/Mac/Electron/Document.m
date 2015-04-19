@@ -18,13 +18,18 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        // Add your subclass-specific initialization here.
+        renderView = [[ERenderView alloc] initWithFrame:NSZeroRect];
     }
     return self;
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *)aController {
     [super windowControllerDidLoadNib:aController];
+    
+    // Build the render view
+    [renderView setFrame:[[[aController window] contentView] bounds]];
+    [renderView setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+    [[[aController window] contentView] addSubview:renderView];
 }
 
 + (BOOL)autosavesInPlace {
@@ -48,12 +53,7 @@
     // Insert code here to read your document from the given data of the specified type. If outError != NULL, ensure that you create and set an appropriate error when returning NO.
     // You can also choose to override -readFromFileWrapper:ofType:error: or -readFromURL:ofType:error: instead.
     // If you override either of these, you should also override -isEntireFileLoaded to return NO if the contents are lazily loaded.
-    
-    
-    
-    
-    
-    
+    [renderView setData:data];
     return YES;
 }
 

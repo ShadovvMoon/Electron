@@ -36,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		147F67131AE34EF700380099 /* render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = render.h; path = ../../OpenGL/render.h; sourceTree = "<group>"; };
 		14ADF3AA1AE32F9000818134 /* Electron.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Electron.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14ADF3AE1AE32F9000818134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14ADF3AF1AE32F9000818134 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -182,6 +183,7 @@
 		14ADF3F91AE3371D00818134 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				147F67131AE34EF700380099 /* render.h */,
 				14ADF3F71AE3370700818134 /* render.cpp */,
 			);
 			name = OpenGL;
