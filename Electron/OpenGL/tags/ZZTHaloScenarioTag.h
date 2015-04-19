@@ -22,91 +22,227 @@
 //  Copyright (c) 2015 Samuco. All rights reserved.
 //
 
-#include "ZZTHaloDataTypes.h"
+#include "HaloData.h"
 
 #ifndef _ZZTHaloScenarioTag_h
 #define _ZZTHaloScenarioTag_h
 
 typedef struct {
     uint8_t unk0[0x30];     //0x0
-    Reflexive skyBox;       //0x30
+    HaloTagReflexive skyBox;       //0x30
     uint32_t unk1;          //0x3C
-    Reflexive children;     //0x40
+    HaloTagReflexive children;     //0x40
     uint8_t unk2[0xA0];     //0x4C
-    Reflexive resources;    //0xEC
-    Reflexive functions;    //0xF8
+    HaloTagReflexive resources;    //0xEC
+    HaloTagReflexive functions;    //0xF8
     uint32_t unk4[2];       //0x104
-    Reflexive unknown;      //0x110
-    Reflexive comments;     //0x118
+    HaloTagReflexive unknown;      //0x110
+    HaloTagReflexive comments;     //0x118
     uint8_t unk5[0xE0];     //0x124
-    Reflexive objectNames;  //0x204
-    Reflexive scen;
-    Reflexive scenRef;
-    Reflexive bipd;
-    Reflexive bipdRef;
-    Reflexive vehi;
-    Reflexive vehiRef;
-    Reflexive eqip;
-    Reflexive eqipRef;
-    Reflexive weap;
-    Reflexive weapRef;
-    Reflexive deviceGroups;
-    Reflexive mach;
-    Reflexive machRef;
-    Reflexive cont;
-    Reflexive contRef;
-    Reflexive light;
-    Reflexive lightRef;
-    Reflexive sound;
-    Reflexive soundRef;
-    Reflexive unk6;
-    Reflexive unk7;
-    Reflexive unk8;
-    Reflexive unk9;
-    Reflexive unk10;
-    Reflexive unk11;
-    Reflexive unk12;
-    Reflexive playerStartingProfile;
-    Reflexive playerSpawn;
-    Reflexive triggerVolumes;
-    Reflexive animations;
-    Reflexive multiplayerFlags;
-    Reflexive mpEquip;
-    Reflexive startEquip;
-    Reflexive bspSwitchTriggers;
-    Reflexive decal;
-    Reflexive decalRef;
-    Reflexive dobcRef;
-    Reflexive unk13;
-    Reflexive unk14;
-    Reflexive unk15;
-    Reflexive unk16;
-    Reflexive unk17;
-    Reflexive unk18;
-    Reflexive unk19;
-    Reflexive actorRef;
-    Reflexive encounters;
-    Reflexive commandlists;
-    Reflexive unk20;
-    Reflexive AiStartingLocations;
-    Reflexive AiPlatoons;
-    Reflexive AiConversations;
+    HaloTagReflexive objectNames;  //0x204
+    HaloTagReflexive scen;
+    HaloTagReflexive scenRef;
+    HaloTagReflexive bipd;
+    HaloTagReflexive bipdRef;
+    HaloTagReflexive vehi;
+    HaloTagReflexive vehiRef;
+    HaloTagReflexive eqip;
+    HaloTagReflexive eqipRef;
+    HaloTagReflexive weap;
+    HaloTagReflexive weapRef;
+    HaloTagReflexive deviceGroups;
+    HaloTagReflexive mach;
+    HaloTagReflexive machRef;
+    HaloTagReflexive cont;
+    HaloTagReflexive contRef;
+    HaloTagReflexive light;
+    HaloTagReflexive lightRef;
+    HaloTagReflexive sound;
+    HaloTagReflexive soundRef;
+    HaloTagReflexive unk6;
+    HaloTagReflexive unk7;
+    HaloTagReflexive unk8;
+    HaloTagReflexive unk9;
+    HaloTagReflexive unk10;
+    HaloTagReflexive unk11;
+    HaloTagReflexive unk12;
+    HaloTagReflexive playerStartingProfile;
+    HaloTagReflexive playerSpawn;
+    HaloTagReflexive triggerVolumes;
+    HaloTagReflexive animations;
+    HaloTagReflexive multiplayerFlags;
+    HaloTagReflexive mpEquip;
+    HaloTagReflexive startEquip;
+    HaloTagReflexive bspSwitchTriggers;
+    HaloTagReflexive decal;
+    HaloTagReflexive decalRef;
+    HaloTagReflexive dobcRef;
+    HaloTagReflexive unk13;
+    HaloTagReflexive unk14;
+    HaloTagReflexive unk15;
+    HaloTagReflexive unk16;
+    HaloTagReflexive unk17;
+    HaloTagReflexive unk18;
+    HaloTagReflexive unk19;
+    HaloTagReflexive actorRef;
+    HaloTagReflexive encounters;
+    HaloTagReflexive commandlists;
+    HaloTagReflexive unk20;
+    HaloTagReflexive AiStartingLocations;
+    HaloTagReflexive AiPlatoons;
+    HaloTagReflexive AiConversations;
     uint32_t scriptDataSize; //0x474
     uint32_t unk21;          //0x478
-    Reflexive scripts;       //0x47C
+    HaloTagReflexive scripts;       //0x47C
     uint32_t unk22[2];       //0x488
-    Reflexive commands;      //0x490
-    Reflexive points;        //0x49C
-    Reflexive AiAnimationRef;//0x4A8
-    Reflexive globals;       //0x4B4
+    HaloTagReflexive commands;      //0x490
+    HaloTagReflexive points;        //0x49C
+    HaloTagReflexive AiAnimationRef;//0x4A8
+    HaloTagReflexive globals;       //0x4B4
     uint32_t unk23[9];       //0x4C0
-    Reflexive AiRecordingRef;//0x4E4
-    Reflexive unk24;         //0x4F0
-    Reflexive participants;  //0x4FC
+    HaloTagReflexive AiRecordingRef;//0x4E4
+    HaloTagReflexive unk24;         //0x4F0
+    HaloTagReflexive participants;  //0x4FC
     uint32_t unk25[9];       //0x508
-    Reflexive lines;         //0x52C
+    HaloTagReflexive lines;         //0x52C
     uint8_t unk26[0x6C];     //0x538
-    Reflexive bsp;           //0x5A4
+    HaloTagReflexive bsp;           //0x5A4
 } __attribute__((packed)) HaloScenarioTag;
+
+typedef struct {
+    uint32_t bsp_mapfile_start;
+    uint32_t bsp_size;
+    uint32_t bsp_magic;
+    uint32_t zero;
+    char sbsp[4];
+    uint32_t name_address;
+    uint32_t reserved;
+    uint16_t tagId;
+    uint16_t halodoesntevenreadthisvaluewtfbungiewhydoyoudothistome;
+} __attribute__((packed)) BSP_CHUNK;
+
+typedef struct {
+    HaloTagDependency lightmaps;
+    uint32_t unk0[0x25];
+    HaloTagReflexive shaders;
+    HaloTagReflexive collBSP;
+    HaloTagReflexive nodes;
+    uint32_t unk1[0x6];
+    HaloTagReflexive leaves;
+    HaloTagReflexive surfaces;
+    HaloTagReflexive submeshIndices;
+    HaloTagReflexive submeshHeader;
+    HaloTagReflexive unk2;
+    HaloTagReflexive unk3;
+    HaloTagReflexive unk4;
+    HaloTagReflexive clusters;
+    uint32_t clusterSize;
+    uint32_t unk5;
+    HaloTagReflexive unk6;
+    HaloTagReflexive clusterPortals;
+    HaloTagReflexive unk7;
+    HaloTagReflexive breakableSurfaces;
+    HaloTagReflexive fogPlanes;
+    HaloTagReflexive fogRegions;
+    HaloTagReflexive weatherPalette;
+    HaloTagReflexive unk8;
+    HaloTagReflexive unk9;
+    HaloTagReflexive weather;
+    HaloTagReflexive weatherPolyhedra;
+    HaloTagReflexive unk10;
+    HaloTagReflexive unk11;
+    HaloTagReflexive pathfinding;
+    HaloTagReflexive unk12;
+    HaloTagReflexive backgroundSound;
+    HaloTagReflexive environmentSound;
+    uint32_t soundSize;
+    uint32_t unk13;
+    HaloTagReflexive unk14;
+    HaloTagReflexive unk15;
+    HaloTagReflexive unk16;
+    HaloTagReflexive markers;
+    HaloTagReflexive dobc;
+    HaloTagReflexive decals;
+    uint32_t unk17[0x9];
+} __attribute__((packed)) BSP_MESH;
+
+typedef struct
+{
+    short LightmapIndex;
+    short unk1;
+    uint32_t unknown[4];
+    HaloTagReflexive material;
+} __attribute__((packed)) BSP_SUBMESH;
+
+typedef struct
+{
+    HaloTagDependency ShaderTag;
+    uint32_t UnkZero2;
+    uint32_t VertIndexOffset;
+    uint32_t VertIndexCount;
+    float Centroid[3];
+    float AmbientColor[3];
+    uint32_t DistLightCount;
+    float DistLight1[6];
+    float DistLight2[6];
+    float unkFloat2[3];
+    float ReflectTint[4];
+    float ShadowVector[3];
+    float ShadowColor[3];
+    float Plane[4];
+    uint32_t UnkFlag2;
+    uint32_t UnkCount1;
+    uint32_t VertexCount1;
+    uint32_t UnkZero4;
+    uint32_t VertexOffset;
+    uint32_t Vert_HaloTagReflexive;
+    uint32_t UnkAlways3;
+    uint32_t VertexCount2;
+    uint32_t UnkZero9;
+    uint32_t UnkLightmapOffset;
+    uint32_t CompVert_HaloTagReflexive;
+    uint32_t UnkZero5[2];
+    uint32_t SomeOffset1;
+    uint32_t PcVertexDataOffset;
+    uint32_t UnkZero6;
+    uint32_t CompVertBufferSize;
+    uint32_t UnkZero7;
+    uint32_t SomeOffset2;
+    uint32_t VertexDataOffset;
+    uint32_t UnkZero8;
+} __attribute__((packed)) MATERIAL_SUBMESH_HEADER;
+
+typedef struct
+{
+    uint32_t comp_normal;
+    short comp_uv[2];
+}COMPRESSED_LIGHTMAP_VERT;
+typedef struct
+{
+    float normal[3];
+    float uv[2];
+}UNCOMPRESSED_LIGHTMAP_VERT;
+
+
+typedef struct
+{
+    float vertex_k[3];
+    float normal[3];
+    float binormal[3];
+    float tangent[3];
+    float uv[2];
+}UNCOMPRESSED_BSP_VERT;
+typedef struct
+{
+    float vertex_k[3];
+    uint32_t  comp_normal;
+    uint32_t  comp_binormal;
+    uint32_t  comp_tangent;
+    float uv[2];
+}COMPRESSED_BSP_VERT;
+typedef struct
+{
+    unsigned short tri_ind[3];
+}TRI_INDICES;
 
 #endif

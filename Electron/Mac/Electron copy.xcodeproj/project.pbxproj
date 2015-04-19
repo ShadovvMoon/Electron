@@ -1,0 +1,514 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		14ADF3B11AE32F9000818134 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B01AE32F9000818134 /* AppDelegate.m */; };
+		14ADF3B31AE32F9000818134 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B21AE32F9000818134 /* main.m */; };
+		14ADF3B61AE32F9000818134 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B51AE32F9000818134 /* Document.m */; };
+		14ADF3B91AE32F9000818134 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14ADF3B71AE32F9000818134 /* Document.xib */; };
+		14ADF3BB1AE32F9000818134 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14ADF3BA1AE32F9000818134 /* Images.xcassets */; };
+		14ADF3BE1AE32F9000818134 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14ADF3BC1AE32F9000818134 /* MainMenu.xib */; };
+		14ADF3CA1AE32F9100818134 /* ElectronTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3C91AE32F9100818134 /* ElectronTests.m */; };
+		14ADF3DE1AE32FC200818134 /* ProtonCacheFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D41AE32FC200818134 /* ProtonCacheFile.cpp */; };
+		14ADF3DF1AE32FC200818134 /* ProtonMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D61AE32FC200818134 /* ProtonMap.cpp */; };
+		14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D81AE32FC200818134 /* ProtonTag.cpp */; };
+		14ADF3E11AE32FC200818134 /* ProtonTagArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DA1AE32FC200818134 /* ProtonTagArray.cpp */; };
+		14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */; };
+		14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3EF1AE3312D00818134 /* ERenderView.mm */; };
+		14ADF3F61AE3367000818134 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ADF3F51AE3367000818134 /* OpenGL.framework */; };
+		14ADF3FA1AE3373200818134 /* render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3F71AE3370700818134 /* render.cpp */; };
+		14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3E31AE32FC700818134 /* HaloData.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		14ADF3C41AE32F9000818134 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 14ADF3A21AE32F9000818134 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14ADF3A91AE32F9000818134;
+			remoteInfo = Electron;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		147F67131AE34EF700380099 /* render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = render.h; path = ../../OpenGL/render.h; sourceTree = "<group>"; };
+		14ADF3AA1AE32F9000818134 /* Electron.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Electron.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14ADF3AE1AE32F9000818134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14ADF3AF1AE32F9000818134 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		14ADF3B01AE32F9000818134 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		14ADF3B21AE32F9000818134 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		14ADF3B41AE32F9000818134 /* Document.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
+		14ADF3B51AE32F9000818134 /* Document.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
+		14ADF3B81AE32F9000818134 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Document.xib; sourceTree = "<group>"; };
+		14ADF3BA1AE32F9000818134 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		14ADF3BD1AE32F9000818134 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		14ADF3C31AE32F9000818134 /* ElectronTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ElectronTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		14ADF3C81AE32F9100818134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14ADF3C91AE32F9100818134 /* ElectronTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ElectronTests.m; sourceTree = "<group>"; };
+		14ADF3D41AE32FC200818134 /* ProtonCacheFile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtonCacheFile.cpp; path = ../../../ProtonCacheFile.cpp; sourceTree = "<group>"; };
+		14ADF3D51AE32FC200818134 /* ProtonCacheFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtonCacheFile.h; path = ../../../ProtonCacheFile.h; sourceTree = "<group>"; };
+		14ADF3D61AE32FC200818134 /* ProtonMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtonMap.cpp; path = ../../../ProtonMap.cpp; sourceTree = "<group>"; };
+		14ADF3D71AE32FC200818134 /* ProtonMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtonMap.h; path = ../../../ProtonMap.h; sourceTree = "<group>"; };
+		14ADF3D81AE32FC200818134 /* ProtonTag.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtonTag.cpp; path = ../../../ProtonTag.cpp; sourceTree = "<group>"; };
+		14ADF3D91AE32FC200818134 /* ProtonTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtonTag.h; path = ../../../ProtonTag.h; sourceTree = "<group>"; };
+		14ADF3DA1AE32FC200818134 /* ProtonTagArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtonTagArray.cpp; path = ../../../ProtonTagArray.cpp; sourceTree = "<group>"; };
+		14ADF3DB1AE32FC200818134 /* ProtonTagArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtonTagArray.h; path = ../../../ProtonTagArray.h; sourceTree = "<group>"; };
+		14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProtonTagDependency.cpp; path = ../../../ProtonTagDependency.cpp; sourceTree = "<group>"; };
+		14ADF3DD1AE32FC200818134 /* ProtonTagDependency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProtonTagDependency.h; path = ../../../ProtonTagDependency.h; sourceTree = "<group>"; };
+		14ADF3E31AE32FC700818134 /* HaloData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HaloData.cpp; path = ../../../HaloData.cpp; sourceTree = "<group>"; };
+		14ADF3E41AE32FC700818134 /* HaloData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HaloData.h; path = ../../../HaloData.h; sourceTree = "<group>"; };
+		14ADF3E61AE32FCF00818134 /* BitmSndMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BitmSndMap.h; path = ../../../BitmSndMap.h; sourceTree = "<group>"; };
+		14ADF3EE1AE3312D00818134 /* ERenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ERenderView.h; sourceTree = "<group>"; };
+		14ADF3EF1AE3312D00818134 /* ERenderView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ERenderView.mm; sourceTree = "<group>"; };
+		14ADF3F51AE3367000818134 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		14ADF3F71AE3370700818134 /* render.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = render.cpp; path = ../../OpenGL/render.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		14ADF3A71AE32F9000818134 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14ADF3F61AE3367000818134 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14ADF3C01AE32F9000818134 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		14ADF3A11AE32F9000818134 = {
+			isa = PBXGroup;
+			children = (
+				14ADF3F51AE3367000818134 /* OpenGL.framework */,
+				14ADF3AC1AE32F9000818134 /* Electron */,
+				14ADF3C61AE32F9000818134 /* ElectronTests */,
+				14ADF3AB1AE32F9000818134 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		14ADF3AB1AE32F9000818134 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3AA1AE32F9000818134 /* Electron.app */,
+				14ADF3C31AE32F9000818134 /* ElectronTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		14ADF3AC1AE32F9000818134 /* Electron */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3EB1AE330E100818134 /* Render */,
+				14ADF3F91AE3371D00818134 /* OpenGL */,
+				14ADF3D31AE32FAE00818134 /* Proton */,
+				14ADF3AF1AE32F9000818134 /* AppDelegate.h */,
+				14ADF3B01AE32F9000818134 /* AppDelegate.m */,
+				14ADF3B41AE32F9000818134 /* Document.h */,
+				14ADF3B51AE32F9000818134 /* Document.m */,
+				14ADF3B71AE32F9000818134 /* Document.xib */,
+				14ADF3BA1AE32F9000818134 /* Images.xcassets */,
+				14ADF3BC1AE32F9000818134 /* MainMenu.xib */,
+				14ADF3AD1AE32F9000818134 /* Supporting Files */,
+			);
+			path = Electron;
+			sourceTree = "<group>";
+		};
+		14ADF3AD1AE32F9000818134 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3AE1AE32F9000818134 /* Info.plist */,
+				14ADF3B21AE32F9000818134 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		14ADF3C61AE32F9000818134 /* ElectronTests */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3C91AE32F9100818134 /* ElectronTests.m */,
+				14ADF3C71AE32F9100818134 /* Supporting Files */,
+			);
+			path = ElectronTests;
+			sourceTree = "<group>";
+		};
+		14ADF3C71AE32F9100818134 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3C81AE32F9100818134 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		14ADF3D31AE32FAE00818134 /* Proton */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3E61AE32FCF00818134 /* BitmSndMap.h */,
+				14ADF3E31AE32FC700818134 /* HaloData.cpp */,
+				14ADF3E41AE32FC700818134 /* HaloData.h */,
+				14ADF3D41AE32FC200818134 /* ProtonCacheFile.cpp */,
+				14ADF3D51AE32FC200818134 /* ProtonCacheFile.h */,
+				14ADF3D61AE32FC200818134 /* ProtonMap.cpp */,
+				14ADF3D71AE32FC200818134 /* ProtonMap.h */,
+				14ADF3D81AE32FC200818134 /* ProtonTag.cpp */,
+				14ADF3D91AE32FC200818134 /* ProtonTag.h */,
+				14ADF3DA1AE32FC200818134 /* ProtonTagArray.cpp */,
+				14ADF3DB1AE32FC200818134 /* ProtonTagArray.h */,
+				14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */,
+				14ADF3DD1AE32FC200818134 /* ProtonTagDependency.h */,
+			);
+			name = Proton;
+			sourceTree = "<group>";
+		};
+		14ADF3EB1AE330E100818134 /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				14ADF3EE1AE3312D00818134 /* ERenderView.h */,
+				14ADF3EF1AE3312D00818134 /* ERenderView.mm */,
+			);
+			name = Render;
+			sourceTree = "<group>";
+		};
+		14ADF3F91AE3371D00818134 /* OpenGL */ = {
+			isa = PBXGroup;
+			children = (
+				147F67131AE34EF700380099 /* render.h */,
+				14ADF3F71AE3370700818134 /* render.cpp */,
+			);
+			name = OpenGL;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		14ADF3A91AE32F9000818134 /* Electron */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14ADF3CD1AE32F9100818134 /* Build configuration list for PBXNativeTarget "Electron" */;
+			buildPhases = (
+				14ADF3A61AE32F9000818134 /* Sources */,
+				14ADF3A71AE32F9000818134 /* Frameworks */,
+				14ADF3A81AE32F9000818134 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Electron;
+			productName = Electron;
+			productReference = 14ADF3AA1AE32F9000818134 /* Electron.app */;
+			productType = "com.apple.product-type.application";
+		};
+		14ADF3C21AE32F9000818134 /* ElectronTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14ADF3D01AE32F9100818134 /* Build configuration list for PBXNativeTarget "ElectronTests" */;
+			buildPhases = (
+				14ADF3BF1AE32F9000818134 /* Sources */,
+				14ADF3C01AE32F9000818134 /* Frameworks */,
+				14ADF3C11AE32F9000818134 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				14ADF3C51AE32F9000818134 /* PBXTargetDependency */,
+			);
+			name = ElectronTests;
+			productName = ElectronTests;
+			productReference = 14ADF3C31AE32F9000818134 /* ElectronTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		14ADF3A21AE32F9000818134 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = Samuco;
+				TargetAttributes = {
+					14ADF3A91AE32F9000818134 = {
+						CreatedOnToolsVersion = 6.3;
+					};
+					14ADF3C21AE32F9000818134 = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = 14ADF3A91AE32F9000818134;
+					};
+				};
+			};
+			buildConfigurationList = 14ADF3A51AE32F9000818134 /* Build configuration list for PBXProject "Electron" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 14ADF3A11AE32F9000818134;
+			productRefGroup = 14ADF3AB1AE32F9000818134 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				14ADF3A91AE32F9000818134 /* Electron */,
+				14ADF3C21AE32F9000818134 /* ElectronTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		14ADF3A81AE32F9000818134 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14ADF3B91AE32F9000818134 /* Document.xib in Resources */,
+				14ADF3BB1AE32F9000818134 /* Images.xcassets in Resources */,
+				14ADF3BE1AE32F9000818134 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14ADF3C11AE32F9000818134 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		14ADF3A61AE32F9000818134 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */,
+				14ADF3FA1AE3373200818134 /* render.cpp in Sources */,
+				14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */,
+				14ADF3B61AE32F9000818134 /* Document.m in Sources */,
+				14ADF3B31AE32F9000818134 /* main.m in Sources */,
+				14ADF3E11AE32FC200818134 /* ProtonTagArray.cpp in Sources */,
+				14ADF3DE1AE32FC200818134 /* ProtonCacheFile.cpp in Sources */,
+				14ADF3B11AE32F9000818134 /* AppDelegate.m in Sources */,
+				14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */,
+				14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */,
+				14ADF3DF1AE32FC200818134 /* ProtonMap.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14ADF3BF1AE32F9000818134 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				14ADF3CA1AE32F9100818134 /* ElectronTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		14ADF3C51AE32F9000818134 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14ADF3A91AE32F9000818134 /* Electron */;
+			targetProxy = 14ADF3C41AE32F9000818134 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		14ADF3B71AE32F9000818134 /* Document.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14ADF3B81AE32F9000818134 /* Base */,
+			);
+			name = Document.xib;
+			sourceTree = "<group>";
+		};
+		14ADF3BC1AE32F9000818134 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				14ADF3BD1AE32F9000818134 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		14ADF3CB1AE32F9100818134 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		14ADF3CC1AE32F9100818134 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		14ADF3CE1AE32F9100818134 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Electron/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		14ADF3CF1AE32F9100818134 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Electron/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		14ADF3D11AE32F9100818134 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ElectronTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Electron.app/Contents/MacOS/Electron";
+			};
+			name = Debug;
+		};
+		14ADF3D21AE32F9100818134 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ElectronTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Electron.app/Contents/MacOS/Electron";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		14ADF3A51AE32F9000818134 /* Build configuration list for PBXProject "Electron" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14ADF3CB1AE32F9100818134 /* Debug */,
+				14ADF3CC1AE32F9100818134 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		14ADF3CD1AE32F9100818134 /* Build configuration list for PBXNativeTarget "Electron" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14ADF3CE1AE32F9100818134 /* Debug */,
+				14ADF3CF1AE32F9100818134 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		14ADF3D01AE32F9100818134 /* Build configuration list for PBXNativeTarget "ElectronTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14ADF3D11AE32F9100818134 /* Debug */,
+				14ADF3D21AE32F9100818134 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 14ADF3A21AE32F9000818134 /* Project object */;
+}

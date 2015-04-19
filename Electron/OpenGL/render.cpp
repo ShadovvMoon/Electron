@@ -24,108 +24,6 @@
     #include <GLUT/glut.h>
 #endif
 
-typedef struct {
-    uint32_t start;
-    uint32_t size;
-    uint32_t magic;
-    uint32_t zero1;
-    uint32_t tag;
-    uint32_t NamePtr;
-    uint32_t unk0;
-    uint32_t tagId;
-} __attribute__((packed)) BSP_CHUNK;
-
-typedef struct {
-    TagDependency lightmaps;
-    uint32_t unk0[0x25];
-    Reflexive shaders;
-    Reflexive collBSP;
-    Reflexive nodes;
-    uint32_t unk1[0x6];
-    Reflexive leaves;
-    Reflexive surfaces;
-    Reflexive submeshIndices;
-    Reflexive submeshHeader;
-    Reflexive unk2;
-    Reflexive unk3;
-    Reflexive unk4;
-    Reflexive clusters;
-    uint32_t clusterSize;
-    uint32_t unk5;
-    Reflexive unk6;
-    Reflexive clusterPortals;
-    Reflexive unk7;
-    Reflexive breakableSurfaces;
-    Reflexive fogPlanes;
-    Reflexive fogRegions;
-    Reflexive weatherPalette;
-    Reflexive unk8;
-    Reflexive unk9;
-    Reflexive weather;
-    Reflexive weatherPolyhedra;
-    Reflexive unk10;
-    Reflexive unk11;
-    Reflexive pathfinding;
-    Reflexive unk12;
-    Reflexive backgroundSound;
-    Reflexive environmentSound;
-    uint32_t soundSize;
-    uint32_t unk13;
-    Reflexive unk14;
-    Reflexive unk15;
-    Reflexive unk16;
-    Reflexive markers;
-    Reflexive dobc;
-    Reflexive decals;
-    uint32_t unk17[0x9];
-} __attribute__((packed)) BSP_MESH;
-
-typedef struct
-{
-    short LightmapIndex;
-    short unk1;
-    uint32_t unknown[4];
-    Reflexive material;
-} __attribute__((packed)) BSP_SUBMESH;
-
-typedef struct
-{
-    TagDependency ShaderTag;
-    uint32_t UnkZero2;
-    uint32_t VertIndexOffset;
-    uint32_t VertIndexCount;
-    float Centroid[3];
-    float AmbientColor[3];
-    uint32_t DistLightCount;
-    float DistLight1[6];
-    float DistLight2[6];
-    float unkFloat2[3];
-    float ReflectTint[4];
-    float ShadowVector[3];
-    float ShadowColor[3];
-    float Plane[4];
-    uint32_t UnkFlag2;
-    uint32_t UnkCount1;
-    uint32_t VertexCount1;
-    uint32_t UnkZero4;
-    uint32_t VertexOffset;
-    uint32_t Vert_Reflexive;
-    uint32_t UnkAlways3;
-    uint32_t VertexCount2;
-    uint32_t UnkZero9;
-    uint32_t UnkLightmapOffset;
-    uint32_t CompVert_Reflexive;
-    uint32_t UnkZero5[2];
-    uint32_t SomeOffset1;
-    uint32_t PcVertexDataOffset;
-    uint32_t UnkZero6;
-    uint32_t CompVertBufferSize;
-    uint32_t UnkZero7;
-    uint32_t SomeOffset2;
-    uint32_t VertexDataOffset;
-    uint32_t UnkZero8;
-} __attribute__((packed)) MATERIAL_SUBMESH_HEADER;
-
 // Setup
 void ERenderer::setup() {
     printf("setup\n");
@@ -181,28 +79,52 @@ public:
     }
 };
 
-void *ERenderer::map2mem(uint32_t pointer) {
-    return map + pointer - map->meta_address;
+uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
+    return (uint8_t*)(scenario->Data() + scenario->PointerToOffset(address));
 }
 
-void ERenderer::renderBSP(Reflexive bsp) {
+void ERenderer::renderBSP(ProtonTag *scenario) {
+    HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
     int i;
     for (i=0; i < bsp.count; i++) {
-        BSP_CHUNK *chunk = (BSP_CHUNK *)((long)map2mem(bsp.pointer) + sizeof(BSP_CHUNK) * i);
-        BSP_MESH *mesh = (BSP_MESH*)(map2mem(chunk->start));
+        printf("loading bsp %d\n", i);
+               
+        BSP_CHUNK *chunk = (BSP_CHUNK *)(map2mem(scenario, bsp.address) + sizeof(BSP_CHUNK) * i); // VERIFIED
+        ProtonTag *bspTag = map->tags.at((uint16_t)(chunk->tagId)).get();
+        BSP_MESH *mesh = (BSP_MESH *)bspTag->Data();
+        printf("mesh map %c%c%c%c\n", mesh->lightmaps.tag_class[0],mesh->lightmaps.tag_class[1],mesh->lightmaps.tag_class[2],mesh->lightmaps.tag_class[3]);
         
         int m;
         for (m=0; m < mesh->submeshHeader.count; m++) {
-            BSP_SUBMESH *submesh = (BSP_SUBMESH *)((long)map2mem(mesh->submeshHeader.pointer) + sizeof(BSP_SUBMESH) * m);
+            printf("loading mesh %d\n", m);
+            
+            BSP_SUBMESH *submesh = (BSP_SUBMESH *)(map2mem(bspTag, mesh->submeshHeader.address) + sizeof(BSP_SUBMESH) * m);
             
             int n;
             for (n=0; n < submesh->material.count; n++) {
-                MATERIAL_SUBMESH_HEADER *material = (MATERIAL_SUBMESH_HEADER *)((long)map2mem(submesh->material.pointer) + sizeof(MATERIAL_SUBMESH_HEADER) * n);
+                printf("loading material %d\n", n);
+                MATERIAL_SUBMESH_HEADER *material = (MATERIAL_SUBMESH_HEADER *)(map2mem(bspTag, submesh->material.address) + sizeof(MATERIAL_SUBMESH_HEADER) * n);
                 
+                uint16_t vertCount = material->VertexCount1;
+                /*uint64_t vertIndexOffset = ((sizeof(TRI_INDICES) * material->VertIndexOffset) + map2mem(bspTag, mesh->submeshIndices.address));
+                
+                glBegin(GL_TRIANGLE_STRIP);
+                
+                int v;
+                for (v=0; v < material->VertIndexCount; v++) {
+                    TRI_INDICES *index = (TRI_INDICES*)(material->VertIndexOffset + sizeof(TRI_INDICES) * v);
+                    index->tri_ind[0];
+                    index->tri_ind[1];
+                    index->tri_ind[2];
+                    
+                    
+                    
+                }
+         
+                glEnd();
+                */
             }
-            glBegin(GL_TRIANGLE_STRIP);
             
-            glEnd();
         }
     }
 }
@@ -213,11 +135,12 @@ void ERenderer::setMap(ProtonMap *map) {
     
     uint16_t scenarioTag = map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
-        const char *scenarioData = map->tags.at(map->principal_tag).get()->Data();
-        HaloScenarioTag *scenario = (HaloScenarioTag *)scenarioData;
+        
+        ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
+        HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
         // Load the BSP
-        renderBSP(scenario->bsp);
+        renderBSP(scenarioTag);
         
         // Load Objects
         int i;
@@ -231,9 +154,6 @@ void ERenderer::setMap(ProtonMap *map) {
     }
     ready = true;
 }
-
-
-
 
 void ERenderer::resize(float width, float height) {
     glViewport(0,0,width,height);
@@ -260,9 +180,6 @@ void ERenderer::render() {
     if (scenarioTag != NULLED_TAG_ID) {
         const char *scenarioData = map->tags.at(map->principal_tag).get()->Data();
         HaloScenarioTag *scenario = (HaloScenarioTag *)scenarioData;
-        
-        // Render BSP
-        renderBSP(scenario->bsp);
 
         // Render Objects
         int i;

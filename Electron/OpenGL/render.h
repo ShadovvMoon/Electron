@@ -17,9 +17,7 @@ class ERenderer {
 private:
     ProtonMap *map;
     bool ready;
-    
-    void *map2mem(uint32_t pointer);
-    void renderBSP(Reflexive bsp);
+    void renderBSP(ProtonTag *scenario);
 public:
     void setup();
     void resize(float width, float height);
