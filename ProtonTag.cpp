@@ -338,6 +338,14 @@ uint32_t ProtonTag::ResourcesDataLength() {
     return this->resources_data_length;
 }
 
+// Convert a Halo pointer to an offset (and vise versa for OffsetToPointer)
+uint32_t ProtonTag::PointerToOffset(uint32_t pointer) {
+    return pointer - this->tag_magic;
+}
+uint32_t ProtonTag::OffsetToPointer(uint32_t offset) {
+    return this->tag_magic + offset;
+}
+
 
 
 ProtonTag::ProtonTag() {}
