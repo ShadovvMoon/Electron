@@ -9,15 +9,18 @@
 #ifndef ____render__
 #define ____render__
 
-#include <stdio.h>
-#include "ProtonMap.h"
-#include "tags/ZZTHaloScenarioTag.h"
+#include "defines.h"
+#include "bsp.h"
+#include "math.h"
+#include "camera.h"
+#include "shader.h"
 
 class ERenderer {
 private:
     ProtonMap *map;
-    bool ready;
-    void renderBSP(ProtonTag *scenario);
+    BSP *bsp;
+    Camera *camera;
+    bool ready = false;
 public:
     void setup();
     void resize(float width, float height);

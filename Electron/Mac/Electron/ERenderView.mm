@@ -61,10 +61,6 @@ ERenderer *renderer;
 - (void)timerTick:(NSTimer *)timer
 {
     [[self openGLContext] update];
-    
-    NSSize sceneBounds = [self bounds].size;
-    renderer->resize(sceneBounds.width, sceneBounds.height);
-    
     [self setNeedsDisplay:YES];
 }
 
@@ -78,9 +74,14 @@ ERenderer *renderer;
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-    [[self openGLContext] makeCurrentContext];
-    renderer->render();
-    [[self openGLContext] flushBuffer];
+    if ([[self window] isMainWindow]) {
+        [[self openGLContext] makeCurrentContext];
+    
+        NSSize sceneBounds = [self bounds].size;
+        renderer->resize(sceneBounds.width, sceneBounds.height);
+        renderer->render();
+        [[self openGLContext] flushBuffer];
+    }
 }
 
 @end

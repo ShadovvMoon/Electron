@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1436196F1AE3982200D82AC8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1436196E1AE3982200D82AC8 /* GLUT.framework */; };
+		143619721AE39B0200D82AC8 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143619701AE39B0200D82AC8 /* shader.cpp */; };
+		143619751AE39B1D00D82AC8 /* senv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143619741AE39B1D00D82AC8 /* senv.cpp */; };
+		143A57BA1AE39C790024C523 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143A57B81AE39C790024C523 /* camera.cpp */; };
+		143A57BD1AE39CE80024C523 /* vector3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143A57BB1AE39CE80024C523 /* vector3d.cpp */; };
+		143A57C01AE39F0B0024C523 /* bsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 143A57BE1AE39F0B0024C523 /* bsp.cpp */; };
 		14ADF3B11AE32F9000818134 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B01AE32F9000818134 /* AppDelegate.m */; };
 		14ADF3B31AE32F9000818134 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B21AE32F9000818134 /* main.m */; };
 		14ADF3B61AE32F9000818134 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B51AE32F9000818134 /* Document.m */; };
@@ -36,6 +42,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1436196E1AE3982200D82AC8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		143619701AE39B0200D82AC8 /* shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = shader.cpp; path = ../../OpenGL/shader.cpp; sourceTree = "<group>"; };
+		143619711AE39B0200D82AC8 /* shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = shader.h; path = ../../OpenGL/shader.h; sourceTree = "<group>"; };
+		143619741AE39B1D00D82AC8 /* senv.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = senv.cpp; path = ../../OpenGL/shaders/senv.cpp; sourceTree = "<group>"; };
+		143619761AE39B2100D82AC8 /* senv.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = senv.h; path = ../../OpenGL/shaders/senv.h; sourceTree = "<group>"; };
+		143619771AE39B3C00D82AC8 /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../../OpenGL/defines.h; sourceTree = "<group>"; };
+		143A57B81AE39C790024C523 /* camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = camera.cpp; path = ../../OpenGL/camera.cpp; sourceTree = "<group>"; };
+		143A57B91AE39C790024C523 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = camera.h; path = ../../OpenGL/camera.h; sourceTree = "<group>"; };
+		143A57BB1AE39CE80024C523 /* vector3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vector3d.cpp; path = ../../OpenGL/vector3d.cpp; sourceTree = "<group>"; };
+		143A57BC1AE39CE80024C523 /* vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vector3d.h; path = ../../OpenGL/vector3d.h; sourceTree = "<group>"; };
+		143A57BE1AE39F0B0024C523 /* bsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bsp.cpp; path = ../../OpenGL/bsp.cpp; sourceTree = "<group>"; };
+		143A57BF1AE39F0B0024C523 /* bsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bsp.h; path = ../../OpenGL/bsp.h; sourceTree = "<group>"; };
 		147F67131AE34EF700380099 /* render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = render.h; path = ../../OpenGL/render.h; sourceTree = "<group>"; };
 		14ADF3AA1AE32F9000818134 /* Electron.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Electron.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14ADF3AE1AE32F9000818134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1436196F1AE3982200D82AC8 /* GLUT.framework in Frameworks */,
 				14ADF3F61AE3367000818134 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -88,9 +107,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		143619731AE39B1400D82AC8 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				143619711AE39B0200D82AC8 /* shader.h */,
+				143619701AE39B0200D82AC8 /* shader.cpp */,
+				143619761AE39B2100D82AC8 /* senv.h */,
+				143619741AE39B1D00D82AC8 /* senv.cpp */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
 		14ADF3A11AE32F9000818134 = {
 			isa = PBXGroup;
 			children = (
+				1436196E1AE3982200D82AC8 /* GLUT.framework */,
 				14ADF3F51AE3367000818134 /* OpenGL.framework */,
 				14ADF3AC1AE32F9000818134 /* Electron */,
 				14ADF3C61AE32F9000818134 /* ElectronTests */,
@@ -183,8 +214,16 @@
 		14ADF3F91AE3371D00818134 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				143619771AE39B3C00D82AC8 /* defines.h */,
 				147F67131AE34EF700380099 /* render.h */,
 				14ADF3F71AE3370700818134 /* render.cpp */,
+				143A57B91AE39C790024C523 /* camera.h */,
+				143A57B81AE39C790024C523 /* camera.cpp */,
+				143A57BC1AE39CE80024C523 /* vector3d.h */,
+				143A57BB1AE39CE80024C523 /* vector3d.cpp */,
+				143A57BF1AE39F0B0024C523 /* bsp.h */,
+				143A57BE1AE39F0B0024C523 /* bsp.cpp */,
+				143619731AE39B1400D82AC8 /* Shaders */,
 			);
 			name = OpenGL;
 			sourceTree = "<group>";
@@ -289,15 +328,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				143A57BA1AE39C790024C523 /* camera.cpp in Sources */,
 				14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */,
 				14ADF3FA1AE3373200818134 /* render.cpp in Sources */,
 				14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */,
 				14ADF3B61AE32F9000818134 /* Document.m in Sources */,
 				14ADF3B31AE32F9000818134 /* main.m in Sources */,
 				14ADF3E11AE32FC200818134 /* ProtonTagArray.cpp in Sources */,
+				143619721AE39B0200D82AC8 /* shader.cpp in Sources */,
 				14ADF3DE1AE32FC200818134 /* ProtonCacheFile.cpp in Sources */,
+				143A57BD1AE39CE80024C523 /* vector3d.cpp in Sources */,
+				143619751AE39B1D00D82AC8 /* senv.cpp in Sources */,
 				14ADF3B11AE32F9000818134 /* AppDelegate.m in Sources */,
 				14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */,
+				143A57C01AE39F0B0024C523 /* bsp.cpp in Sources */,
 				14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */,
 				14ADF3DF1AE32FC200818134 /* ProtonMap.cpp in Sources */,
 			);
@@ -424,6 +468,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Electron/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -435,6 +480,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Electron/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
