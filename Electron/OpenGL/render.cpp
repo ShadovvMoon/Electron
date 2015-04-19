@@ -24,62 +24,6 @@
     #include <GLUT/glut.h>
 #endif
 
-// Setup
-void ERenderer::setup() {
-    printf("setup\n");
-#ifdef _WINDOWS
-    GLenum error = glewInit();
-    if (error != GLEW_OK)
-    {
-        printf ("An error occurred with glew %d: %s \n", error, (char *) glewGetErrorString(error));
-    }
-#endif
-    
-    glClearDepth(1.0f);
-    glDepthFunc(GL_LEQUAL);
-    ready = false;
-}
-
-
-// Shaders
-class shader {
-public:
-    void start();
-    void stop();
-};
-
-class soso : shader {
-    
-};
-
-// Camera (converted from Archon)
-class vector3d {
-public:
-    float x, y, z;
-    vector3d (float sx, float sy, float sz) {
-        x = sx;
-        y = sy;
-        y = sz;
-    }
-    vector3d* add(vector3d* vector) {
-        x += vector->x;
-        y += vector->y;
-        z += vector->z;
-        return this;
-    };
-};
-
-class camera {
-public:
-    vector3d *position, *view, *up, *strafe;
-    camera () {
-        position = new vector3d(0.0, 0.0, 0.0);
-        view     = new vector3d(0.0, 0.0, -0.5);
-        up       = new vector3d(0.0, 0.0, 1.0);
-    }
-};
-
-
 typedef struct {
     uint32_t start;
     uint32_t size;
@@ -181,6 +125,61 @@ typedef struct
     uint32_t VertexDataOffset;
     uint32_t UnkZero8;
 } __attribute__((packed)) MATERIAL_SUBMESH_HEADER;
+
+// Setup
+void ERenderer::setup() {
+    printf("setup\n");
+#ifdef _WINDOWS
+    GLenum error = glewInit();
+    if (error != GLEW_OK)
+    {
+        printf ("An error occurred with glew %d: %s \n", error, (char *) glewGetErrorString(error));
+    }
+#endif
+    
+    glClearDepth(1.0f);
+    glDepthFunc(GL_LEQUAL);
+    ready = false;
+}
+
+
+// Shaders
+class shader {
+public:
+    void start();
+    void stop();
+};
+
+class soso : shader {
+    
+};
+
+// Camera (converted from Archon)
+class vector3d {
+public:
+    float x, y, z;
+    vector3d (float sx, float sy, float sz) {
+        x = sx;
+        y = sy;
+        y = sz;
+    }
+    vector3d* add(vector3d* vector) {
+        x += vector->x;
+        y += vector->y;
+        z += vector->z;
+        return this;
+    };
+};
+
+class camera {
+public:
+    vector3d *position, *view, *up, *strafe;
+    camera () {
+        position = new vector3d(0.0, 0.0, 0.0);
+        view     = new vector3d(0.0, 0.0, -0.5);
+        up       = new vector3d(0.0, 0.0, 1.0);
+    }
+};
 
 void *ERenderer::map2mem(uint32_t pointer) {
     return map + pointer - map->meta_address;

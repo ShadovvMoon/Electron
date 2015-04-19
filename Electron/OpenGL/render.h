@@ -16,7 +16,6 @@
 class ERenderer {
 private:
     ProtonMap *map;
-    const void *data;
     bool ready;
     
     void *map2mem(uint32_t pointer);

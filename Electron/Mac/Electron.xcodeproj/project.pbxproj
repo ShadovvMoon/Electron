@@ -19,10 +19,10 @@
 		14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D81AE32FC200818134 /* ProtonTag.cpp */; };
 		14ADF3E11AE32FC200818134 /* ProtonTagArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DA1AE32FC200818134 /* ProtonTagArray.cpp */; };
 		14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */; };
-		14ADF3E51AE32FC700818134 /* HaloData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3E31AE32FC700818134 /* HaloData.cpp */; };
 		14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3EF1AE3312D00818134 /* ERenderView.mm */; };
 		14ADF3F61AE3367000818134 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ADF3F51AE3367000818134 /* OpenGL.framework */; };
 		14ADF3FA1AE3373200818134 /* render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3F71AE3370700818134 /* render.cpp */; };
+		14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3E31AE32FC700818134 /* HaloData.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -289,10 +289,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				14ADF3E51AE32FC700818134 /* HaloData.cpp in Sources */,
+				14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */,
 				14ADF3FA1AE3373200818134 /* render.cpp in Sources */,
-				14ADF3B61AE32F9000818134 /* Document.m in Sources */,
 				14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */,
+				14ADF3B61AE32F9000818134 /* Document.m in Sources */,
 				14ADF3B31AE32F9000818134 /* main.m in Sources */,
 				14ADF3E11AE32FC200818134 /* ProtonTagArray.cpp in Sources */,
 				14ADF3DE1AE32FC200818134 /* ProtonCacheFile.cpp in Sources */,
