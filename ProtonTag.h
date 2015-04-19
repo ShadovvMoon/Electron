@@ -29,7 +29,10 @@ public:
     
     
     char tag_classes[12] = {};
+    
     uint32_t tag_magic; // This is the base address of what it would be when open in Halo.
+    
+    
     std::vector<std::unique_ptr<ProtonTagDependency>> dependencies;
     uint32_t resource_index = NO_RESOURCE_INDEX;
     void ScanDependencies(ProtonTagArray *parent_tag_array);
@@ -38,6 +41,9 @@ public:
     void AppendData(uint32_t offset, uint32_t size);
     void DeleteData(uint32_t offset, uint32_t size);
     void InsertData(uint32_t offset, const char *data, uint32_t size);
+    
+    uint32_t PointerToOffset(uint32_t pointer);
+    uint32_t OffsetToPointer(uint32_t pointer);
     
     void SetName(const char *name);
     const char *Name() const;
@@ -51,6 +57,8 @@ public:
     char *ResourcesData();
     uint32_t ResourcesDataLength();
     void SetResourcesData(const char *data, uint32_t length);
+    
+    
     
     ProtonTag();
     ProtonTag(const ProtonTag& tag);
