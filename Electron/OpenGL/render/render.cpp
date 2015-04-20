@@ -24,17 +24,19 @@ void ERenderer::setup() {
 #endif
     
     // Initilisation
-    camera  = new Camera();
-    shaders = new ShaderManager();
+    camera  = new Camera;
+    shaders = new ShaderManager;
     bsp     = new BSP(shaders);
+    objects = new ObjectManager;
     
     // Start the tick
     tick = now();
     forward_tick = now();
     strafe_tick = now();
     
-    printf("ready\n");
+    // Start
     ready = false;
+    printf("ready\n");
 }
 
 // Load a map
@@ -46,17 +48,8 @@ void ERenderer::setMap(ProtonMap *map) {
     if (scenarioTag != NULLED_TAG_ID) {
         
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
-        HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
-        this->bsp->setup(map, scenarioTag);
-        
-        // Load Objects
-        int i;
-        for (i=0; i < scenario->scenRef.count; i++) {
-        }
-        
-        printf("This map has %d types of scenery\n", scenario->scenRef.count);
-        printf("This map has %d types of vehicles\n", scenario->vehiRef.count);
-        printf("This map has %d types of equipment\n", scenario->eqipRef.count);
+        bsp->setup(map, scenarioTag);
+        objects->read(map, scenarioTag);
         
     }
     ready = true;
@@ -141,12 +134,12 @@ void ERenderer::render() {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
-        for (int pass = shader_SENV; pass <= shader_SENV; pass++ )
+        for (int pass = shader_SENV; pass <= shader_SCHI; pass++ )
         {
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
             shader->start();
-            this->bsp->render(map, scenarioTag);
+            this->bsp->render(type);
             shader->stop();
         }
         

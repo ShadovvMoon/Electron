@@ -6,22 +6,19 @@
 //
 //
 
-#ifndef __BSP__
-#define __BSP__
+#ifndef __MODEL__
+#define __MODEL__
 
 #include "defines.h"
 #include "shader.h"
 
-class BSPRenderMesh {
+class GeometryRenderMesh {
 public:
     GLuint m_Buffers[5];
-    
-    // Rendering
     GLuint geometryVAO;
     int indexCount;
     int vertCount;
     
-    // Arrays
     GLfloat* vertex_array;
     GLfloat* texture_uv;
     GLfloat* light_uv;
@@ -32,14 +29,23 @@ public:
     void setup();
 };
 
-
-class BSP {
-    ShaderManager *shaders;
-    std::vector<BSPRenderMesh*> renderables;
+class Geometry {
 public:
-    BSP(ShaderManager* manager);
-    void setup(ProtonMap *map, ProtonTag *scenario);
-    void render(ProtonMap *map, ProtonTag *scenario);
+    std::vector<GeometryRenderMesh*> renderables;
+    Geometry(uint8_t *offset);
+};
+
+class Model {
+public:
+    std::vector<Geometry*> geometries;
+    Model(ProtonMap *map, HaloTagDependency tag);
+};
+
+class ModelManager {
+private:
+    std::map<uint16_t, Model*> models;
+public:
+    Model *create_model(ProtonMap *map, HaloTagDependency tag);
 };
 
 #endif /* defined(__BSP__) */

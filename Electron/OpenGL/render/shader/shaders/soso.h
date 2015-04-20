@@ -6,13 +6,13 @@
 //
 //
 
-#ifndef ____EShaderSenv__
-#define ____EShaderSenv__
+#ifndef ____EShaderSoso__
+#define ____EShaderSoso__
 
 #include "shader.h"
 #include "texture.h"
 
-class senv : public shader {
+class soso : public shader {
 private:
     GLuint program;
     GLint baseTexture;
@@ -21,12 +21,12 @@ private:
 public:
     GLint maps;
     
-    void setup();
+    void setup(std::string path);
     void start();
     void stop();
 };
 
-class senv_object : public shader_object {
+class soso_object : public shader_object {
 private:
     texture *baseMap = nullptr;
     
@@ -42,6 +42,7 @@ private:
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     void render();
+    bool is(ShaderType type);
 };
 
 #endif

@@ -8,6 +8,12 @@
 
 #include "shader.h"
 #include "shaders/senv.h"
+#include "shaders/schi.h"
+#include "shaders/soso.h"
+
+float b2f(bool b) {
+    return b?1.0:0.0;
+}
 
 char *file_contents(const char *filename, GLint *len)
 {
@@ -41,7 +47,7 @@ GLuint make_shader(GLenum type, const char *filename)
     
     if (!source)
     {
-        fprintf(stderr, "Cannot load %s: Missing source", filename);
+        fprintf(stderr, "Cannot load %s: Missing source\n", filename);
         return 0;
     }
     
@@ -92,45 +98,50 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
     return program;
 }
 
-shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {
-    ProtonTag *shaderTag = map->tags.at((uint16_t)shader.tag_id.tag_index).get();
-    if(strncmp(shaderTag->tag_classes, "vnes", 4) == 0) { // senv shader
-        senv_object *shaderObj = new senv_object;
-        shaderObj->setup(this, map, shaderTag);
-        return shaderObj;
-    }
-    return nullptr;
-}
-
-/*
-void shader::setup() {
-    fprintf(stderr, "INVALID SHADER - setup()\n");
-}
-void shader::start() {
-    fprintf(stderr, "INVALID SHADER - start()\n");
-}
-void shader::stop() {
-    fprintf(stderr, "INVALID SHADER - stop()\n");
-}
-void shader_object::setup(ProtonMap *map, ProtonTag *shaderTag) {
-    fprintf(stderr, "INVALID SHADER OBJECT - setup()\n");
-};
-
-void shader_object::render() {
-    fprintf(stderr, "INVALID SHADER OBJECT - render()\n");
-}
-*/
-
 ShaderManager::ShaderManager() {
     printf("shader manager setup\n");
     
     // Create a texture manager
     textures = new TextureManager();
     
+    std::string path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
+    
     // Setup our shader types
-    senv *senv_shader = new senv();
-    senv_shader->setup();
+    senv *senv_shader = new senv;
+    senv_shader->setup(path);
     shaders[shader_SENV] = (shader*)senv_shader;
+    
+    schi *schi_shader = new schi;
+    schi_shader->setup(path);
+    shaders[shader_SCHI] = (shader*)schi_shader;
+    
+    soso *soso_shader = new soso;
+    soso_shader->setup(path);
+    shaders[shader_SOSO] = (shader*)soso_shader;
+}
+
+shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {
+    // Do we already have this shader?
+    std::map<uint16_t, shader_object*>::iterator iter = shader_objects.find(shader.tag_id.tag_index);
+    if (iter != shader_objects.end()) {
+        return iter->second;
+    }
+    
+    ProtonTag *shaderTag = map->tags.at((uint16_t)shader.tag_id.tag_index).get();
+    shader_object *shaderObj = nullptr;
+    if(strncmp(shaderTag->tag_classes, "vnes", 4) == 0) { // senv shader
+        shaderObj = new senv_object;
+    } else if(strncmp(shaderTag->tag_classes, "ihcs", 4) == 0) { // senv shader
+        shaderObj = new schi_object;
+    } else if(strncmp(shaderTag->tag_classes, "osos", 4) == 0) { // senv shader
+        //shaderObj = new soso_object;
+    }
+    
+    if (shaderObj != nullptr) {
+        shaderObj->setup(this, map, shaderTag);
+    }
+    shader_objects[shader.tag_id.tag_index] = shaderObj;
+    return shaderObj;
 }
 
 TextureManager *ShaderManager::texture_manager() {

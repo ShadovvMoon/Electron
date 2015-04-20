@@ -11,14 +11,18 @@
 
 #include <stdio.h>
 #include "tags/ZZTHaloScenarioTag.h"
+#include "tags/ZZTHaloObjectTag.h"
+
 #include "ProtonMap.h"
 
 #define BITS_PER_PIXEL 32.0
 #define DEPTH_SIZE 32.0
 
-#define ShaderCount 1
+#define ShaderCount 3
 typedef enum {
-    shader_SENV = 0
+    shader_SENV = 0,
+    shader_SCHI = 1,
+    shader_SOSO = 2
 } ShaderType;
 
 // Definitions

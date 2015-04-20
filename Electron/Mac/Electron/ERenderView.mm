@@ -7,7 +7,7 @@
 //
 
 #import "ERenderView.h"
-#import "../../OpenGL/render.h"
+#import "../../OpenGL/render/render.h"
 
 @implementation ERenderView
 ERenderer *renderer;

@@ -6,18 +6,14 @@
 //
 //
 
-#include "senv.h"
+#include "soso.h"
 
 // Global instance
-void senv::setup() {
-    printf("senv setup\n");
+void soso::setup(std::string path) {
+    printf("soso setup\n");
     GLuint vertex_shader, fragment_shader;
-    const char *vert_path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/shaders/senv.vert";
-    const char *frag_path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/shaders/senv.frag";
-    
-    // Load the shader
-    vertex_shader   = make_shader(GL_VERTEX_SHADER, vert_path);
-    fragment_shader = make_shader(GL_FRAGMENT_SHADER, frag_path);
+    vertex_shader   = make_shader(GL_VERTEX_SHADER,   (path + "/soso.vert").c_str());
+    fragment_shader = make_shader(GL_FRAGMENT_SHADER, (path + "/soso.frag").c_str());
     program         = make_program(vertex_shader, fragment_shader);
     
     // Bind attributes
@@ -29,7 +25,7 @@ void senv::setup() {
     glBindAttribLocation(program, 1, "texCoord_buffer");
 }
 
-void senv::start() {
+void soso::start() {
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
     glUniform1i(primaryDetailMap, 1);
@@ -37,13 +33,13 @@ void senv::start() {
     
 }
 
-void senv::stop() {
+void soso::stop() {
     
 }
 
 // Senv object
-void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
-    printf("senv object setup\n");
+void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
+    printf("soso object setup\n");
     baseMap = manager->texture_manager()->create_texture(map, *(HaloTagDependency*)(shaderTag->Data() + 0x88));
     
     HaloTagDependency primary = *(HaloTagDependency*)(shaderTag->Data() + 0xB8);
@@ -62,14 +58,14 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     }
     
     printf("shader setup\n");
-    senv *shader = (senv *)(manager->get_shader(shader_SENV));
+    soso *shader = (soso *)(manager->get_shader(shader_SOSO));
     mapsId = shader->maps;
 };
 
-float b2f(bool b) {
-    return b?1.0:0.0;
+bool soso_object::is(ShaderType type) {
+    return (type == shader_SOSO);
 }
-void senv_object::render() {
+void soso_object::render() {
     
     // Texturing
     glActiveTexture(GL_TEXTURE0);

@@ -69,7 +69,6 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                 int vertex_number = material->VertexCount1;
                 int indexSize = material->VertIndexCount*3;
                 
-                
                 HaloTagDependency shader = material->ShaderTag;
                 printf("shader setup %d %d\n", n, shader.tag_id.tag_index);
                 shader_object *material_shader = shaders->create_shader(map, shader);
@@ -156,7 +155,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     printf("done bsp setup\n");
 }
 
-void BSP::render(ProtonMap *map, ProtonTag *scenario) {
+void BSP::render(ShaderType pass) {
     
     
     // Render the renderables
@@ -167,62 +166,19 @@ void BSP::render(ProtonMap *map, ProtonTag *scenario) {
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
     int i;
+    
+    shader_object *previous_shader = nullptr;
     for (i=0; i < renderables.size(); i++) {
         BSPRenderMesh *mesh = renderables[i];
-        glBindVertexArrayAPPLE(mesh->geometryVAO);
-        if (mesh->shader != nullptr) {
-            mesh->shader->render();
+        if (mesh->shader != nullptr && mesh->shader->is(pass)) {
+            glBindVertexArrayAPPLE(mesh->geometryVAO);
+            if (mesh->shader != previous_shader) {
+                mesh->shader->render();
+                previous_shader = mesh->shader;
+            }
+            glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_INT, 0);
+            glBindVertexArrayAPPLE(0);
         }
-        glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_INT, 0);
-        glBindVertexArrayAPPLE(0);
     }
     glUseProgram(0);
-    
-    
- 
-    return;
-    
-    HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
-    //int i;
-    for (i=0; i < bsp.count; i++) {
-        BSP_CHUNK *chunk = (BSP_CHUNK *)(map2mem(scenario, bsp.address) + sizeof(BSP_CHUNK) * i); // VERIFIED
-        ProtonTag *bspTag = map->tags.at((uint16_t)(chunk->tagId)).get();
-        uint32_t mesh_offset = *(uint32_t *)(bspTag->Data());
-        BSP_MESH *mesh = (BSP_MESH *)map2mem(bspTag, mesh_offset);
-        
-        int m;
-        for (m=0; m < mesh->submeshHeader.count; m++) {
-            BSP_SUBMESH *submesh = (BSP_SUBMESH *)(map2mem(bspTag, mesh->submeshHeader.address) + sizeof(BSP_SUBMESH) * m);
-            
-            int n;
-            for (n=0; n < submesh->material.count; n++) {
-                MATERIAL_SUBMESH_HEADER *material = (MATERIAL_SUBMESH_HEADER *)(map2mem(bspTag, submesh->material.address) + sizeof(MATERIAL_SUBMESH_HEADER) * n);
-                uint8_t *vertIndexOffset = (uint8_t *)((sizeof(TRI_INDICES) * material->VertIndexOffset) + map2mem(bspTag, mesh->submeshIndices.address));
-                uint8_t *PcVertexDataOffset = map2mem(bspTag, material->PcVertexDataOffset);
-                
-                // Bind the VAO
-                
-                
-                
-                glBegin(GL_TRIANGLES);
-                
-                int v;
-                for (v=0; v < material->VertIndexCount; v++) {
-                    TRI_INDICES *index = (TRI_INDICES*)(vertIndexOffset + sizeof(TRI_INDICES) * v);
-                    
-                    // Render a vertex for tri_ind[0]
-                    UNCOMPRESSED_BSP_VERT *vert1 = (UNCOMPRESSED_BSP_VERT*)(PcVertexDataOffset + index->tri_ind[0] * sizeof(UNCOMPRESSED_BSP_VERT));
-                    UNCOMPRESSED_BSP_VERT *vert2 = (UNCOMPRESSED_BSP_VERT*)(PcVertexDataOffset + index->tri_ind[1] * sizeof(UNCOMPRESSED_BSP_VERT));
-                    UNCOMPRESSED_BSP_VERT *vert3 = (UNCOMPRESSED_BSP_VERT*)(PcVertexDataOffset + index->tri_ind[2] * sizeof(UNCOMPRESSED_BSP_VERT));
-                    
-                    glVertex3f(vert1->vertex_k[0], vert1->vertex_k[1], vert1->vertex_k[2]);
-                    glVertex3f(vert2->vertex_k[0], vert2->vertex_k[1], vert2->vertex_k[2]);
-                    glVertex3f(vert3->vertex_k[0], vert3->vertex_k[1], vert3->vertex_k[2]);
-                    glColor4f(arc4random()%10000/10000.0, arc4random()%10000/10000.0, arc4random()%10000/10000.0, 1.0);
-                }
-                
-                glEnd();
-            }
-        }
-    }
 }

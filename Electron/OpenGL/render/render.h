@@ -14,6 +14,7 @@
 #include "math.h"
 #include "camera.h"
 #include "shader.h"
+#include "object.h"
 
 #include <chrono>
 using namespace std::chrono;
@@ -38,6 +39,7 @@ private:
     ShaderManager *shaders;
     BSP *bsp;
     Camera *camera;
+    ObjectManager *objects;
 public:
     void setup();
     void resize(float width, float height);
