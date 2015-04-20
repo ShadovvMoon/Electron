@@ -45,4 +45,7 @@ typedef enum {
 #define TEXCOORD_VB 3
 #define LIGHT_VB 4
 
+// Functions
+void errorCheck();
+
 #endif

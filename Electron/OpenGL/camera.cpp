@@ -10,6 +10,7 @@
 #include "math.h"
 
 Camera::Camera () {
+    printf("camera setup\n");
     //position = new vector3d(0.0, 0.0, 0.0);
     //view     = new vector3d(0.0, 0.0, -0.5);
     //up       = new vector3d(0.0, 0.0, 1.0);

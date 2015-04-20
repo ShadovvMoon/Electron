@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "bitmaps.h"
 
 @interface AppDelegate ()
 
@@ -16,6 +17,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
+    load_bitmaps([[NSString stringWithFormat:@"%@/Library/Application Support/HaloMD/GameData/Maps/bitmaps.map", NSHomeDirectory()] cStringUsingEncoding:NSUTF8StringEncoding]);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

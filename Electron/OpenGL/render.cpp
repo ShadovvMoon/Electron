@@ -20,12 +20,12 @@ void ERenderer::setup() {
 #endif
     
     // Initilisation
-    bsp    = new BSP();
-    camera = new Camera();
-    ready  = false;
+    camera  = new Camera();
+    shaders = new ShaderManager();
+    bsp     = new BSP(shaders);
     
-    // Shaders
-    load_shaders();
+    printf("ready\n");
+    ready   = false;
 }
 
 // Load a map
@@ -63,9 +63,17 @@ void ERenderer::resize(float width, float height) {
     glLoadIdentity();
 }
 
+void errorCheck() {
+    // Print any errors
+    GLenum error = glGetError();
+    if( error != GL_NO_ERROR )
+    {
+        fprintf(stderr, "Opengl error %s", gluErrorString( error ));
+    }
+}
+
 // Main rendering loop
 void ERenderer::render() {
-    printf("render\n");
     if (!ready) {
         return;
     }
@@ -88,10 +96,10 @@ void ERenderer::render() {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
-        for (int pass = shader_SENV; pass != shader_SENV; pass++ )
+        for (int pass = shader_SENV; pass <= shader_SENV; pass++ )
         {
             ShaderType type = static_cast<ShaderType>(pass);
-            shader *shader = get_shader(type);
+            shader *shader = shaders->get_shader(type);
             shader->start();
             this->bsp->render(map, scenarioTag);
             shader->stop();
@@ -104,12 +112,6 @@ void ERenderer::render() {
         }
     }
     
-    // Print any errors
-    GLenum error = glGetError();
-    if( error != GL_NO_ERROR )
-    {
-        fprintf(stderr, "Opengl error %s", gluErrorString( error ));
-    }
-    
+    errorCheck();
     glFlush();
 }

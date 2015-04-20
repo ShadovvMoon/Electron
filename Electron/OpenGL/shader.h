@@ -7,28 +7,37 @@
 //
 
 #include "defines.h"
+#include "texture.h"
 
 #ifndef ____EShader__
 #define ____EShader__
 
 class shader {
 public:
-    void setup();
-    void start();
-    void stop();
+    virtual void setup() = 0;
+    virtual void start() = 0;
+    virtual void stop() = 0;
+};
+
+class shader_object;
+class ShaderManager {
+private:
+    shader *shaders[ShaderCount];
+    TextureManager *textures = nullptr;
+public:
+    ShaderManager();
+    TextureManager *texture_manager();
+    shader *get_shader(ShaderType pass);
+    shader_object *create_shader(ProtonMap *map, HaloTagDependency shader);
 };
 
 class shader_object {
 public:
-    void setup(ProtonMap *map, ProtonTag *shaderTag);
-    void render();
+    virtual void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) = 0;
+    virtual void render() = 0;
 };
 
-void load_shaders();
 GLuint make_shader(GLenum type, const char *filename);
 GLuint make_program(GLuint vertex_shader, GLuint fragment_shader);
-shader *get_shader(ShaderType pass);
-GLuint load_bitm(HaloTagDependency bitm);
-shader_object *load_shader(ProtonMap *map, HaloTagDependency shader);
 
 #endif

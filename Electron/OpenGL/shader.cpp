@@ -92,28 +92,17 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
     return program;
 }
 
-
-GLuint load_bitm(HaloTagDependency bitm) {
-    // Has this bitmap been loaded before? Check the cache
-    
-    // Create a new texture
-    GLuint texture;
-    glGenTextures(1,&texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    
-    return texture;
-}
-
-shader_object *load_shader(ProtonMap *map, HaloTagDependency shader) {
+shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {
     ProtonTag *shaderTag = map->tags.at((uint16_t)shader.tag_id.tag_index).get();
     if(strncmp(shaderTag->tag_classes, "vnes", 4) == 0) { // senv shader
         senv_object *shaderObj = new senv_object();
-        shaderObj->setup(map, shaderTag);
+        shaderObj->setup(this, map, shaderTag);
         return shaderObj;
     }
     return nullptr;
 }
 
+/*
 void shader::setup() {
     fprintf(stderr, "INVALID SHADER - setup()\n");
 }
@@ -130,15 +119,25 @@ void shader_object::setup(ProtonMap *map, ProtonTag *shaderTag) {
 void shader_object::render() {
     fprintf(stderr, "INVALID SHADER OBJECT - render()\n");
 }
+*/
 
-
-shader *shaders[ShaderCount];
-void load_shaders() {
+ShaderManager::ShaderManager() {
+    printf("shader manager setup\n");
+    
+    // Create a texture manager
+    textures = new TextureManager();
+    
+    // Setup our shader types
     senv *senv_shader = new senv();
     senv_shader->setup();
     shaders[shader_SENV] = (shader*)senv_shader;
 }
 
-shader *get_shader(ShaderType pass) {
+TextureManager *ShaderManager::texture_manager() {
+    return textures;
+}
+
+shader * ShaderManager::get_shader(ShaderType pass) {
     return shaders[pass];
 }
+

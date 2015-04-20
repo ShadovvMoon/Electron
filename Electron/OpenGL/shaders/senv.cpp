@@ -10,6 +10,7 @@
 
 // Global instance
 void senv::setup() {
+    printf("senv setup\n");
     GLuint vertex_shader, fragment_shader;
     const char *vert_path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/shaders/senv.vert";
     const char *frag_path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/shaders/senv.frag";
@@ -20,9 +21,9 @@ void senv::setup() {
     program         = make_program(vertex_shader, fragment_shader);
     
     // Bind attributes
+    baseTexture = glGetUniformLocation(program, "baseTexture");
     glBindAttribLocation(program, 1, "texCoord_buffer");
-    glBindAttribLocation(program, 3, "texCoord_buffer_light");
-    
+
     /*
     const char* attribute_name = "coord2d";
     attribute_coord2d = glGetAttribLocation(program, attribute_name);
@@ -35,6 +36,7 @@ void senv::setup() {
 
 void senv::start() {
     glUseProgram(program);
+    glUniform1i(baseTexture, 0);
 }
 
 void senv::stop() {
@@ -42,10 +44,12 @@ void senv::stop() {
 }
 
 // Senv object
-void senv_object::setup(ProtonMap *map, ProtonTag *shaderTag) {
-    baseMap = load_bitm(*(HaloTagDependency*)(shaderTag->Data() + 0x88));
+void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
+    printf("senv object setup\n");
+    baseMap = manager->texture_manager()->create_texture(map, *(HaloTagDependency*)(shaderTag->Data() + 0x88));
 };
 
 void senv_object::render() {
-    
+    glActiveTexture(GL_TEXTURE0);
+    baseMap->bind();
 }

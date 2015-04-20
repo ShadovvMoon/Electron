@@ -10,11 +10,12 @@
 #define ____EShaderSenv__
 
 #include "shader.h"
+#include "texture.h"
 
 class senv : public shader {
 private:
     GLuint program;
-    GLint attribute_coord2d;
+    GLint baseTexture;
 public:
     void setup();
     void start();
@@ -23,9 +24,9 @@ public:
 
 class senv_object : public shader_object {
 private:
-    GLuint baseMap;
+    texture *baseMap;
 public:
-    void setup(ProtonMap *map, ProtonTag *shaderTag);
+    void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     void render();
 };
 

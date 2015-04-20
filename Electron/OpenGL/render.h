@@ -17,10 +17,11 @@
 
 class ERenderer {
 private:
+    bool ready = false;
     ProtonMap *map;
+    ShaderManager *shaders;
     BSP *bsp;
     Camera *camera;
-    bool ready = false;
 public:
     void setup();
     void resize(float width, float height);
