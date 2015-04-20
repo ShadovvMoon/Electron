@@ -80,15 +80,22 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
     // Params
     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
     glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+    
+    // Check
+    if (bitm.tag_id.tag_index == NULLED_TAG_ID) {
+        printf("invalid bitmap\n");
+        return;
+    }
     
     // Load the texture (texture 0 for now)
     ProtonTag *bitmapTag = map->tags.at(bitm.tag_id.tag_index).get();
     if (bitmapTag) {
         bitm_header_t *bitmData = (bitm_header_t *)bitmapTag->Data();
-        if (bitmData->image_reflexive.count > 0) {
+        int i;
+        for (i=0; i < bitmData->image_reflexive.count; i++) {
             
-            int i = 0;
             bitm_image_t *image = (bitm_image_t *)(bitmapTag->Data() + bitmapTag->PointerToOffset(bitmData->image_reflexive.address) + sizeof(bitm_image_t) * i);
             char *input = (char*)bitmapTag->ResourcesData() + image->offset;
             
@@ -118,29 +125,22 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                 return;
             }
             
-            glCompressedTexImage2D(GL_TEXTURE_2D, 0, internalFormat, image->width, image->height, 0, size, input);
-            /*glTexImage2D(GL_TEXTURE_2D,
-                         0,
-                         internalFormat,
-                         image->width,
-                         image->height,
-                         0,
-                         format,
-                         GL_UNSIGNED_BYTE,
-                         input);
-             */
-            
-            
+            glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, image->width, image->height, 0, size, input);
+            glGenerateMipmap(GL_TEXTURE_2D);
         }
     } else {
         printf("missing bitmap\n");
     }
+    
+    
 }
 void texture::bind() {
     glBindTexture(GL_TEXTURE_2D, tex);
 }
 
 texture *TextureManager::create_texture(ProtonMap *map, HaloTagDependency bitm) {
+    printf("%d\n", bitm.tag_id.tag_index);
+    
     // Has this bitmap been loaded before? Check the cache
     std::map<uint16_t, texture*>::iterator iter = textures.find(bitm.tag_id.tag_index);
     if (iter != textures.end()) {

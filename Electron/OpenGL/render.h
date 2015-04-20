@@ -15,8 +15,24 @@
 #include "camera.h"
 #include "shader.h"
 
+#include <chrono>
+using namespace std::chrono;
+
+typedef struct {
+    bool forward;
+    bool left;
+    bool right;
+    bool back;
+} Control;
+
 class ERenderer {
 private:
+    // movement
+    milliseconds tick;
+    milliseconds forward_tick;
+    milliseconds strafe_tick;
+    
+    // rendering
     bool ready = false;
     ProtonMap *map;
     ShaderManager *shaders;
@@ -27,6 +43,10 @@ public:
     void resize(float width, float height);
     void render();
     void setMap(ProtonMap *map);
+    
+    // Movement
+    void applyControl(Control *control);
+    void mouseDrag(float dx, float dy);
 };
 
 #endif /* defined(____render__) */

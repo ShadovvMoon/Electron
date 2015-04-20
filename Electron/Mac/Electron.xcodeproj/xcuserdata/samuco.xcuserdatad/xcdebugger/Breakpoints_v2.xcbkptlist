@@ -11,18 +11,17 @@
             continueAfterRunningActions = "No"
             scope = "2"
             stopOnStyle = "0"
-            exceptionName = "malloc_error_break">
+            exceptionName = "std::out_of_range::out_of_range">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
          <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            scope = "2"
-            stopOnStyle = "0"
-            exceptionName = "std::out_of_range::out_of_range">
+            symbolName = "malloc_error_break"
+            moduleName = "">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

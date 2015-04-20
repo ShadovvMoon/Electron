@@ -8,6 +8,10 @@
 
 #include "render.h"
 
+milliseconds now() {
+    return duration_cast< milliseconds >(high_resolution_clock::now().time_since_epoch());
+}
+
 // Setup
 void ERenderer::setup() {
     printf("setup\n");
@@ -24,12 +28,18 @@ void ERenderer::setup() {
     shaders = new ShaderManager();
     bsp     = new BSP(shaders);
     
+    // Start the tick
+    tick = now();
+    forward_tick = now();
+    strafe_tick = now();
+    
     printf("ready\n");
-    ready   = false;
+    ready = false;
 }
 
 // Load a map
 void ERenderer::setMap(ProtonMap *map) {
+    printf("set map\n");
     this->map = map;
     
     uint16_t scenarioTag = map->principal_tag;
@@ -68,8 +78,43 @@ void errorCheck() {
     GLenum error = glGetError();
     if( error != GL_NO_ERROR )
     {
-        fprintf(stderr, "Opengl error %s", gluErrorString( error ));
+        fprintf(stderr, "Opengl error %\n", gluErrorString( error ));
     }
+}
+
+void ERenderer::mouseDrag(float dx, float dy) {
+    camera->drag(dx, dy);
+}
+
+void ERenderer::applyControl(Control *control){
+    if (!ready) {
+        return;
+    }
+    
+    milliseconds current = now();
+    double seconds = (current.count() - tick.count()) / 1000.0;
+    double forward_seconds = (current.count() - forward_tick.count()) / 1000.0;
+    double  strafe_seconds = (current.count() -  strafe_tick.count()) / 1000.0;
+    
+    float speed = 1;
+    float fspeed = speed * forward_seconds;
+    float sspeed = speed * strafe_seconds;
+    if (control->forward && !control->back) {
+        camera->move(fspeed);
+    } else if (control->back) {
+        camera->move(-fspeed);
+    } else {
+        forward_tick = now();
+    }
+    
+    if (control->left && !control->right) {
+        camera->strafe(-sspeed);
+    } else if (control->right) {
+        camera->strafe(+sspeed);
+    } else {
+        strafe_tick = now();
+    }
+    tick = now();
 }
 
 // Main rendering loop

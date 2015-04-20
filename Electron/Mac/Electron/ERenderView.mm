@@ -11,6 +11,7 @@
 
 @implementation ERenderView
 ERenderer *renderer;
+Control *controls = (Control *)malloc(sizeof(Control));
 
 +(NSOpenGLPixelFormat*)pixelFormat {
     // Setup the OpenGL context
@@ -48,7 +49,7 @@ ERenderer *renderer;
         [[self openGLContext] makeCurrentContext];
         [[self openGLContext] setView:self];
         
-        renderer = new ERenderer();
+        renderer = new ERenderer;
         renderer->setup();
         
         // Start the draw timer
@@ -58,9 +59,70 @@ ERenderer *renderer;
     return self;
 }
 
+-(BOOL)acceptsFirstResponder {
+    return YES;
+}
+
+CGPoint prevDown;
+- (void)rightMouseDown:(NSEvent *)event
+{
+    NSPoint downPoint = [event locationInWindow];
+    prevDown = [NSEvent mouseLocation];
+}
+
+- (void)rightMouseDragged:(NSEvent *)theEvent
+{
+    NSPoint dragPoint = [NSEvent mouseLocation];
+    
+    if ((([theEvent modifierFlags] & NSControlKeyMask) == 0))
+        renderer->mouseDrag((dragPoint.x - prevDown.x), (dragPoint.y - prevDown.y));
+    
+    prevDown = dragPoint;
+}
+
+-(void)keyDown:(NSEvent *)theEvent {
+    unichar character = [[theEvent characters] characterAtIndex:0];
+    switch (character)
+    {
+        case 'w':
+            controls->forward = true;
+            break;
+        case 's':
+            controls->back = true;
+            break;
+        case 'a':
+            controls->left = true;
+            break;
+        case 'd':
+            controls->right = true;
+            break;
+    }
+}
+
+-(void)keyUp:(NSEvent *)theEvent {
+    unichar character = [[theEvent characters] characterAtIndex:0];
+    switch (character)
+    {
+        case 'w':
+            controls->forward = false;
+            break;
+        case 's':
+            controls->back = false;
+            break;
+        case 'a':
+            controls->left = false;
+            break;
+        case 'd':
+            controls->right = false;
+            break;
+    }
+}
+
 - (void)timerTick:(NSTimer *)timer
 {
     [[self openGLContext] update];
+    
+    renderer->applyControl(controls);
     [self setNeedsDisplay:YES];
 }
 

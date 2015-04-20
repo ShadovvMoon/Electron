@@ -26,6 +26,7 @@ BSP::BSP(ShaderManager* manager) {
     shaders = manager;
 }
 
+//TODO: Group elements into renderables
 void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     printf("bsp setup\n");
     HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
@@ -68,12 +69,13 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                 int vertex_number = material->VertexCount1;
                 int indexSize = material->VertIndexCount*3;
                 
-                printf("shader setup %d\n", n);
+                
                 HaloTagDependency shader = material->ShaderTag;
+                printf("shader setup %d %d\n", n, shader.tag_id.tag_index);
                 shader_object *material_shader = shaders->create_shader(map, shader);
                 
                 printf("renderer setup %d\n", n);
-                BSPRenderMesh *renderer = new BSPRenderMesh();
+                BSPRenderMesh *renderer = new BSPRenderMesh;
                 renderer->setup();
                 renderer->shader = material_shader;
                 renderer->indexCount = indexSize;

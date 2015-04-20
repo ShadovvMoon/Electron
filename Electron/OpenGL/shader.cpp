@@ -95,7 +95,7 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
 shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {
     ProtonTag *shaderTag = map->tags.at((uint16_t)shader.tag_id.tag_index).get();
     if(strncmp(shaderTag->tag_classes, "vnes", 4) == 0) { // senv shader
-        senv_object *shaderObj = new senv_object();
+        senv_object *shaderObj = new senv_object;
         shaderObj->setup(this, map, shaderTag);
         return shaderObj;
     }

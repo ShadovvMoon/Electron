@@ -16,7 +16,11 @@ class senv : public shader {
 private:
     GLuint program;
     GLint baseTexture;
+    GLint primaryDetailMap;
+    GLint secondaryDetailMap;
 public:
+    GLint maps;
+    
     void setup();
     void start();
     void stop();
@@ -24,7 +28,17 @@ public:
 
 class senv_object : public shader_object {
 private:
-    texture *baseMap;
+    texture *baseMap = nullptr;
+    
+    bool usePrimary = false;
+    float primaryScale;
+    texture *primaryDetailMap = nullptr;
+    
+    bool useSecondary = false;
+    float secondaryScale;
+    texture *secondaryDetailMap;
+    
+    GLint mapsId;
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     void render();

@@ -14,9 +14,12 @@
 
 class Camera {
 public:
-    vector3d *position, *view, *up, *strafe;
+    vector3d *position, *view, *up, *vstrafe;
     Camera ();
+    void drag(float dx, float dy);
     void rotate(float angle, float x, float y, float z);
+    void move(float delta);
+    void strafe(float delta);
     void look();
 };
 

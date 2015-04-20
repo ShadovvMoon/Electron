@@ -18,6 +18,9 @@ public:
     vector3d* add(vector3d* vector);
     vector3d* sub(vector3d* vector);
     vector3d* set(vector3d* vector);
+    vector3d* cross(vector3d* vector);
+    vector3d* norm();
+    vector3d* mul(float delta);
 };
 
 #endif /* defined(__V3D__) */
