@@ -8,6 +8,7 @@
 
 #include "object.h"
 #include "objects/scen.h"
+#include "objects/vehi.h"
 
 ObjectRef::ObjectRef(ObjectManager *manager, ProtonMap *map, HaloTagDependency tag) {
     printf("creating object ref\n");
@@ -48,9 +49,12 @@ void ObjectManager::read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scen
     modelManager = new ModelManager(shaders);
     scen = new ScenClass;
     scen->read(this, map, scenario);
+    vehi = new VehiClass;
+    vehi->read(this, map, scenario);
 }
 
 void ObjectManager::render(ShaderType pass) {
     scen->render(pass);
+    vehi->render(pass);
 }
 

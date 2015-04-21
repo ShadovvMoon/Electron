@@ -32,6 +32,9 @@ void schi::stop() {
     
 }
 
+void schi_object::setBaseUV(float u, float v) {
+}
+
 // Senv object
 void schi_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
     

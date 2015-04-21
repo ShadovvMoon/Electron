@@ -24,6 +24,7 @@ class ShaderManager;
 class shader_object {
 public:
     virtual void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) = 0;
+    virtual void setBaseUV(float u, float v) = 0;
     virtual void render() = 0;
     virtual bool is(ShaderType type) = 0;
 };

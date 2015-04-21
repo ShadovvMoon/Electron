@@ -20,9 +20,12 @@ void senv::setup(std::string path) {
     baseTexture         = glGetUniformLocation(program, "baseTexture");
     primaryDetailMap    = glGetUniformLocation(program, "primaryDetailMap");
     secondaryDetailMap  = glGetUniformLocation(program, "secondaryDetailMap");
+    lightMap            = glGetUniformLocation(program, "lightMap");
     
     maps = glGetUniformLocation(program, "maps");
+    maps2 = glGetUniformLocation(program, "maps2");
     glBindAttribLocation(program, 1, "texCoord_buffer");
+    glBindAttribLocation(program, 2, "texCoord_buffer_light");
 }
 
 void senv::start() {
@@ -30,10 +33,14 @@ void senv::start() {
     glUniform1i(baseTexture, 0);
     glUniform1i(primaryDetailMap, 1);
     glUniform1i(secondaryDetailMap, 2);
+    glUniform1i(lightMap, 3);
 }
 
 void senv::stop() {
     
+}
+
+void senv_object::setBaseUV(float u, float v) {
 }
 
 // Senv object
@@ -59,6 +66,7 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     printf("shader setup\n");
     senv *shader = (senv *)(manager->get_shader(shader_SENV));
     mapsId = shader->maps;
+    maps2Id = shader->maps2;
 };
 
 bool senv_object::is(ShaderType type) {
@@ -84,4 +92,5 @@ void senv_object::render() {
     
     // Scales
     glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
+    glUniform1f(maps2Id, b2f(useLight));
 }

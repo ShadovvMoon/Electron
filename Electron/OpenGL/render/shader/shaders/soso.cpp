@@ -18,7 +18,7 @@ void soso::setup(std::string path) {
     
     // Bind attributes
     baseTexture     = glGetUniformLocation(program, "baseTexture");
-    //multipurposeMap = glGetUniformLocation(program, "multipurposeMap");
+    multipurposeMap = glGetUniformLocation(program, "multipurposeMap");
     detailMap       = glGetUniformLocation(program, "detailMap");
     //cubeMap         = glGetUniformLocation(program, "cubeMap");
     
@@ -32,17 +32,22 @@ void soso::start() {
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
     glUniform1i(detailMap, 1);
+    glUniform1i(multipurposeMap, 2);
 }
 
 void soso::stop() {
     
 }
 
+void soso_object::setBaseUV(float u, float v) {
+    uscale = u;
+    vscale = v;
+}
+
 // Senv object
 void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
     printf("soso object setup\n");
     baseMap = manager->texture_manager()->create_texture(map, *(HaloTagDependency*)(shaderTag->Data() + 0xA4));
-    
     uscale = *(float*)(shaderTag->Data() + 0x9C);
     vscale = *(float*)(shaderTag->Data() + 0xA0);
     
@@ -50,12 +55,11 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     HaloTagDependency detail = *(HaloTagDependency*)(shaderTag->Data() + 0xDC);
     if (detail.tag_id.tag_index != NULLED_TAG_ID) {
         detailMap = manager->texture_manager()->create_texture(map, detail);
-        detailScale = *(float*)(shaderTag->Data() + 0xD8);
+        detailScale  = *(float*)(shaderTag->Data() + 0xD8);
         detailScaleV = *(float*)(shaderTag->Data() + 0xEC);
         useDetail = true;
     }
     
-    /*
     printf("multi setup\n");
     HaloTagDependency multi = *(HaloTagDependency*)(shaderTag->Data() + 0xBC);
     if (multi.tag_id.tag_index != NULLED_TAG_ID) {
@@ -63,6 +67,7 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
         useMulti = true;
     }
     
+    /*
     printf("cube setup\n");
     HaloTagDependency cube = *(HaloTagDependency*)(shaderTag->Data() + 0x164);
     if (cube.tag_id.tag_index != NULLED_TAG_ID) {
@@ -89,6 +94,11 @@ void soso_object::render() {
     glActiveTexture(GL_TEXTURE1);
     if (useDetail) {
         detailMap->bind();
+    }
+    
+    glActiveTexture(GL_TEXTURE2);
+    if (useMulti) {
+        multipurposeMap->bind();
     }
     
     // Blending

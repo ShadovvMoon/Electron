@@ -16,6 +16,9 @@ class ModelRenderMesh {
 public:
     GLuint m_Buffers[5];
     
+    float base_u;
+    float base_v;
+    
     // Rendering
     GLuint geometryVAO;
     int indexCount;

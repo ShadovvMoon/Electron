@@ -24,7 +24,7 @@ public:
     void setup();
 };
 
-class BSPRenderMesh {
+class BSPRenderSubmesh {
 public:
     GLuint m_Buffers[5];
     
@@ -32,20 +32,20 @@ public:
     GLuint geometryVAO;
     int indexCount;
     int vertCount;
-    
     int indexOffset;
     int vertexOffset;
-    
-    // Arrays
-    GLfloat* vertex_array;
-    GLfloat* texture_uv;
-    GLfloat* light_uv;
-    GLfloat* normals;
-    GLint* index_array;
+    int lightmap;
     
     shader_object *shader;
     void setup();
 };
+
+class BSPRenderMesh {
+public:
+    texture *lightTexture;
+    std::vector<BSPRenderSubmesh*> submeshes;
+};
+
 
 class BSP {
     BSPRenderBuffer *vao;

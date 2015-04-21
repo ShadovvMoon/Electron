@@ -6,10 +6,10 @@
 //
 //
 
-#include "scen.h"
+#include "vehi.h"
 
-#define SCENERY_SPAWN_CHUNK 0x48
-#define SCENERY_REF_CHUNK   0x30
+#define VEHICLE_SPAWN_CHUNK 0x78
+#define VEHICLE_REF_CHUNK   0x30
 
 typedef struct
 {
@@ -19,17 +19,17 @@ typedef struct
     short desired_permutation;
     float coord[3];
     float rotation[3];
-    float unknown[10];
-} ScenerySpawn;
+    uint32_t unknown2[22];
+} VehicleSpawn;
 
 typedef struct
 {
-    HaloTagDependency scen_ref;
+    HaloTagDependency vehi_ref;
     uint32_t zero[8];
-} SceneryReference;
+} VehicleReference;
 
-void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size) {
-    ScenerySpawn *spawn = (ScenerySpawn*)offset;
+void VehiInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size) {
+    VehicleSpawn *spawn = (VehicleSpawn*)offset;
     reference = manager->references[spawn->numid];
     x = spawn->coord[0];
     y = spawn->coord[1];
@@ -39,7 +39,7 @@ void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     roll  = spawn->rotation[2];
     data  = offset;
 };
-void ScenInstance::render(ShaderType pass) {
+void VehiInstance::render(ShaderType pass) {
     glPushMatrix();
     glTranslatef(x, y, z);
     glRotatef(roll   * (57.29577951), 1, 0, 0);
@@ -49,33 +49,33 @@ void ScenInstance::render(ShaderType pass) {
     glPopMatrix();
 }
 
-void ScenClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
+void VehiClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
     int i;
     for (i=0; i < spawn.count; i++) {
         uint8_t *data = (uint8_t *)scenario->Data() + scenario->PointerToOffset(spawn.address) + size * i;
-        ScenInstance *object = new ScenInstance;
+        VehiInstance *object = new VehiInstance;
         object->read(this, scenario, data, size);
         objects.push_back(object);
     }
 }
 
-void ScenClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario) {
-    printf("creating scen manager\n");
+void VehiClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario) {
+    printf("creating vehi manager\n");
     HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
-    HaloTagReflexive scenRef = tag->scenRef;
+    HaloTagReflexive vehiRef = tag->vehiRef;
     int i;
-    for (i=0; i < scenRef.count; i++) {
+    for (i=0; i < vehiRef.count; i++) {
         printf("reading scen ref %d\n", i);
-        SceneryReference *data = (SceneryReference *)(scenario->Data() + scenario->PointerToOffset(scenRef.address) + SCENERY_REF_CHUNK * i);
-        ObjectRef *ref = manager->create_object(map, data->scen_ref);
+        VehicleReference *data = (VehicleReference *)(scenario->Data() + scenario->PointerToOffset(vehiRef.address) + VEHICLE_REF_CHUNK * i);
+        ObjectRef *ref = manager->create_object(map, data->vehi_ref);
         references.push_back(ref);
         printf("%lu\n", references.size());
     }
     printf("reading spawns\n");
-    read_spawn(scenario, tag->scen, SCENERY_SPAWN_CHUNK);
+    read_spawn(scenario, tag->vehi, VEHICLE_SPAWN_CHUNK);
 }
 
-void ScenClass::render(ShaderType pass) {
+void VehiClass::render(ShaderType pass) {
     int i;
     for (i=0; i < objects.size(); i++) {
         objects[i]->render(pass);

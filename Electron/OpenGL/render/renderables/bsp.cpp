@@ -7,21 +7,13 @@
 //
 
 #include "bsp.h"
+#include "../shader/shaders/senv.h"
 
 uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
     return (uint8_t*)(scenario->Data() + scenario->PointerToOffset(address));
 }
 
 void BSPRenderBuffer::setup() {
-    // Create the buffers for the vertices atttributes
-    glGenVertexArraysAPPLE(1, &geometryVAO);
-    glBindVertexArrayAPPLE(geometryVAO);
-    
-    // Create the buffers for the vertices atttributes
-    glGenBuffers(5, m_Buffers);
-}
-
-void BSPRenderMesh::setup() {
     // Create the buffers for the vertices atttributes
     glGenVertexArraysAPPLE(1, &geometryVAO);
     glBindVertexArrayAPPLE(geometryVAO);
@@ -43,14 +35,17 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     // Count data size
     int index_size  = 0;
     int vertex_size = 0;
-    int renderable_count = 0;
+    
     HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
+    renderables.resize(bsp.count);
+    
     int i, m, n;
     for (i=0; i < bsp.count; i++) {
         BSP_CHUNK *chunk = (BSP_CHUNK *)(map2mem(scenario, bsp.address) + sizeof(BSP_CHUNK) * i); // VERIFIED
         ProtonTag *bspTag = map->tags.at((uint16_t)(chunk->tagId)).get();
         uint32_t mesh_offset = *(uint32_t *)(bspTag->Data());
         BSP_MESH *mesh = (BSP_MESH *)map2mem(bspTag, mesh_offset);
+        int renderable_count = 0;
         for (m=0; m < mesh->submeshHeader.count; m++) {
             BSP_SUBMESH *submesh = (BSP_SUBMESH *)(map2mem(bspTag, mesh->submeshHeader.address) + sizeof(BSP_SUBMESH) * m);
             for (n=0; n < submesh->material.count; n++) {
@@ -60,9 +55,13 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                 renderable_count++;
             }
         }
+        renderables[i] = new BSPRenderMesh;
+        renderables[i]->submeshes.resize(renderable_count);
+        
+        printf("creating lightmap 0x%x\n", mesh->lightmaps.tag_id.tag_index);
+        renderables[i]->lightTexture = shaders->texture_manager()->create_texture(map, mesh->lightmaps);
     }
-    renderables.resize(renderable_count);
-    
+
     vao->setup();
     vao->vertex_array    = (GLfloat*)malloc(vertex_size   * 3 * sizeof(GLfloat));
     vao->texture_uv      = (GLfloat*)malloc(vertex_size   * 2 * sizeof(GLfloat));
@@ -72,7 +71,6 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
 
     int vertex_offset = 0;
     int index_offset = 0;
-    int render_pos = 0;
     
     int vert, uv;
     for (i=0; i < bsp.count; i++) {
@@ -80,6 +78,8 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
         ProtonTag *bspTag = map->tags.at((uint16_t)(chunk->tagId)).get();
         uint32_t mesh_offset = *(uint32_t *)(bspTag->Data());
         BSP_MESH *mesh = (BSP_MESH *)map2mem(bspTag, mesh_offset);
+        
+        int render_pos = 0;
         for (m=0; m < mesh->submeshHeader.count; m++) {
             BSP_SUBMESH *submesh = (BSP_SUBMESH *)(map2mem(bspTag, mesh->submeshHeader.address) + sizeof(BSP_SUBMESH) * m);
             for (n=0; n < submesh->material.count; n++) {
@@ -94,17 +94,23 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                 shader_object *material_shader = shaders->create_shader(map, shader);
                 
                 printf("renderer setup %d\n", n);
-                BSPRenderMesh *renderer = new BSPRenderMesh;
+                BSPRenderSubmesh *renderer = new BSPRenderSubmesh;
                 renderer->shader = material_shader;
+                if (renderer->shader != nullptr && renderer->shader->is(shader_SENV)) {
+                    ((senv_object*)renderer->shader)->useLight = true;
+                }
                 renderer->indexOffset = index_offset;
                 renderer->vertexOffset = vertex_offset;
                 renderer->indexCount = indexSize;
                 renderer->vertCount = vertex_number;
+                renderer->lightmap = submesh->LightmapIndex;
+                
                 
                 int v;
                 for (v = 0; v < vertex_number; v++)
                 {
-                    UNCOMPRESSED_BSP_VERT *vert1 = (UNCOMPRESSED_BSP_VERT*)(PcVertexDataOffset + v * sizeof(UNCOMPRESSED_BSP_VERT));
+                    UNCOMPRESSED_BSP_VERT       *vert1 = (UNCOMPRESSED_BSP_VERT*)(PcVertexDataOffset + v * sizeof(UNCOMPRESSED_BSP_VERT));
+                    UNCOMPRESSED_LIGHTMAP_VERT  *vert2 = (UNCOMPRESSED_LIGHTMAP_VERT*)(PcVertexDataOffset + vertex_number * sizeof(UNCOMPRESSED_BSP_VERT) + v * sizeof(UNCOMPRESSED_LIGHTMAP_VERT));
                     vert = vertex_offset * 3;
                     uv = vertex_offset * 2;
                     vao->vertex_array[vert]   = vert1->vertex_k[0];
@@ -115,6 +121,8 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                     vao->normals[vert+2]      = vert1->normal[2];
                     vao->texture_uv[uv]       = vert1->uv[0];
                     vao->texture_uv[uv+1]     = vert1->uv[1];
+                    vao->light_uv[uv]         = vert2->uv[0];
+                    vao->light_uv[uv+1]       = vert2->uv[1];
                     vertex_offset++;
                 }
                 
@@ -127,7 +135,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                     index_offset += 3;
                 }
                 
-                renderables[render_pos] = renderer;
+                renderables[i]->submeshes[render_pos] = renderer;
                 render_pos++;
             }
         }
@@ -135,9 +143,9 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     
     // Assemble the VAO
     #define texCoord_buffer 1
-    #define normals_buffer 2
-    #define texCoord_buffer_light 3
-        
+    #define texCoord_buffer_light 2
+    #define normals_buffer 3
+    
     //Shift these to vertex buffers
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[POS_VB]);
     glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
@@ -174,11 +182,12 @@ void BSP::render(ShaderType pass) {
     
     glEnable(GL_TEXTURE_2D);
     glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     
 #ifndef RENDER_VAO
-    glEnableVertexAttribArray(texCoord_buffer);
     glEnableVertexAttribArray(normals_buffer);
+    glEnableVertexAttribArray(texCoord_buffer);
+    glEnableVertexAttribArray(texCoord_buffer_light);
 #endif
     
 #ifdef RENDER_VAO
@@ -194,20 +203,26 @@ void BSP::render(ShaderType pass) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->m_Buffers[INDEX_BUFFER]);
 #endif
     
-    int i;
+    int i, s;
     shader_object *previous_shader = nullptr;
     for (i=0; i < renderables.size(); i++) {
         BSPRenderMesh *mesh = renderables[i];
-        if (mesh->shader != nullptr && mesh->shader->is(pass)) {
-            if (mesh->shader != previous_shader) {
-                mesh->shader->render();
-                previous_shader = mesh->shader;
+        for (s=0; s < mesh->submeshes.size(); s++) {
+            BSPRenderSubmesh *submesh = mesh->submeshes[s];
+            if (submesh->shader != nullptr && submesh->shader->is(pass)) {
+                if (submesh->shader != previous_shader) {
+                    submesh->shader->render();
+                    previous_shader = submesh->shader;
+                }
+                glActiveTexture(GL_TEXTURE3);
+                mesh->lightTexture->bind(submesh->lightmap);
+                
+                glDrawElementsBaseVertex(GL_TRIANGLES,
+                                         submesh->indexCount,
+                                         GL_UNSIGNED_INT,
+                                         (void*)(submesh->indexOffset * sizeof(GLuint)),
+                                         (submesh->vertexOffset));
             }
-            glDrawElementsBaseVertex(GL_TRIANGLES,
-                                     mesh->indexCount,
-                                     GL_UNSIGNED_INT,
-                                     (void*)(mesh->indexOffset * sizeof(GLuint)),
-                                     (mesh->vertexOffset));
         }
     }
     glBindVertexArrayAPPLE(0);

@@ -30,8 +30,8 @@ public:
 
 class soso_object : public shader_object {
 private:
-    float uscale;
-    float vscale;
+    float uscale = 1.0;
+    float vscale = 1.0;
     texture *baseMap = nullptr;
     
     bool useMulti = false;
@@ -50,6 +50,7 @@ private:
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     void render();
+    void setBaseUV(float u, float v);
     bool is(ShaderType type);
 };
 

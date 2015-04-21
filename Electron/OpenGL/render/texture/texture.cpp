@@ -46,9 +46,6 @@ typedef struct
     
 } bitm_first_t;
 
-
-//0x10 + 1 + 8 = 0x19
-
 typedef struct
 {
     int							id;			// 'bitm' 0x0
@@ -72,17 +69,30 @@ typedef struct
     int							unknown11;	// always 0x024F0040?
 } bitm_image_t;
 
+// Conversion
+typedef struct
+{
+    unsigned int r, g, b, a;
+} rgba_color_t;
+
+void DecodeLinearR5G6B5 (int width, int height, const char *texdata, unsigned int *outdata)
+{
+    //CSLog(@"BITM_FORMAT_A8R8G8B8");
+    unsigned short cdata;
+    int x,y;
+    for (y = 0; y < height; y++)
+        for (x = 0; x < width; x++){
+            cdata = ((unsigned short *)texdata)[(y * width) + x];
+            outdata[(y * width) + x]  = 0xFF000000 |
+            ((cdata & 0xF800) >> 8)|
+            ((cdata & 0x07e0) << 5)|
+            ((cdata & 0x1f) << 19); //rgba_to_int (color);
+        }
+}
+
+
 texture::texture(ProtonMap *map, HaloTagDependency bitm) {
-    glDeleteTextures(1, &tex);
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
-    
-    // Params
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-    
+
     // Check
     if (bitm.tag_id.tag_index == NULLED_TAG_ID) {
         printf("invalid bitmap\n");
@@ -93,8 +103,20 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
     ProtonTag *bitmapTag = map->tags.at(bitm.tag_id.tag_index).get();
     if (bitmapTag) {
         bitm_header_t *bitmData = (bitm_header_t *)bitmapTag->Data();
+        textures.resize(bitmData->image_reflexive.count);
         int i;
         for (i=0; i < bitmData->image_reflexive.count; i++) {
+            
+            glDeleteTextures(1, &textures[i]);
+            glGenTextures(1, &textures[i]);
+            glBindTexture(GL_TEXTURE_2D, textures[i]);
+            
+            // Params
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+            glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+            glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
+            
             
             bitm_image_t *image = (bitm_image_t *)(bitmapTag->Data() + bitmapTag->PointerToOffset(bitmData->image_reflexive.address) + sizeof(bitm_image_t) * i);
             char *input = (char*)bitmapTag->ResourcesData() + image->offset;
@@ -107,21 +129,49 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                 input = (char*)bitmap_data() + image->offset;
             };
             
-            printf("loading %s %d %d %d %d 0x%x -> %d\n", bitmapTag->Name(), image->width, image->height, image->format, image->internalized, bitmapTag->ResourcesData(), tex);
+            printf("loading %s %d %d %d %d 0x%x -> %d\n", bitmapTag->Name(), image->width, image->height, image->format, image->internalized, bitmapTag->ResourcesData(), textures[i]);
             int size = 0;
             if (image->format == BITM_FORMAT_DXT1) {
                 format = GL_RGB;
                 internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
                 size = (image->width >> 2) * (image->height >> 2) * 8;
+                
             } else if (image->format == BITM_FORMAT_DXT2AND3) {
                 format = GL_RGBA;
                 internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
                 size = (image->width >> 2) * (image->height >> 2) * 16;
+                
             } else if (image->format == BITM_FORMAT_DXT4AND5) {
                 format = GL_RGBA;
                 internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
                 size = (image->width >> 2) * (image->height >> 2) * 16;
+                
+            } else if (image->format == BITM_FORMAT_X8R8G8B8) {
+                format = GL_RGB;
+                internalFormat = GL_RGBA;
+                size = image->width * image->height * 4;
+                
+            } else if (image->format == BITM_FORMAT_A8R8G8B8) {
+                format = GL_RGBA;
+                internalFormat = GL_RGBA;
+                size = image->width * image->height * 4;
+                
+            } else if (image->format == BITM_FORMAT_R5G6B5) {
+                printf("R5G6B5\n");
+                char *output = (char*)malloc(4 * image->width * image->height);
+                DecodeLinearR5G6B5(image->width,image->height,input,(unsigned int*)output);
+                glTexImage2D(GL_TEXTURE_2D,
+                             0,
+                             GL_RGBA,
+                             image->width,
+                             image->height,
+                             0,
+                             GL_RGBA,
+                             GL_UNSIGNED_BYTE,
+                             output);
+                continue;
             } else {
+                printf("unknown format\n");
                 return;
             }
             
@@ -135,9 +185,11 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
     
 }
 void texture::bind() {
-    glBindTexture(GL_TEXTURE_2D, tex);
+    glBindTexture(GL_TEXTURE_2D, textures[0]);
 }
-
+void texture::bind(int i) {
+    glBindTexture(GL_TEXTURE_2D, textures[i]);
+}
 texture *TextureManager::create_texture(ProtonMap *map, HaloTagDependency bitm) {
     printf("%d\n", bitm.tag_id.tag_index);
     

@@ -31,6 +31,7 @@ private:
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     void render();
+    void setBaseUV(float u, float v);
     bool is(ShaderType type);
 };
 

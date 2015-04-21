@@ -62,8 +62,10 @@ typedef struct
 {
     float vertex_k[3]; //0
     float normal[3];   //0xC
+    
     float binormal[3]; //0x18
     float tangent[3];  //0x24
+    
     float uv[2]; //0x30
     char unk0[12];
 } MODEL_VERT;
@@ -81,6 +83,10 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
     printf("reading model\n");
     ProtonTag *modelTag = map->tags.at(tag.tag_id.tag_index).get();
     HaloModel *modelData = (HaloModel *)modelTag->Data();
+    
+    float base_u = *(float*)(modelTag->Data() + 0x30);
+    float base_v = *(float*)(modelTag->Data() + 0x34);
+    
     int i,p;
     
     // Read shaders
@@ -128,6 +134,8 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             
             ModelRenderMesh *renderer = new ModelRenderMesh;
             renderer->setup();
+            renderer->base_u = base_u;
+            renderer->base_v = base_v;
             renderer->shader = shaders[part->shader];
             renderer->indexCount = indexSize;
             
@@ -255,6 +263,7 @@ void Model::render(ShaderType pass) {
                     mesh->shader->render();
                     previous_shader = mesh->shader;
                 }
+                mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
 
                 glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, 0);
                 glBindVertexArrayAPPLE(0);

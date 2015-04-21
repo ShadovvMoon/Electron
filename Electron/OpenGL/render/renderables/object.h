@@ -50,6 +50,7 @@ public:
 class ObjectManager {
 private:
     ObjectClass *scen;
+    ObjectClass *vehi;
     std::map<uint16_t, ObjectRef*> objects;
 public:
     ModelManager *modelManager;

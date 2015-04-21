@@ -39,7 +39,8 @@ typedef enum {
 #include "glew/glew.h"
 #include <GL/freeglut.h>
 #elif __APPLE__
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
+//#include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #endif

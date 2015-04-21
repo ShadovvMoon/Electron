@@ -7,6 +7,6 @@ varying vec2 tex_coord;
 varying vec2 tex_coord_light;
 
 void main(void) {
-    tex_coord       = texCoord_buffer;
+    tex_coord    = texCoord_buffer;
     gl_Position  = ftransform();
 }

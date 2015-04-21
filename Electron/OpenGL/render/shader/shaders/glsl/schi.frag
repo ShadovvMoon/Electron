@@ -1,5 +1,7 @@
 #version 120
 uniform sampler2D baseTexture;
+
+uniform vec2 baseMapUV;
 uniform vec4 maps; //0 = hasPrimary, 1 = primaryScale, 2 = hasSecondary, 3 = secondaryScale
 varying vec2 tex_coord;
 void main(void) {

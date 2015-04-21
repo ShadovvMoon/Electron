@@ -15,9 +15,11 @@
 
 class texture {
 public:
+    std::vector<GLuint>textures;
     GLuint tex;
     texture(ProtonMap *map, HaloTagDependency bitm);
     void bind();
+    void bind(int index);
 };
 
 class TextureManager {
