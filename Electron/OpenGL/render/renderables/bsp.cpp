@@ -165,17 +165,35 @@ void BSP::render(ShaderType pass) {
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
+#ifndef RENDER_VAO
+    glEnableVertexAttribArray(texCoord_buffer);
+    glEnableVertexAttribArray(normals_buffer);
+#endif
+    
     int i;
     
     shader_object *previous_shader = nullptr;
     for (i=0; i < renderables.size(); i++) {
         BSPRenderMesh *mesh = renderables[i];
         if (mesh->shader != nullptr && mesh->shader->is(pass)) {
+            
+#ifdef RENDER_VAO
             glBindVertexArrayAPPLE(mesh->geometryVAO);
+#else
+            glBindVertexArrayAPPLE(0);
+            glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[POS_VB]);
+            glVertexPointer(3, GL_FLOAT, 0, 0);
+            glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TEXCOORD_VB]);
+            glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
+            glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[NORMAL_VB]);
+            glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
+#endif
             if (mesh->shader != previous_shader) {
                 mesh->shader->render();
                 previous_shader = mesh->shader;
             }
+            
             glDrawElements(GL_TRIANGLES, mesh->indexCount, GL_UNSIGNED_INT, 0);
             glBindVertexArrayAPPLE(0);
         }
