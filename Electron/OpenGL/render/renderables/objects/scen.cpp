@@ -39,6 +39,12 @@ void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     roll  = spawn->rotation[2];
     data  = offset;
 };
+void ScenInstance::render(ShaderType pass) {
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    reference->render(pass);
+    glPopMatrix();
+}
 
 void ScenClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
     int i;
@@ -64,4 +70,11 @@ void ScenClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
     }
     printf("reading spawns\n");
     read_spawn(scenario, tag->scen, SCENERY_SPAWN_CHUNK);
+}
+
+void ScenClass::render(ShaderType pass) {
+    int i;
+    for (i=0; i < objects.size(); i++) {
+        objects[i]->render(pass);
+    }
 }

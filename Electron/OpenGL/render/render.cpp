@@ -49,7 +49,7 @@ void ERenderer::setMap(ProtonMap *map) {
         
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         bsp->setup(map, scenarioTag);
-        objects->read(map, scenarioTag);
+        objects->read(shaders, map, scenarioTag);
         
     }
     ready = true;
@@ -139,7 +139,8 @@ void ERenderer::render() {
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
             shader->start();
-            this->bsp->render(type);
+            bsp->render(type);
+            objects->render(type);
             shader->stop();
         }
         

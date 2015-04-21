@@ -24,6 +24,7 @@ private:
 public:
     ObjectRef(ObjectManager *manager, ProtonMap *map, HaloTagDependency tag);
     void updateTag();
+    void render(ShaderType pass);
 };
 
 class ObjectInstance {
@@ -34,6 +35,7 @@ private:
     void *data;
 public:
     virtual void read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size) = 0;
+    virtual void render(ShaderType pass)=0;
 };
 
 class ObjectClass {
@@ -41,18 +43,19 @@ public:
     std::vector<ObjectRef*> references;
     std::vector<ObjectInstance*> objects;
     
-    void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario);
-    void write(ProtonMap *map, ProtonTag *scenario);
-    void render(ShaderType type);
+    virtual void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario)=0;
+    virtual void render(ShaderType pass)=0;
 };
 
 class ObjectManager {
 private:
+    ObjectClass *scen;
     std::map<uint16_t, ObjectRef*> objects;
 public:
     ModelManager *modelManager;
-    void read(ProtonMap *map, ProtonTag *scenario);
+    void read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scenario);
     ObjectRef *create_object(ProtonMap *map, HaloTagDependency tag);
+    void render(ShaderType pass);
 };
 
 #endif /* defined(__BSP__) */

@@ -180,5 +180,4 @@ void BSP::render(ShaderType pass) {
             glBindVertexArrayAPPLE(0);
         }
     }
-    glUseProgram(0);
 }

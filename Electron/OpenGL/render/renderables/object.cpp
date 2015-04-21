@@ -24,6 +24,9 @@ ObjectRef::ObjectRef(ObjectManager *manager, ProtonMap *map, HaloTagDependency t
         model = nullptr;
     }
 }
+void ObjectRef::render(ShaderType pass) {
+    model->render(pass);
+}
 
 ObjectRef *ObjectManager::create_object(ProtonMap *map, HaloTagDependency tag) {
     printf("creating object %d\n", tag.tag_id.tag_index);
@@ -40,10 +43,14 @@ ObjectRef *ObjectManager::create_object(ProtonMap *map, HaloTagDependency tag) {
     return obj;
 }
 
-void ObjectManager::read(ProtonMap *map, ProtonTag *scenario) {
+void ObjectManager::read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scenario) {
     printf("starting object manager\n");
-    modelManager = new ModelManager;
-    ScenClass *scen = new ScenClass;
+    modelManager = new ModelManager(shaders);
+    scen = new ScenClass;
     scen->read(this, map, scenario);
+}
+
+void ObjectManager::render(ShaderType pass) {
+    scen->render(pass);
 }
 

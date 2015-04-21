@@ -18,6 +18,7 @@ private:
     void *data;
 public:
     void read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size);
+    void render(ShaderType pass);
 };
 
 class ScenClass : public ObjectClass {
@@ -26,7 +27,7 @@ private:
 public:
     void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario);
     void write(ProtonMap *map, ProtonTag *scenario);
-    void render(ShaderType type);
+    void render(ShaderType pass);
 };
 
 #endif

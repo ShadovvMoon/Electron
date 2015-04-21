@@ -30,10 +30,6 @@ typedef struct {
     char unk4[12];
 } HaloGeometryPart;
 
-Geometry::Geometry(uint8_t *offset) {
-    
-}
-
 typedef struct {
     char unk0[48];
     float uv[2];
@@ -63,25 +59,7 @@ typedef struct MODEL_REGION
     MODEL_REGION_PERMUTATION *modPermutations;
 } MODEL_REGION;
 
-class ModelRenderMesh {
-public:
-    GLuint m_Buffers[5];
-    
-    // Rendering
-    GLuint geometryVAO;
-    int indexCount;
-    int vertCount;
-    
-    // Arrays
-    GLfloat* vertex_array;
-    GLfloat* texture_uv;
-    GLfloat* light_uv;
-    GLfloat* normals;
-    GLint* index_array;
-    
-    shader_object *shader;
-    void setup();
-};
+
 void ModelRenderMesh::setup() {
     // Create the buffers for the vertices atttributes
     glGenVertexArraysAPPLE(1, &geometryVAO);
@@ -91,24 +69,65 @@ void ModelRenderMesh::setup() {
     glGenBuffers(5, m_Buffers);
 }
 
-Model::Model(ProtonMap *map, HaloTagDependency tag) {
-    ProtonTag *modelTag = map->tags.at(tag.tag_id.tag_index).get();
-    HaloModel *modelData = (HaloModel *)modelTag->Data();
+void Model::render(ShaderType pass) {
+    glEnable(GL_TEXTURE_2D);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
     int i;
+    
+    shader_object *previous_shader = nullptr;
+    for (i=0; i < renderables.size(); i++) {
+        ModelRenderMesh *mesh = renderables[i];
+        if (mesh->shader != nullptr && mesh->shader->is(pass)) {
+            glBindVertexArrayAPPLE(mesh->geometryVAO);
+            if (mesh->shader != previous_shader) {
+                mesh->shader->render();
+                previous_shader = mesh->shader;
+            }
+            glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, 0);
+            glBindVertexArrayAPPLE(0);
+        }
+    }
+}
+
+Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
+    printf("reading model\n");
+    ProtonTag *modelTag = map->tags.at(tag.tag_id.tag_index).get();
+    HaloModel *modelData = (HaloModel *)modelTag->Data();
+    int i,p;
     
     // Read regions
     
     // Read shaders
+    printf("reading shaders\n");
+    std::vector<shader_object*> shaders;
     for (i=0; i < modelData->shaders.count; i++) {
         HaloShader *shaderRef = (HaloShader *)(modelTag->Data() + modelTag->PointerToOffset(modelData->shaders.address) + sizeof(HaloShader) * i);
+        shaders.push_back(manager->shaders->create_shader(map, shaderRef->shader));
     }
     
-    // Read geometry
+    // Count geometry
+    printf("counting geom\n");
+    int renderable_count = 0;
     for (i=0; i < modelData->geometry.count; i++) {
         HaloGeometry *geometry = (HaloGeometry *)(modelTag->Data() + modelTag->PointerToOffset(modelData->geometry.address) + sizeof(HaloGeometry) * i);
-        
-        int p;
+        for (p=0; p < geometry->parts.count; p++) {
+            HaloGeometryPart *part = (HaloGeometryPart *)(modelTag->Data() + modelTag->PointerToOffset(geometry->parts.address) + sizeof(HaloGeometryPart) * p);
+            if (part->indexPointer1 != part->indexPointer2) {
+                continue;
+            }
+            renderable_count++;
+        }
+    }
+    renderables.resize(renderable_count);
+    
+    // Read geometry
+    printf("reading geom\n");
+    int render = 0;
+    for (i=0; i < modelData->geometry.count; i++) {
+        HaloGeometry *geometry = (HaloGeometry *)(modelTag->Data() + modelTag->PointerToOffset(modelData->geometry.address) + sizeof(HaloGeometry) * i);
+
         for (p=0; p < geometry->parts.count; p++) {
             HaloGeometryPart *part = (HaloGeometryPart *)(modelTag->Data() + modelTag->PointerToOffset(geometry->parts.address) + sizeof(HaloGeometryPart) * p);
             if (part->indexPointer1 != part->indexPointer2) {
@@ -123,6 +142,7 @@ Model::Model(ProtonMap *map, HaloTagDependency tag) {
             int indexSize = part->indexCount * 3;
             ModelRenderMesh *renderer = new ModelRenderMesh;
             renderer->setup();
+            renderer->shader = shaders[part->shader];
             
             // Assemble the VBO
             renderer->vertex_array    = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat));
@@ -189,11 +209,10 @@ Model::Model(ProtonMap *map, HaloTagDependency tag) {
             glBindVertexArrayAPPLE(0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            
+            renderables[render] = renderer;
+            render++;
         }
-        
-        
-        //Geometry *geometry = new Geometry(offset);
-        //geometries.push_back(geometry);
     }
     
     printf("creating model object\n");
@@ -209,7 +228,12 @@ Model *ModelManager::create_model(ProtonMap *map, HaloTagDependency mod2) {
     }
     
     // Create a new texture
-    Model *model = new Model(map, mod2);
+    Model *model = new Model(this, map, mod2);
     models[mod2.tag_id.tag_index] = model;
     return model;
+}
+
+ModelManager::ModelManager(ShaderManager* manager) {
+    printf("model manager setup\n");
+    shaders = manager;
 }

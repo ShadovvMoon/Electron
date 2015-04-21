@@ -12,13 +12,16 @@
 #include "defines.h"
 #include "shader.h"
 
-class GeometryRenderMesh {
+class ModelRenderMesh {
 public:
     GLuint m_Buffers[5];
+    
+    // Rendering
     GLuint geometryVAO;
     int indexCount;
     int vertCount;
     
+    // Arrays
     GLfloat* vertex_array;
     GLfloat* texture_uv;
     GLfloat* light_uv;
@@ -29,22 +32,20 @@ public:
     void setup();
 };
 
-class Geometry {
-public:
-    std::vector<GeometryRenderMesh*> renderables;
-    Geometry(uint8_t *offset);
-};
-
+class ModelManager;
 class Model {
 public:
-    std::vector<Geometry*> geometries;
-    Model(ProtonMap *map, HaloTagDependency tag);
+    std::vector<ModelRenderMesh*> renderables;
+    Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag);
+    void render(ShaderType pass);
 };
 
 class ModelManager {
 private:
     std::map<uint16_t, Model*> models;
 public:
+    ShaderManager *shaders;
+    ModelManager(ShaderManager* manager);
     Model *create_model(ProtonMap *map, HaloTagDependency tag);
 };
 
