@@ -17,20 +17,21 @@ void soso::setup(std::string path) {
     program         = make_program(vertex_shader, fragment_shader);
     
     // Bind attributes
-    baseTexture         = glGetUniformLocation(program, "baseTexture");
-    primaryDetailMap    = glGetUniformLocation(program, "primaryDetailMap");
-    secondaryDetailMap  = glGetUniformLocation(program, "secondaryDetailMap");
+    baseTexture     = glGetUniformLocation(program, "baseTexture");
+    //multipurposeMap = glGetUniformLocation(program, "multipurposeMap");
+    detailMap       = glGetUniformLocation(program, "detailMap");
+    //cubeMap         = glGetUniformLocation(program, "cubeMap");
     
-    maps = glGetUniformLocation(program, "maps");
+    maps  = glGetUniformLocation(program, "maps");
+    scale = glGetUniformLocation(program, "scale");
     glBindAttribLocation(program, 1, "texCoord_buffer");
+    printf("done\n");
 }
 
 void soso::start() {
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
-    glUniform1i(primaryDetailMap, 1);
-    glUniform1i(secondaryDetailMap, 2);
-    
+    glUniform1i(detailMap, 1);
 }
 
 void soso::stop() {
@@ -40,26 +41,40 @@ void soso::stop() {
 // Senv object
 void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
     printf("soso object setup\n");
-    baseMap = manager->texture_manager()->create_texture(map, *(HaloTagDependency*)(shaderTag->Data() + 0x88));
+    baseMap = manager->texture_manager()->create_texture(map, *(HaloTagDependency*)(shaderTag->Data() + 0xA4));
     
-    HaloTagDependency primary = *(HaloTagDependency*)(shaderTag->Data() + 0xB8);
-    if (primary.tag_id.tag_index != NULLED_TAG_ID) {
-        primaryScale = *(float*)(shaderTag->Data() + 0xB4);
-        primaryDetailMap = manager->texture_manager()->create_texture(map, primary);
-        usePrimary = true;
+    uscale = *(float*)(shaderTag->Data() + 0x9C);
+    vscale = *(float*)(shaderTag->Data() + 0xA0);
+    
+    printf("detail setup\n");
+    HaloTagDependency detail = *(HaloTagDependency*)(shaderTag->Data() + 0xDC);
+    if (detail.tag_id.tag_index != NULLED_TAG_ID) {
+        detailMap = manager->texture_manager()->create_texture(map, detail);
+        detailScale = *(float*)(shaderTag->Data() + 0xD8);
+        detailScaleV = *(float*)(shaderTag->Data() + 0xEC);
+        useDetail = true;
     }
     
-    printf("secondary setup\n");
-    HaloTagDependency secondary = *(HaloTagDependency*)(shaderTag->Data() + 0xCC);
-    if (secondary.tag_id.tag_index != NULLED_TAG_ID) {
-        secondaryScale = *(float*)(shaderTag->Data() + 0xC8);
-        secondaryDetailMap = manager->texture_manager()->create_texture(map, secondary);
-        useSecondary = true;
+    /*
+    printf("multi setup\n");
+    HaloTagDependency multi = *(HaloTagDependency*)(shaderTag->Data() + 0xBC);
+    if (multi.tag_id.tag_index != NULLED_TAG_ID) {
+        multipurposeMap = manager->texture_manager()->create_texture(map, multi);
+        useMulti = true;
     }
+    
+    printf("cube setup\n");
+    HaloTagDependency cube = *(HaloTagDependency*)(shaderTag->Data() + 0x164);
+    if (cube.tag_id.tag_index != NULLED_TAG_ID) {
+        cubeMap = manager->texture_manager()->create_texture(map, cube);
+        useCube = true;
+    }
+    */
     
     printf("shader setup\n");
     soso *shader = (soso *)(manager->get_shader(shader_SOSO));
-    mapsId = shader->maps;
+    mapsId  = shader->maps;
+    scaleId = shader->scale;
 };
 
 bool soso_object::is(ShaderType type) {
@@ -70,19 +85,17 @@ void soso_object::render() {
     // Texturing
     glActiveTexture(GL_TEXTURE0);
     baseMap->bind();
+    
     glActiveTexture(GL_TEXTURE1);
-    if (usePrimary) {
-        primaryDetailMap->bind();
-    }
-    glActiveTexture(GL_TEXTURE2);
-    if (useSecondary) {
-        secondaryDetailMap->bind();
+    if (useDetail) {
+        detailMap->bind();
     }
     
     // Blending
-    glEnable(GL_BLEND);
+    glDisable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Scales
-    glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
+    glUniform4f(scaleId, uscale, vscale, detailScale, detailScaleV);
+    glUniform3f(mapsId , b2f(useMulti), b2f(useDetail), b2f(useCube));
 }

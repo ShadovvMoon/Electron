@@ -17,8 +17,7 @@ void schi::setup(std::string path) {
     program         = make_program(vertex_shader, fragment_shader);
     
     // Bind attributes
-    baseTexture         = glGetUniformLocation(program, "baseTexture");
-    
+    baseTexture     = glGetUniformLocation(program, "baseTexture");
     maps = glGetUniformLocation(program, "maps");
     glBindAttribLocation(program, 1, "texCoord_buffer");
 }
@@ -26,7 +25,7 @@ void schi::setup(std::string path) {
 void schi::start() {
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
-    
+    errorCheck();
 }
 
 void schi::stop() {

@@ -16,9 +16,11 @@ class soso : public shader {
 private:
     GLuint program;
     GLint baseTexture;
-    GLint primaryDetailMap;
-    GLint secondaryDetailMap;
+    GLint multipurposeMap;
+    GLint detailMap;
+    GLint cubeMap;
 public:
+    GLint scale;
     GLint maps;
     
     void setup(std::string path);
@@ -28,17 +30,23 @@ public:
 
 class soso_object : public shader_object {
 private:
+    float uscale;
+    float vscale;
     texture *baseMap = nullptr;
     
-    bool usePrimary = false;
-    float primaryScale;
-    texture *primaryDetailMap = nullptr;
+    bool useMulti = false;
+    texture *multipurposeMap = nullptr;
     
-    bool useSecondary = false;
-    float secondaryScale;
-    texture *secondaryDetailMap;
+    bool useDetail = false;
+    float detailScale = 1.0;
+    float detailScaleV = 1.0;
+    texture *detailMap = nullptr;
+    
+    bool useCube = false;
+    texture *cubeMap = nullptr;
     
     GLint mapsId;
+    GLint scaleId;
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     void render();

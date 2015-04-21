@@ -9,7 +9,7 @@
 #ifndef _defines_h
 #define _defines_h
 
-//#define RENDER_VAO
+#define RENDER_VAO
 
 #include <stdio.h>
 #include "tags/ZZTHaloScenarioTag.h"

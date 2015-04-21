@@ -53,7 +53,7 @@ Control *controls = (Control *)malloc(sizeof(Control));
         renderer->setup();
         
         // Start the draw timer
-        int fps = 100;
+        int fps = 60;
         drawTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0/fps) target:self selector:@selector(timerTick:) userInfo:nil repeats:YES];
     }
     return self;

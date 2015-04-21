@@ -134,7 +134,7 @@ shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency s
     } else if(strncmp(shaderTag->tag_classes, "ihcs", 4) == 0) { // senv shader
         shaderObj = new schi_object;
     } else if(strncmp(shaderTag->tag_classes, "osos", 4) == 0) { // senv shader
-        //shaderObj = new soso_object;
+        shaderObj = new soso_object;
     }
     
     if (shaderObj != nullptr) {

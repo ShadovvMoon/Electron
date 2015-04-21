@@ -1,20 +1,17 @@
 #version 120
 uniform sampler2D baseTexture;
-uniform sampler2D primaryDetailMap;
-uniform sampler2D secondaryDetailMap;
+uniform sampler2D multipurposeMap;
+uniform sampler2D detailMap;
+uniform sampler2D cubeMap;
 
-uniform vec4 maps; //0 = hasPrimary, 1 = primaryScale, 2 = hasSecondary, 3 = secondaryScale
+uniform vec3 maps;  //0 = useMulti, useDetail, useCube
+uniform vec4 scale; //0 = uscale, vscale, detailScale, detailScaleV
 varying vec2 tex_coord;
 void main(void) {
-    vec4 texel0 = texture2D(baseTexture, tex_coord);
-    vec4 texel1 = texture2D(primaryDetailMap, tex_coord*maps[1]);
-    vec4 texel2 = texture2D(secondaryDetailMap, tex_coord*maps[3]);
-    
+    vec2 mapScale    = vec2(scale[0], scale[1]);
+    vec4 texel0 = texture2D(baseTexture, tex_coord*mapScale);
+    vec4 texel1 = texture2D(detailMap, tex_coord*scale[2]);
     vec4 white = vec4(1.0,1.0,1.0,1.0);
-    vec4 detail1 = mix(white, texel1, maps[0]);
-    vec4 detail2 = mix(white, texel2, maps[2]);
-    vec4 detail  = mix(detail2, detail1, texel0.a);
-
+    vec4 detail = mix(white, texel1, maps[1]);
     gl_FragColor = texel0 * detail;
-    gl_FragColor.a = 1.0;
 }

@@ -50,7 +50,6 @@ void ERenderer::setMap(ProtonMap *map) {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         bsp->setup(map, scenarioTag);
         objects->read(shaders, map, scenarioTag);
-        
     }
     ready = true;
 }
@@ -71,7 +70,7 @@ void errorCheck() {
     GLenum error = glGetError();
     if( error != GL_NO_ERROR )
     {
-        fprintf(stderr, "Opengl error %\n", gluErrorString( error ));
+        fprintf(stderr, "Opengl error %s\n", gluErrorString( error ));
     }
 }
 
@@ -115,6 +114,7 @@ void ERenderer::render() {
     if (!ready) {
         return;
     }
+    errorCheck();
     
     // Setup the current viewport
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -134,7 +134,7 @@ void ERenderer::render() {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
-        for (int pass = shader_SENV; pass <= shader_SCHI; pass++ )
+        for (int pass = shader_SENV; pass <= shader_SOSO; pass++ )
         {
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
@@ -143,14 +143,5 @@ void ERenderer::render() {
             objects->render(type);
             shader->stop();
         }
-        
-        // Render Objects
-        int i;
-        for (i=0; i < scenario->scen.count; i++) {
-            
-        }
     }
-    
-    errorCheck();
-    glFlush();
 }

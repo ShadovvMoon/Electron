@@ -12,6 +12,18 @@
 #include "defines.h"
 #include "shader.h"
 
+class BSPRenderBuffer {
+public:
+    GLuint m_Buffers[5];
+    GLuint geometryVAO;
+    GLfloat* vertex_array;
+    GLfloat* texture_uv;
+    GLfloat* light_uv;
+    GLfloat* normals;
+    GLint* index_array;
+    void setup();
+};
+
 class BSPRenderMesh {
 public:
     GLuint m_Buffers[5];
@@ -20,6 +32,9 @@ public:
     GLuint geometryVAO;
     int indexCount;
     int vertCount;
+    
+    int indexOffset;
+    int vertexOffset;
     
     // Arrays
     GLfloat* vertex_array;
@@ -32,8 +47,8 @@ public:
     void setup();
 };
 
-
 class BSP {
+    BSPRenderBuffer *vao;
     ShaderManager *shaders;
     std::vector<BSPRenderMesh*> renderables;
 public:

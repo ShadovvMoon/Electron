@@ -30,7 +30,6 @@ void senv::start() {
     glUniform1i(baseTexture, 0);
     glUniform1i(primaryDetailMap, 1);
     glUniform1i(secondaryDetailMap, 2);
-    
 }
 
 void senv::stop() {
@@ -66,7 +65,7 @@ bool senv_object::is(ShaderType type) {
     return (type == shader_SENV);
 }
 void senv_object::render() {
-    
+
     // Texturing
     glActiveTexture(GL_TEXTURE0);
     baseMap->bind();

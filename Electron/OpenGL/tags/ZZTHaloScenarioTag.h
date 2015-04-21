@@ -226,12 +226,13 @@ typedef struct
 
 typedef struct
 {
-    float vertex_k[3];
-    float normal[3];
-    float binormal[3];
-    float tangent[3];
-    float uv[2];
+    float vertex_k[3]; //0
+    float normal[3];   //0xC
+    float binormal[3]; //0x18
+    float tangent[3];  //0x24
+    float uv[2]; //0x30
 }UNCOMPRESSED_BSP_VERT;
+
 typedef struct
 {
     float vertex_k[3];

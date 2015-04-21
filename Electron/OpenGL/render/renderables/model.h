@@ -34,8 +34,12 @@ public:
 
 class ModelManager;
 class Model {
+private:
+    const char *name;
+    std::vector<shader_object*> shaders;
+    std::vector<uint8_t> renderIndices;
 public:
-    std::vector<ModelRenderMesh*> renderables;
+    std::vector<std::vector<ModelRenderMesh*>> geometries;
     Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag);
     void render(ShaderType pass);
 };
