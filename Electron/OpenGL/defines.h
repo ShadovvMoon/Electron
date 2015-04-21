@@ -19,6 +19,7 @@
 
 #define BITS_PER_PIXEL 32.0
 #define DEPTH_SIZE 32.0
+#define MAX_SCENARIO_OBJECTS 100000
 
 #define ShaderCount 3
 typedef enum {

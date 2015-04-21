@@ -48,6 +48,9 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     printf("senv object setup\n");
     baseMap = manager->texture_manager()->create_texture(map, *(HaloTagDependency*)(shaderTag->Data() + 0x88));
     
+    bitmask16 environmentFlags = *(bitmask16*)(shaderTag->Data() + 0x28);
+    useBlend = (environmentFlags & 15);
+    
     HaloTagDependency primary = *(HaloTagDependency*)(shaderTag->Data() + 0xB8);
     if (primary.tag_id.tag_index != NULLED_TAG_ID) {
         primaryScale = *(float*)(shaderTag->Data() + 0xB4);
@@ -92,5 +95,5 @@ void senv_object::render() {
     
     // Scales
     glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
-    glUniform1f(maps2Id, b2f(useLight));
+    glUniform2f(maps2Id, b2f(useLight), b2f(useBlend));
 }

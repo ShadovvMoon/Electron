@@ -64,6 +64,19 @@ Control *controls = (Control *)malloc(sizeof(Control));
 }
 
 CGPoint prevDown;
+CGPoint prevDownLeft;
+-(void)mouseDown:(NSEvent *)theEvent {
+    prevDownLeft = [NSEvent mouseLocation];
+    renderer->mouseDown([theEvent locationInWindow].x, [theEvent locationInWindow].y);
+}
+- (void)mouseDragged:(NSEvent *)theEvent
+{
+    NSPoint dragPoint = [NSEvent mouseLocation];
+    if ((([theEvent modifierFlags] & NSControlKeyMask) == 0))
+        renderer->mouseDrag((dragPoint.x - prevDownLeft.x), (dragPoint.y - prevDownLeft.y));
+    prevDownLeft = dragPoint;
+}
+
 - (void)rightMouseDown:(NSEvent *)event
 {
     NSPoint downPoint = [event locationInWindow];
@@ -75,7 +88,7 @@ CGPoint prevDown;
     NSPoint dragPoint = [NSEvent mouseLocation];
     
     if ((([theEvent modifierFlags] & NSControlKeyMask) == 0))
-        renderer->mouseDrag((dragPoint.x - prevDown.x), (dragPoint.y - prevDown.y));
+        renderer->rightMouseDrag((dragPoint.x - prevDown.x), (dragPoint.y - prevDown.y));
     
     prevDown = dragPoint;
 }

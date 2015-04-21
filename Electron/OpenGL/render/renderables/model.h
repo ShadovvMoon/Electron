@@ -38,6 +38,7 @@ public:
 class ModelManager;
 class Model {
 private:
+    bool ready = false;
     const char *name;
     std::vector<shader_object*> shaders;
     std::vector<uint8_t> renderIndices;

@@ -74,8 +74,39 @@ void errorCheck() {
     }
 }
 
-void ERenderer::mouseDrag(float dx, float dy) {
+void ERenderer::rightMouseDrag(float dx, float dy) {
     camera->drag(dx, dy);
+}
+
+void ERenderer::mouseDrag(float dx, float dy) {
+    if (objects->selection.size() > 0) {
+        int i;
+        for (i=0; i < objects->selection.size(); i++) {
+            ObjectInstance *instance = objects->selection[i];
+            vector3d *coord = new vector3d(instance->x, instance->y, instance->z);
+            
+            vector3d *move = new vector3d(dx/200, -dy/200, 0);
+            vector3d *viewDirection = new vector3d(0,0,0);
+            viewDirection->set(camera->position);
+            viewDirection->sub(coord);
+            
+            float s_acceleration = 1.0;
+            float mx = (s_acceleration * move->y * viewDirection->x);
+            float my = (s_acceleration * move->y * viewDirection->y);
+            mx += (s_acceleration * move->x * ((0 * viewDirection->z) - (1 * viewDirection->y)));
+            my += (s_acceleration * move->x * ((1 * viewDirection->x) - (0 * viewDirection->z)));
+
+            instance->x += mx;
+            instance->y += my;
+            
+            delete viewDirection;
+            delete move;
+        }
+    }
+}
+
+void ERenderer::mouseDown(float dx, float dy) {
+    objects->select(dx, dy);
 }
 
 void ERenderer::applyControl(Control *control){
@@ -140,7 +171,9 @@ void ERenderer::render() {
             shader *shader = shaders->get_shader(type);
             shader->start();
             bsp->render(type);
-            objects->render(type);
+            
+            GLuint number = 0;
+            objects->render(&number, nullptr, type);
             shader->stop();
         }
     }

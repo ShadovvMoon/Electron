@@ -176,6 +176,13 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     glBindVertexArrayAPPLE(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    
+    // Clean up
+    free(vao->vertex_array);
+    free(vao->texture_uv);
+    free(vao->light_uv);
+    free(vao->normals);
+    free(vao->index_array);
 }
 
 void BSP::render(ShaderType pass) {

@@ -11,11 +11,6 @@
 #include "object.h"
 
 class VehiInstance : public ObjectInstance {
-private:
-    ObjectRef *reference;
-    float x,y,z;
-    float yaw, pitch, roll;
-    void *data;
 public:
     void read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size);
     void render(ShaderType pass);
@@ -27,7 +22,8 @@ private:
 public:
     void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario);
     void write(ProtonMap *map, ProtonTag *scenario);
-    void render(ShaderType pass);
+    void render(GLuint *name, GLuint *lookup, ShaderType pass);
+    void select(GLuint index);
 };
 
 #endif

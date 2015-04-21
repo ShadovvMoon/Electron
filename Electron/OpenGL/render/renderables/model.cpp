@@ -80,13 +80,15 @@ void ModelRenderMesh::setup() {
 }
 
 Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
-    printf("reading model\n");
+    if (tag.tag_id.tag_index == NULLED_TAG_ID) {
+        return;
+    }
+    
+    printf("reading model 0x%x\n", tag.tag_id.tag_index);
     ProtonTag *modelTag = map->tags.at(tag.tag_id.tag_index).get();
     HaloModel *modelData = (HaloModel *)modelTag->Data();
-    
     float base_u = *(float*)(modelTag->Data() + 0x30);
     float base_v = *(float*)(modelTag->Data() + 0x34);
-    
     int i,p;
     
     // Read shaders
@@ -140,11 +142,11 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             renderer->indexCount = indexSize;
             
             // Assemble the VBO
-            renderer->vertex_array    = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat));
-            renderer->texture_uv      = (GLfloat*)malloc(vertex_number   * 2 * sizeof(GLfloat));
-            renderer->light_uv        = (GLfloat*)malloc(vertex_number   * 2 * sizeof(GLfloat));
-            renderer->normals         = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat));
-            renderer->index_array     = (GLint*)  malloc(indexSize * sizeof(GLint));
+            renderer->vertex_array    = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat)); // cleaned
+            renderer->texture_uv      = (GLfloat*)malloc(vertex_number   * 2 * sizeof(GLfloat)); // cleaned
+            renderer->light_uv        = (GLfloat*)malloc(vertex_number   * 2 * sizeof(GLfloat)); // cleaned
+            renderer->normals         = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat)); // cleaned
+            renderer->index_array     = (GLint*)  malloc(indexSize * sizeof(GLint)); // cleaned
             
             int v;
             int vert = 0, uv = 0;
@@ -203,6 +205,13 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             
+            // Clean up
+            free(renderer->vertex_array);
+            free(renderer->texture_uv);
+            free(renderer->light_uv);
+            free(renderer->normals);
+            free(renderer->index_array);
+            
             printf("geom %d %d\n", i, render);
             geometries[i][render] = renderer;
             render++;
@@ -211,7 +220,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
     printf("geometries %d\n", geometries.size());
     
     // Read regions
-    int LOD = 5;
+    int LOD = 4;
     printf("regions %d\n", modelData->region.count);
     for (i=0; i < modelData->region.count; i++) {
         MODEL_REGION *region = (MODEL_REGION *)(modelTag->Data() + modelTag->PointerToOffset(modelData->region.address) + 76 * i);
@@ -219,15 +228,20 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
         for (p=0; p < region->Permutations.count; p++) {
             MODEL_REGION_PERMUTATION *permutation = (MODEL_REGION_PERMUTATION *)(modelTag->Data() + modelTag->PointerToOffset(region->Permutations.address) + 88 * p);
             printf("permutation %d\n", i, permutation->LOD_MeshIndex[LOD]);
-            renderIndices.push_back(permutation->LOD_MeshIndex[LOD]);
+            if ((permutation->Flags[0] & 0xFF) != 1) {
+                renderIndices.push_back(permutation->LOD_MeshIndex[LOD]);
+            }
         }
     }
     
     printf("creating model object\n");
     name = modelTag->Name();
+    ready = true;
 }
 
 void Model::render(ShaderType pass) {
+    if (!ready) return;
+    
     glEnable(GL_TEXTURE_2D);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -258,7 +272,6 @@ void Model::render(ShaderType pass) {
                 glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
 #endif
-                
                 if (mesh->shader != previous_shader) {
                     mesh->shader->render();
                     previous_shader = mesh->shader;

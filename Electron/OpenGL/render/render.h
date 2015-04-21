@@ -48,7 +48,10 @@ public:
     
     // Movement
     void applyControl(Control *control);
+    
+    void mouseDown(float dx, float dy);
     void mouseDrag(float dx, float dy);
+    void rightMouseDrag(float dx, float dy);
 };
 
 #endif /* defined(____render__) */

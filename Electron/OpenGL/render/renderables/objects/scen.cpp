@@ -39,7 +39,14 @@ void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     roll  = spawn->rotation[2];
     data  = offset;
 };
+
 void ScenInstance::render(ShaderType pass) {
+    if (selected) {
+        glEnable(GL_COLOR_MATERIAL);
+        glEnable(GL_BLEND);
+        glColor4f(1.0, 1.0, 0.0, 0.2);
+    }
+    
     glPushMatrix();
     glTranslatef(x, y, z);
     glRotatef(roll   * (57.29577951), 1, 0, 0);
@@ -47,6 +54,10 @@ void ScenInstance::render(ShaderType pass) {
     glRotatef(yaw    * (57.29577951), 0, 0, 1);
     reference->render(pass);
     glPopMatrix();
+    
+    if (selected) {
+        glColor4f(1.0, 1.0, 1.0, 1.0);
+    }
 }
 
 void ScenClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
@@ -75,9 +86,39 @@ void ScenClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
     read_spawn(scenario, tag->scen, SCENERY_SPAWN_CHUNK);
 }
 
-void ScenClass::render(ShaderType pass) {
+void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
+    HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
+
+    // Remove the old scenery spawn reflexive data
+    scenario->DeleteData(scenario->PointerToOffset(tag->scen.address), tag->scen.count * SCENERY_SPAWN_CHUNK);
+    
+    // Assemble the new spawn data
+    char *data = (char*)malloc(SCENERY_SPAWN_CHUNK * objects.size());
     int i;
     for (i=0; i < objects.size(); i++) {
+        ScenInstance *object = (ScenInstance*)objects[i];
+        ScenerySpawn *spawn = (ScenerySpawn*)(data + i * SCENERY_SPAWN_CHUNK);
+        spawn->coord[0] = object->x;
+        spawn->coord[1] = object->y;
+        spawn->coord[2] = object->z;
+        
+    }
+
+}
+
+void ScenClass::select(GLuint index) {
+    objects[index]->selected = true;
+}
+
+void ScenClass::render(GLuint *name, GLuint *lookup, ShaderType pass) {
+    int i;
+    for (i=0; i < objects.size(); i++) {
+        glLoadName(*name);
+        if (lookup) {
+            lookup[*name] = (GLuint)((s_scenery * MAX_SCENARIO_OBJECTS) + i);
+            (*name)++;
+        }
         objects[i]->render(pass);
     }
 }
+

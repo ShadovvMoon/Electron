@@ -91,6 +91,72 @@ void DecodeLinearR5G6B5 (int width, int height, const char *texdata, unsigned in
 }
 
 
+
+/*================================
+ * DecodeLinearX8R8G8B8
+ ================================*/
+void DecodeLinearX8R8G8B8 (int width, int height, const char *texdata, unsigned int *outdata)
+{
+    rgba_color_t	color;
+    unsigned int	cdata;
+    int x,y;
+    for (y = 0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+            cdata = ((int *)texdata)[(y * width) + x];
+            color.a = 255;
+            color.r = (cdata >> 16) & 0xFF;
+            color.g = (cdata >>  8) & 0xFF;
+            color.b = (cdata >>  0) & 0xFF;
+            
+            outdata[(y * width) + x] = (255 << 24) | (color.r << 16) | (color.g << 8) | (color.b); //0xff000000 | cdata & 0xffffff;
+            
+            outdata[(y * width) + x]  = 0xFF000000 |
+            (((cdata) & 0xff0000) >> 16)|
+            ((cdata) & 0xff00)|
+            (((cdata) & 0xff) << 16);
+            
+        }
+    }
+}
+/*================================
+ * DecodeLinearA8R8G8B8
+ ================================*/
+void DecodeLinearA8R8G8B8 (int width, int height, const char *texdata, unsigned int *outdata)
+{
+    rgba_color_t	color;
+    unsigned int	cdata;
+    int x,y;
+    for (y = 0; y < height; y++)
+    {
+        for (x = 0; x < width; x++)
+        {
+            cdata = ((int *)texdata)[(y * width) + x];
+            //cdata = bmpEndianSwap32(cdata);
+            
+            color.a = (cdata >> 24) & 0xFF;
+            color.r = (cdata >> 16) & 0xFF;
+            color.g = (cdata >>  8) & 0xFF;
+            color.b = (cdata >>  0) & 0xFF;
+            
+            
+            
+            // //Pretty sky!
+            outdata[(y * width) + x]  = (((cdata >> 24) & 0xff) << 24 ) |
+            (((cdata) & 0xff0000) >> 16)|
+            ((cdata) & 0xff00)|
+            (((cdata) & 0xff) << 16);
+            
+            //outdata[(y * width) + x] = rgba_to_int (color);
+            
+        }
+    }
+}
+
+// simple paramaterization
+// alpha tested
+
 texture::texture(ProtonMap *map, HaloTagDependency bitm) {
 
     // Check
@@ -147,15 +213,36 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                 size = (image->width >> 2) * (image->height >> 2) * 16;
                 
             } else if (image->format == BITM_FORMAT_X8R8G8B8) {
-                format = GL_RGB;
-                internalFormat = GL_RGBA;
-                size = image->width * image->height * 4;
-                
+                //format = GL_RGB;
+                //internalFormat = GL_RGBA;
+                //size = image->width * image->height * 4;
+                char *output = (char*)malloc(4 * image->width * image->height);
+                DecodeLinearX8R8G8B8(image->width,image->height,input,(unsigned int*)output);
+                glTexImage2D(GL_TEXTURE_2D,
+                             0,
+                             GL_RGBA,
+                             image->width,
+                             image->height,
+                             0,
+                             GL_RGBA,
+                             GL_UNSIGNED_BYTE,
+                             input);
             } else if (image->format == BITM_FORMAT_A8R8G8B8) {
-                format = GL_RGBA;
-                internalFormat = GL_RGBA;
-                size = image->width * image->height * 4;
-                
+                //format = GL_RGBA;
+                //internalFormat = GL_RGBA;
+                //size = image->width * image->height * 4;
+                char *output = (char*)malloc(4 * image->width * image->height);
+                DecodeLinearA8R8G8B8(image->width,image->height,input,(unsigned int*)output);
+                glTexImage2D(GL_TEXTURE_2D,
+                             0,
+                             GL_RGBA,
+                             image->width,
+                             image->height,
+                             0,
+                             GL_RGBA,
+                             GL_UNSIGNED_BYTE,
+                             input);
+                continue;
             } else if (image->format == BITM_FORMAT_R5G6B5) {
                 printf("R5G6B5\n");
                 char *output = (char*)malloc(4 * image->width * image->height);
@@ -185,7 +272,9 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
     
 }
 void texture::bind() {
-    glBindTexture(GL_TEXTURE_2D, textures[0]);
+    if (textures.size() > 0) {
+        glBindTexture(GL_TEXTURE_2D, textures[0]);
+    }
 }
 void texture::bind(int i) {
     glBindTexture(GL_TEXTURE_2D, textures[i]);

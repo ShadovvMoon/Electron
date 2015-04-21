@@ -31,6 +31,7 @@ public:
 class senv_object : public shader_object {
 private:
     texture *baseMap = nullptr;
+    bool useBlend = false;
     bool usePrimary = false;
     float primaryScale;
     texture *primaryDetailMap = nullptr;

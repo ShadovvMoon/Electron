@@ -75,9 +75,18 @@ void VehiClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
     read_spawn(scenario, tag->vehi, VEHICLE_SPAWN_CHUNK);
 }
 
-void VehiClass::render(ShaderType pass) {
+void VehiClass::select(GLuint index) {
+    objects[index]->selected = true;
+}
+
+void VehiClass::render(GLuint *name, GLuint *lookup, ShaderType pass) {
     int i;
     for (i=0; i < objects.size(); i++) {
+        glLoadName(*name);
+        if (lookup) {
+            lookup[*name] = (GLuint)((s_vehicle * MAX_SCENARIO_OBJECTS) + i);
+            (*name)++;
+        }
         objects[i]->render(pass);
     }
 }
