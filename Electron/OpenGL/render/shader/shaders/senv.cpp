@@ -75,6 +75,7 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool senv_object::is(ShaderType type) {
     return (type == shader_SENV);
 }
+
 void senv_object::render() {
 
     // Texturing

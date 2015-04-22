@@ -68,6 +68,10 @@ void ObjectManager::read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scen
     vehi->read(this, map, scenario);
 }
 
+void ObjectManager::write(ProtonMap *map, ProtonTag *scenario) {
+    scen->write(map, scenario);
+}
+
 void render_instance(ObjectInstance *instance, ShaderType pass) {
     if (instance->selected) {
         glEnable(GL_COLOR_MATERIAL);

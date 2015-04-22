@@ -40,7 +40,15 @@ void ERenderer::setup() {
 }
 
 // Load a map
-void ERenderer::setMap(ProtonMap *map) {
+void ERenderer::write() {
+    uint16_t scenarioTag = map->principal_tag;
+    if (scenarioTag != NULLED_TAG_ID) {
+        ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
+        objects->write(map, scenarioTag);
+    }
+}
+
+void ERenderer::read(ProtonMap *map) {
     printf("set map\n");
     this->map = map;
     
@@ -68,8 +76,7 @@ void ERenderer::resize(float width, float height) {
 void errorCheck() {
     // Print any errors
     GLenum error = glGetError();
-    if( error != GL_NO_ERROR )
-    {
+    if( error != GL_NO_ERROR ) {
         fprintf(stderr, "Opengl error %s\n", gluErrorString( error ));
     }
 }
@@ -84,7 +91,6 @@ void ERenderer::mouseDrag(float dx, float dy) {
         for (i=0; i < objects->selection.size(); i++) {
             ObjectInstance *instance = objects->selection[i];
             vector3d *coord = new vector3d(instance->x, instance->y, instance->z);
-            
             vector3d *move = new vector3d(dx/200, -dy/200, 0);
             vector3d *viewDirection = new vector3d(0,0,0);
             viewDirection->set(camera->position);
@@ -99,8 +105,9 @@ void ERenderer::mouseDrag(float dx, float dy) {
             instance->x += mx;
             instance->y += my;
             
-            delete viewDirection;
+            delete coord;
             delete move;
+            delete viewDirection;
         }
     }
 }
@@ -177,4 +184,13 @@ void ERenderer::render() {
             shader->stop();
         }
     }
+}
+
+// Cleanup
+ERenderer::~ERenderer() {
+    printf("deleting renderer\n");
+    delete camera;
+    delete shaders;
+    delete bsp;
+    delete objects;
 }

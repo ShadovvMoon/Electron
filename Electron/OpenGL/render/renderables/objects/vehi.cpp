@@ -75,6 +75,9 @@ void VehiClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
     read_spawn(scenario, tag->vehi, VEHICLE_SPAWN_CHUNK);
 }
 
+void VehiClass::write(ProtonMap *map, ProtonTag *scenario) {
+}
+
 void VehiClass::select(GLuint index) {
     objects[index]->selected = true;
 }

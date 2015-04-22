@@ -143,9 +143,22 @@ CGPoint prevDownLeft;
     
 }
 
+ProtonMap *map;
 -(void)setData:(NSData*)data {
-    ProtonMap *map = new ProtonMap([data bytes]);
-    renderer->setMap(map);
+    map = new ProtonMap([data bytes]);
+    renderer->read(map);
+}
+
+-(NSData *)getData {
+    renderer->write();
+    ProtonCacheFile cache = map->ToCacheFile();
+    return [[NSData alloc] initWithBytes:cache.Data() length:cache.Length()];
+}
+
+-(void)dealloc {
+    delete map;
+    delete renderer;
+    [super dealloc];
 }
 
 - (void)drawRect:(NSRect)dirtyRect {

@@ -37,7 +37,8 @@ void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     yaw   = spawn->rotation[0];
     pitch = spawn->rotation[1];
     roll  = spawn->rotation[2];
-    data  = offset;
+    data = malloc(size);
+    memcpy(data, offset, size);
 };
 
 void ScenInstance::render(ShaderType pass) {
@@ -87,23 +88,34 @@ void ScenClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
 }
 
 void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
+    printf("writing scenery\n");
     HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
 
     // Remove the old scenery spawn reflexive data
-    scenario->DeleteData(scenario->PointerToOffset(tag->scen.address), tag->scen.count * SCENERY_SPAWN_CHUNK);
+    uint32_t offset = scenario->PointerToOffset(tag->scen.address);
+    scenario->DeleteData(offset, tag->scen.count * SCENERY_SPAWN_CHUNK);
     
     // Assemble the new spawn data
-    char *data = (char*)malloc(SCENERY_SPAWN_CHUNK * objects.size());
+    char *data = (char*)malloc(SCENERY_SPAWN_CHUNK * objects.size()); //cleaned
     int i;
     for (i=0; i < objects.size(); i++) {
         ScenInstance *object = (ScenInstance*)objects[i];
         ScenerySpawn *spawn = (ScenerySpawn*)(data + i * SCENERY_SPAWN_CHUNK);
+        memcpy(spawn, object->data, SCENERY_SPAWN_CHUNK);
         spawn->coord[0] = object->x;
         spawn->coord[1] = object->y;
         spawn->coord[2] = object->z;
-        
+        spawn->rotation[0] = object->yaw;
+        spawn->rotation[1] = object->pitch;
+        spawn->rotation[2] = object->roll;
     }
-
+    scenario->InsertData(offset, data, (uint32_t)(objects.size() * SCENERY_SPAWN_CHUNK));
+    free(data);
+    
+    // Update the scen reflexive
+    tag->scen.count   = (uint16_t)objects.size();
+    tag->scen.address = scenario->OffsetToPointer(offset);
+    
 }
 
 void ScenClass::select(GLuint index) {

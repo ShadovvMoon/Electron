@@ -41,10 +41,13 @@ private:
     Camera *camera;
     ObjectManager *objects;
 public:
+    ~ERenderer();
     void setup();
     void resize(float width, float height);
     void render();
-    void setMap(ProtonMap *map);
+    
+    void read(ProtonMap *map);
+    void write();
     
     // Movement
     void applyControl(Control *control);

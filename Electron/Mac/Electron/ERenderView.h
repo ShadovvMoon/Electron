@@ -13,4 +13,5 @@
     NSTimer *drawTimer;
 }
 -(void)setData:(NSData*)data;
+-(NSData *)getData;
 @end

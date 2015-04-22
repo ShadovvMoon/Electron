@@ -58,6 +58,7 @@ public:
     std::vector<ObjectInstance*> objects;
     
     virtual void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario)=0;
+    virtual void write(ProtonMap *map, ProtonTag *scenario) = 0;
     virtual void render(GLuint *name, GLuint *lookup, ShaderType pass)=0;
     virtual void select(GLuint index) = 0;
 };
@@ -73,6 +74,7 @@ public:
     
     // Setup
     void read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scenario);
+    void write(ProtonMap *map, ProtonTag *scenario);
     ObjectRef *create_object(ProtonMap *map, HaloTagDependency tag);
     
     // Rendering
