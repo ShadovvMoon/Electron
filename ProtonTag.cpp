@@ -229,7 +229,7 @@ static inline void IncreaseReflexiveIfPossible(uint32_t ref_offset, uint32_t off
     }
 }
 
-void ProtonTag::OffsetData(uint32_t offset, uint32_t size) {
+void ProtonTag::OffsetData(uint32_t offset, int32_t size) {
     if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive)) return;
     if(size == 0) return;
     //if(memcmp(this->tag_classes, "rncs", 4) == 0) {
@@ -257,6 +257,7 @@ void ProtonTag::OffsetData(uint32_t offset, uint32_t size) {
         for(uint32_t i=0;i<this->tag_data_length - sizeof(HaloTagReflexive) + iterate; i+= iterate) {
             HaloTagReflexive *reflexive = (HaloTagReflexive *)(this->Data() + i);
             if(reflexive->address < min_address || reflexive->address >= max_address) continue;
+            if(reflexive->address == min_address && size < 0) continue;
             if(reflexive->reserved_data != 0) continue;
             reflexive->address += size;
         }

@@ -37,7 +37,7 @@ public:
     uint32_t resource_index = NO_RESOURCE_INDEX;
     void ScanDependencies(ProtonTagArray *parent_tag_array);
     
-    void OffsetData(uint32_t offset, uint32_t size);
+    void OffsetData(uint32_t offset, int32_t size);
     void AppendData(uint32_t offset, uint32_t size);
     void DeleteData(uint32_t offset, uint32_t size);
     void InsertData(uint32_t offset, const char *data, uint32_t size);
