@@ -62,6 +62,7 @@ void ScenInstance::render(ShaderType pass) {
 }
 
 void ScenClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
+    printf("%d\n", spawn.count);
     int i;
     for (i=0; i < spawn.count; i++) {
         uint8_t *data = (uint8_t *)scenario->Data() + scenario->PointerToOffset(spawn.address) + size * i;
