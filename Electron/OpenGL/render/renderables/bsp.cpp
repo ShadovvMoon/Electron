@@ -205,6 +205,8 @@ void BSP::render(ShaderType pass) {
     glVertexPointer(3, GL_FLOAT, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[TEXCOORD_VB]);
     glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[LIGHT_VB]);
+    glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[NORMAL_VB]);
     glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->m_Buffers[INDEX_BUFFER]);
