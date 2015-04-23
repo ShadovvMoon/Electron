@@ -1,0 +1,711 @@
+﻿Build started 23/04/2015 7:13:48 PM.
+     1>Project "C:\Users\admin_000\Documents\GitHub\Electron\Electron\Windows\Electron\Electron\Electron.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\admin_000\Documents\GitHub\Electron\Electron\OpenGL /IC:\Users\admin_000\Documents\GitHub\Electron /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS- /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\Electron.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+     1>cl : Command line warning D9025: overriding '/sdl' with '/GS-'
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\Users\admin_000\Documents\GitHub\Electron\Electron\OpenGL /IC:\Users\admin_000\Documents\GitHub\Electron /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS- /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\..\HaloData.cpp ..\..\..\..\ProtonCacheFile.cpp ..\..\..\..\ProtonMap.cpp ..\..\..\..\ProtonTag.cpp ..\..\..\..\ProtonTagArray.cpp ..\..\..\..\ProtonTagDependency.cpp ..\..\..\OpenGL\render\camera\camera.cpp ..\..\..\OpenGL\render\camera\vector3d.cpp ..\..\..\OpenGL\render\render.cpp ..\..\..\OpenGL\render\renderables\bsp.cpp ..\..\..\OpenGL\render\renderables\model.cpp ..\..\..\OpenGL\render\renderables\object.cpp ..\..\..\OpenGL\render\renderables\objects\itmc.cpp ..\..\..\OpenGL\render\renderables\objects\scen.cpp ..\..\..\OpenGL\render\renderables\objects\vehi.cpp ..\..\..\OpenGL\render\shader\shader.cpp ..\..\..\OpenGL\render\shader\shaders\null.cpp ..\..\..\OpenGL\render\shader\shaders\schi.cpp ..\..\..\OpenGL\render\shader\shaders\senv.cpp ..\..\..\OpenGL\render\shader\shaders\soso.cpp ..\..\..\OpenGL\render\texture\bitmaps.cpp ..\..\..\OpenGL\render\texture\texture.cpp Electron.cpp
+     1>cl : Command line warning D9025: overriding '/sdl' with '/GS-'
+         Electron.cpp
+         texture.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\texture\texture.cpp(166): warning C4018: '<' : signed/unsigned mismatch
+         bitmaps.cpp
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\texture\bitmaps.cpp(16): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+         soso.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\shader\shaders\soso.cpp(116): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+         senv.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\shader\shaders\senv.cpp(58): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+         schi.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\shader\shaders\schi.cpp(44): warning C4018: '<' : signed/unsigned mismatch
+         null.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+         shader.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\shader\shader.cpp(16): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
+         vehi.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\vehi.cpp(46): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\vehi.cpp(47): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\vehi.cpp(48): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\vehi.cpp(72): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\vehi.cpp(85): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\vehi.cpp(107): warning C4018: '<' : signed/unsigned mismatch
+         scen.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(60): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(65): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(66): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(67): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(82): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(95): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\scen.cpp(117): warning C4018: '<' : signed/unsigned mismatch
+         itmc.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\itmc.cpp(59): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\itmc.cpp(64): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\itmc.cpp(65): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\itmc.cpp(66): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\itmc.cpp(81): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\objects\itmc.cpp(113): warning C4018: '<' : signed/unsigned mismatch
+         object.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(87): warning C4305: 'argument' : truncation from 'double' to 'GLfloat'
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(92): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(93): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(94): warning C4244: 'argument' : conversion from 'double' to 'GLfloat', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(105): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(119): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(178): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(181): warning C4244: '=' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(183): warning C4244: '=' : conversion from 'float' to 'unsigned int', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(206): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\object.cpp(211): warning C4018: '<' : signed/unsigned mismatch
+         model.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(97): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(105): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(108): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(120): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(124): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(225): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(228): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(232): warning C4244: 'argument' : conversion from 'short' to 'const unsigned char', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(258): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\model.cpp(261): warning C4018: '<' : signed/unsigned mismatch
+         bsp.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(43): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(49): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(51): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(76): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(83): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(85): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(216): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\renderables\bsp.cpp(218): warning C4018: '<' : signed/unsigned mismatch
+         render.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\render.cpp(68): warning C4244: 'argument' : conversion from 'float' to 'GLsizei', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\render.cpp(91): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\render.cpp(147): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\render.cpp(148): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\render.cpp(177): warning C4305: 'argument' : truncation from 'double' to 'GLclampf'
+         vector3d.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+         camera.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\camera\camera.cpp(23): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\camera\camera.cpp(24): warning C4305: 'argument' : truncation from 'double' to 'float'
+     1>c:\users\admin_000\documents\github\electron\electron\opengl\render\camera\camera.cpp(62): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         ProtonTagDependency.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+         ProtonTagArray.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+         ProtonTag.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.cpp(314): warning C4146: unary minus operator applied to unsigned type, result still unsigned
+         Generating Code...
+         Compiling...
+         ProtonMap.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(53): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(55): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(56): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(56) : see declaration of 'HaloCacheFileHeaderDemo::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(58): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(61): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(62): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(64): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding5' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(67): error C2536: 'HaloCacheFileHeaderDemo::HaloCacheFileHeaderDemo::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(67) : see declaration of 'HaloCacheFileHeaderDemo::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(68): warning C4351: new behavior: elements of array 'HaloCacheFileHeaderDemo::padding6' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(74): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::head' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(74) : see declaration of 'HaloCacheFileHeader::head'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(77): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding1' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(80): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding2' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(81): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapName' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(82): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::mapBuild' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(84): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding3' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(86): warning C4351: new behavior: elements of array 'HaloCacheFileHeader::padding4' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\halodata.h(87): error C2536: 'HaloCacheFileHeader::HaloCacheFileHeader::foot' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(87) : see declaration of 'HaloCacheFileHeader::foot'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(102): error C2536: 'HaloCacheFileTagDataHeader::HaloCacheFileTagDataHeader::tags' : cannot specify explicit initializer for arrays
+                 c:\users\admin_000\documents\github\electron\halodata.h(102) : see declaration of 'HaloCacheFileTagDataHeader::tags'
+     1>c:\users\admin_000\documents\github\electron\protontag.h(31): warning C4351: new behavior: elements of array 'ProtonTag::tag_classes' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protontag.h(69): warning C4351: new behavior: elements of array 'ProtonTag::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(43): warning C4351: new behavior: elements of array 'ProtonMap::name' will be default initialized
+     1>c:\users\admin_000\documents\github\electron\protonmap.h(44): warning C4351: new behavior: elements of array 'ProtonMap::build' will be default initialized
+         ProtonCacheFile.cpp
+         HaloData.cpp
+     1>c:\users\admin_000\documents\github\electron\halodata.h(16): error C3064: 'uint32_t': must be a simple type or resolve to one
+     1>c:\users\admin_000\documents\github\electron\halodata.h(24): error C3064: 'uint16_t': must be a simple type or resolve to one
+     1>c:\users\admin_000\documents\github\electron\halodata.h(32): error C2146: syntax error : missing ';' before identifier 'tag_index'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(32): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(33): error C2146: syntax error : missing ';' before identifier 'table_id'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(33): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(35): error C2061: syntax error : identifier 'uint16_t'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(35): error C2535: 'HaloTagID::HaloTagID(void)' : member function already defined or declared
+                 c:\users\admin_000\documents\github\electron\halodata.h(34) : see declaration of 'HaloTagID::HaloTagID'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(40): error C2146: syntax error : missing ';' before identifier 'name_address'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(40): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(41): error C2146: syntax error : missing ';' before identifier 'reserved_data'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(41): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(46): error C2146: syntax error : missing ';' before identifier 'count'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(46): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(47): error C2146: syntax error : missing ';' before identifier 'address'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(47): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(48): error C2146: syntax error : missing ';' before identifier 'reserved_data'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(48): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(57): error C2146: syntax error : missing ';' before identifier 'tagDataSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(57): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(63): error C2146: syntax error : missing ';' before identifier 'fileCRC32'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(63): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(65): error C2146: syntax error : missing ';' before identifier 'fileSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(65): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(66): error C2146: syntax error : missing ';' before identifier 'tagDataOffset'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(66): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(76): error C2146: syntax error : missing ';' before identifier 'fileSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(76): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(78): error C2146: syntax error : missing ';' before identifier 'tagDataOffset'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(78): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(79): error C2146: syntax error : missing ';' before identifier 'tagDataSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(79): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(85): error C2146: syntax error : missing ';' before identifier 'fileCRC32'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(85): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(93): error C2146: syntax error : missing ';' before identifier 'tagArrayAddress'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(93): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(95): error C2146: syntax error : missing ';' before identifier 'randomNumber'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(95): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(96): error C2146: syntax error : missing ';' before identifier 'tagCount'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(96): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(97): error C2146: syntax error : missing ';' before identifier 'partCountA'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(97): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(98): error C2146: syntax error : missing ';' before identifier 'modelDataOffset'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(98): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(99): error C2146: syntax error : missing ';' before identifier 'partCountB'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(99): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(100): error C2146: syntax error : missing ';' before identifier 'vertexSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(100): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(101): error C2146: syntax error : missing ';' before identifier 'modelSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(101): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(110): error C2146: syntax error : missing ';' before identifier 'nameAddress'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(110): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(111): error C2146: syntax error : missing ';' before identifier 'dataAddress'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(111): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(112): error C2146: syntax error : missing ';' before identifier 'notInMap'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(112): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(113): error C2146: syntax error : missing ';' before identifier 'padding'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(113): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(117): error C2146: syntax error : missing ';' before identifier 'sbspFileOffset'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(117): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(118): error C2146: syntax error : missing ';' before identifier 'sbspSize'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(118): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.h(119): error C2146: syntax error : missing ';' before identifier 'sbspAddress'
+     1>c:\users\admin_000\documents\github\electron\halodata.h(119): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(17): error C2039: 'fileCRC32' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(17): error C2039: 'fileCRC32' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(18): error C2039: 'fileSize' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(18): error C2039: 'fileSize' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(25): error C2039: 'tagDataOffset' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(25): error C2039: 'tagDataOffset' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(26): error C2039: 'tagDataSize' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(26): error C2039: 'tagDataSize' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(33): error C2039: 'fileCRC32' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(33): error C2039: 'fileCRC32' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(34): error C2039: 'fileSize' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(34): error C2039: 'fileSize' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(41): error C2039: 'tagDataOffset' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(41): error C2039: 'tagDataOffset' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(42): error C2039: 'tagDataSize' : is not a member of 'HaloCacheFileHeader'
+                 c:\users\admin_000\documents\github\electron\halodata.h(73) : see declaration of 'HaloCacheFileHeader'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(42): error C2039: 'tagDataSize' : is not a member of 'HaloCacheFileHeaderDemo'
+                 c:\users\admin_000\documents\github\electron\halodata.h(52) : see declaration of 'HaloCacheFileHeaderDemo'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(48): error C2065: 'uint16_t' : undeclared identifier
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(48): error C2146: syntax error : missing ')' before identifier 'tagIndex'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(48): error C2761: '{ctor}' : member function redeclaration not allowed
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(48): error C2059: syntax error : ')'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(48): error C2143: syntax error : missing ';' before '{'
+     1>c:\users\admin_000\documents\github\electron\halodata.cpp(48): error C2447: '{' : missing function header (old-style formal list?)
+         Generating Code...
+     1>Done Building Project "C:\Users\admin_000\Documents\GitHub\Electron\Electron\Windows\Electron\Electron\Electron.vcxproj" (Rebuild target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:06.26
