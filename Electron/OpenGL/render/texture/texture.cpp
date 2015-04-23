@@ -7,8 +7,6 @@
 //
 
 #include "texture.h"
-#include "squish.h"
-using namespace squish;
 
 #define BITM_FORMAT_A8			0x00
 #define BITM_FORMAT_Y8			0x01

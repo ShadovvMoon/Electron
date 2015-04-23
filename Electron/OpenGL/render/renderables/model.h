@@ -10,7 +10,7 @@
 #define __MODEL__
 
 #include "defines.h"
-#include "shader.h"
+#include "../shader/shader.h"
 
 class ModelRenderMesh {
 public:

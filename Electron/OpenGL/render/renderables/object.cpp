@@ -143,7 +143,7 @@ void ObjectManager::clearSelection() {
 }
 
 void ObjectManager::select(bool shift, float x, float y) {
-    GLsizei bufferSize = 16384;
+    const GLsizei bufferSize = 16384;
     GLuint nameBuf[bufferSize];
     GLuint tmpLookup[bufferSize];
     

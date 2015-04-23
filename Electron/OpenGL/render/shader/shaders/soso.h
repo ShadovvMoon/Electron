@@ -9,9 +9,7 @@
 #ifndef ____EShaderSoso__
 #define ____EShaderSoso__
 
-#include "shader.h"
-#include "texture.h"
-
+#include "../shader.h"
 class soso : public shader {
 private:
     GLuint program;

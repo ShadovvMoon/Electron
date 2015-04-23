@@ -8,7 +8,7 @@
 
 #ifndef __OBJECT_ITMC__
 #define __OBJECT_ITMC__
-#include "object.h"
+#include "../object.h"
 
 class ItmcInstance : public ObjectInstance {
 public:

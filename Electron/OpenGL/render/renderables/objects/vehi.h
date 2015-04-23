@@ -8,7 +8,7 @@
 
 #ifndef __OBJECT_VEHI__
 #define __OBJECT_VEHI__
-#include "object.h"
+#include "../object.h"
 
 class VehiInstance : public ObjectInstance {
 public:

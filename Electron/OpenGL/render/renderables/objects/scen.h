@@ -8,7 +8,7 @@
 
 #ifndef __OBJECT_SCEN__
 #define __OBJECT_SCEN__
-#include "object.h"
+#include "../object.h"
 
 class ScenInstance : public ObjectInstance {
 public:

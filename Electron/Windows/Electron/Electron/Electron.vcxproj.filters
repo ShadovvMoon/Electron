@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\OpenGL">
+      <UniqueIdentifier>{11df7de7-27ff-4dc1-b217-6be2cd19027e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\glew">
+      <UniqueIdentifier>{32117f0c-e4b8-44a5-8c66-a116f6fa8e85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render">
+      <UniqueIdentifier>{ec7952ff-4f0f-4e83-803f-2395478c348e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\tags">
+      <UniqueIdentifier>{290eedd4-8ddd-420d-800e-7cbed15be9ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\camera">
+      <UniqueIdentifier>{34172636-ffb5-4b27-9cc4-1b3b32a67591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\renderables">
+      <UniqueIdentifier>{cc46ad04-b5d3-45d2-8ca6-5741af60faf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\shader">
+      <UniqueIdentifier>{db22b2b0-d788-48fb-aae3-f44634491fb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\texture">
+      <UniqueIdentifier>{65cf4151-9008-4027-b5e6-1f0f45a4c27a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\shader\shaders">
+      <UniqueIdentifier>{0d1dea8f-6c79-417c-b226-478f4e56ae1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\shader\shaders\glsl">
+      <UniqueIdentifier>{731ce911-5d4b-463d-86c6-5c6df5316d2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OpenGL\render\renderables\objects">
+      <UniqueIdentifier>{afc89c08-33da-464e-bd6c-52e9d0af8102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Proton">
+      <UniqueIdentifier>{0787a5d2-b354-48d6-a808-ed9579443659}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Electron.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\defines.h">
+      <Filter>Source Files\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\tags\ZZTHaloObjectTag.h">
+      <Filter>Source Files\OpenGL\tags</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\tags\ZZTHaloScenarioTag.h">
+      <Filter>Source Files\OpenGL\tags</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\render.h">
+      <Filter>Source Files\OpenGL\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\texture\bitmaps.h">
+      <Filter>Source Files\OpenGL\render\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\texture\texture.h">
+      <Filter>Source Files\OpenGL\render\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\camera\camera.h">
+      <Filter>Source Files\OpenGL\render\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\camera\vector3d.h">
+      <Filter>Source Files\OpenGL\render\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shader.h">
+      <Filter>Source Files\OpenGL\render\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\null.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\schi.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\senv.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\soso.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\bsp.h">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\model.h">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\object.h">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\objects\itmc.h">
+      <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\objects\scen.h">
+      <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\objects\vehi.h">
+      <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\glew\glew.h">
+      <Filter>Source Files\OpenGL\glew</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\ProtonTagArray.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\ProtonTagDependency.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\BitmSndMap.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\HaloData.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\ProtonCacheFile.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\ProtonMap.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\ProtonTag.h">
+      <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Electron.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\render.cpp">
+      <Filter>Source Files\OpenGL\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\texture\bitmaps.cpp">
+      <Filter>Source Files\OpenGL\render\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\texture\texture.cpp">
+      <Filter>Source Files\OpenGL\render\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\camera\camera.cpp">
+      <Filter>Source Files\OpenGL\render\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\camera\vector3d.cpp">
+      <Filter>Source Files\OpenGL\render\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shader.cpp">
+      <Filter>Source Files\OpenGL\render\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\null.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\schi.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\senv.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\soso.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\bsp.cpp">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\model.cpp">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\object.cpp">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\objects\itmc.cpp">
+      <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\objects\scen.cpp">
+      <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\objects\vehi.cpp">
+      <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\glew\glew.c">
+      <Filter>Source Files\OpenGL\glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ProtonTag.cpp">
+      <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ProtonTagArray.cpp">
+      <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ProtonTagDependency.cpp">
+      <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\HaloData.cpp">
+      <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ProtonCacheFile.cpp">
+      <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\ProtonMap.cpp">
+      <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Electron.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Electron.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\null.frag">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\null.vert">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\schi.frag">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\schi.vert">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\senv.frag">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\senv.vert">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\soso.frag">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+    <None Include="..\..\..\OpenGL\render\shader\shaders\glsl\soso.vert">
+      <Filter>Source Files\OpenGL\render\shader\shaders\glsl</Filter>
+    </None>
+  </ItemGroup>
+</Project>

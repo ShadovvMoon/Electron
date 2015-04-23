@@ -10,7 +10,7 @@
 #define __BSP__
 
 #include "defines.h"
-#include "shader.h"
+#include "../shader/shader.h"
 
 class BSPRenderBuffer {
 public:

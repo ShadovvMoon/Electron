@@ -11,7 +11,7 @@
 typedef struct {
     char unk[36];
     HaloTagReflexive parts;
-} __attribute__((packed)) HaloGeometry;
+} HaloGeometry;
 
 typedef struct {
     uint32_t flags;
@@ -28,7 +28,7 @@ typedef struct {
     char unk3[8];
     uint32_t compressedVertPointer;
     char unk4[12];
-} __attribute__((packed)) HaloGeometryPart;
+} HaloGeometryPart;
 
 typedef struct {
     char unk0[48];
@@ -37,12 +37,12 @@ typedef struct {
     HaloTagReflexive region;
     HaloTagReflexive geometry;
     HaloTagReflexive shaders;
-} __attribute__((packed)) HaloModel;
+} HaloModel;
 
 typedef struct {
     HaloTagDependency shader;
     char unk0[16];
-} __attribute__((packed)) HaloShader;
+} HaloShader;
 
 typedef struct MODEL_REGION_PERMUTATION
 {

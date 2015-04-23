@@ -9,9 +9,7 @@
 #ifndef ____EShaderSchi__
 #define ____EShaderSchi__
 
-#include "shader.h"
-#include "texture.h"
-
+#include "../shader.h"
 class schi : public shader {
 private:
     GLuint program;

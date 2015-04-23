@@ -9,9 +9,7 @@
 #ifndef ____EShaderNull__
 #define ____EShaderNull__
 
-#include "shader.h"
-#include "texture.h"
-
+#include "../shader.h"
 class null : public shader {
 private:
     GLuint program;

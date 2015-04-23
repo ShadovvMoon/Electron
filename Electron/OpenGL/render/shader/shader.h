@@ -7,7 +7,7 @@
 //
 
 #include "defines.h"
-#include "texture.h"
+#include "../texture/texture.h"
 #include <map>
 
 #ifndef ____EShader__

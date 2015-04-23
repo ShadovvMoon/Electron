@@ -107,7 +107,7 @@ typedef struct {
     HaloTagReflexive lines;         //0x52C
     uint8_t unk26[0x6C];     //0x538
     HaloTagReflexive bsp;           //0x5A4
-} __attribute__((packed)) HaloScenarioTag;
+} HaloScenarioTag;
 
 typedef struct {
     uint32_t bsp_mapfile_start;
@@ -119,7 +119,7 @@ typedef struct {
     uint32_t reserved;
     uint16_t tagId;
     uint16_t halodoesntevenreadthisvaluewtfbungiewhydoyoudothistome;
-} __attribute__((packed)) BSP_CHUNK;
+} BSP_CHUNK;
 
 typedef struct {
     HaloTagDependency lightmaps;
@@ -164,7 +164,7 @@ typedef struct {
     HaloTagReflexive dobc;
     HaloTagReflexive decals;
     uint32_t unk17[0x9];
-} __attribute__((packed)) BSP_MESH;
+} BSP_MESH;
 
 typedef struct
 {
@@ -172,7 +172,7 @@ typedef struct
     short unk1;
     uint32_t unknown[4];
     HaloTagReflexive material;
-} __attribute__((packed)) BSP_SUBMESH;
+} BSP_SUBMESH;
 
 typedef struct
 {
@@ -210,7 +210,7 @@ typedef struct
     uint32_t SomeOffset2;
     uint32_t VertexDataOffset;
     uint32_t UnkZero8;
-} __attribute__((packed)) MATERIAL_SUBMESH_HEADER;
+} MATERIAL_SUBMESH_HEADER;
 
 typedef struct
 {

@@ -10,11 +10,11 @@
 #define ____render__
 
 #include "defines.h"
-#include "bsp.h"
 #include "math.h"
-#include "camera.h"
-#include "shader.h"
-#include "object.h"
+#include "camera/camera.h"
+#include "shader/shader.h"
+#include "renderables/bsp.h"
+#include "renderables/object.h"
 
 #include <chrono>
 using namespace std::chrono;

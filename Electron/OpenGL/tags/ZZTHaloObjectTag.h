@@ -22,6 +22,8 @@
 //  Copyright (c) 2014 Zero2. All rights reserved.
 //
 
+#include "HaloData.h"
+
 typedef uint16_t unichar;
 typedef uint8_t bitmask8;
 typedef uint16_t bitmask16;
@@ -168,18 +170,18 @@ typedef struct {
     float functionAccelerationScale; //0x138
     char padding2[0xC]; //0x13C
     char usage[32]; //0x148
-} __attribute__((packed)) HaloObjectFunctions;
+} HaloObjectFunctions;
 
 typedef struct {
     HaloTagDependency reference;
     char padding[0x10];
-} __attribute__((packed)) HaloObjectWidgets; //0x20
+} HaloObjectWidgets; //0x20
 
 typedef struct {
     float weight;
     ColorRGB colorLowerBound;
     ColorRGB colorUpperBound;
-} __attribute__((packed)) HaloObjectChangeColorsPermutations;
+} HaloObjectChangeColorsPermutations;
 
 typedef struct {
     enum haloFunctions darkenBy; //0x0
@@ -188,7 +190,7 @@ typedef struct {
     ColorRGB colorUpperBound; //0x8
     ColorRGB colorLowerBound; //0x14
     HaloTagReflexive permutations; //0x20
-} __attribute__((packed)) HaloObjectChangeColors;
+} HaloObjectChangeColors;
 
 typedef struct {
     HaloTagDependency type; //0x0
@@ -197,7 +199,7 @@ typedef struct {
     enum objectAttachmentsFunctionsScale secondaryScale; //0x32
     enum objectAttachmentsFunctionsScale changeColor; //0x34
     char padding[0x12]; //0x36
-} __attribute__((packed)) HaloObjectAttachments; //0x48
+} HaloObjectAttachments; //0x48
 
 enum ObjectResourceType : uint16_t {
     RESOURCE_BITMAP = 0,
@@ -208,7 +210,7 @@ typedef struct {
     enum ObjectResourceType type; //0x0
     char padding[0x2];
     HaloTagID name;
-} __attribute__((packed)) HaloObjectResources;
+} HaloObjectResources;
 
 typedef struct {
     enum objectType type; //0x0
@@ -239,7 +241,7 @@ typedef struct {
     char padding3[0xC]; //0x158
     HaloTagReflexive changeColors; //0x164
     HaloTagReflexive resources;
-} __attribute__((packed)) HaloObjectTagData; //0x17C
+} HaloObjectTagData; //0x17C
 
 
 #endif

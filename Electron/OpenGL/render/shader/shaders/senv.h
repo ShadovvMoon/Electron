@@ -9,9 +9,7 @@
 #ifndef ____EShaderSenv__
 #define ____EShaderSenv__
 
-#include "shader.h"
-#include "texture.h"
-
+#include "../shader.h"
 class senv : public shader {
 private:
     GLuint program;
