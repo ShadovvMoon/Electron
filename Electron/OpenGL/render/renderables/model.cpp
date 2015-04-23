@@ -243,6 +243,7 @@ void Model::render(ShaderType pass) {
     if (!ready) return;
     
     glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_CUBE_MAP);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
@@ -259,7 +260,8 @@ void Model::render(ShaderType pass) {
         std::vector<ModelRenderMesh*>renderables = geometries[renderIndex];
         for (i=0; i < renderables.size(); i++) {
             ModelRenderMesh *mesh = renderables[i];
-            if (mesh->shader != nullptr && mesh->shader->is(pass)) {
+            if ((mesh->shader == nullptr && pass == shader_NULL) ||
+                (mesh->shader != nullptr && mesh->shader->is(pass))) {
 #ifdef RENDER_VAO
                 glBindVertexArrayAPPLE(mesh->geometryVAO);
 #else
@@ -272,12 +274,14 @@ void Model::render(ShaderType pass) {
                 glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
 #endif
-                if (mesh->shader != previous_shader) {
-                    mesh->shader->render();
-                    previous_shader = mesh->shader;
+                if (mesh->shader != nullptr) {
+                    if (mesh->shader != previous_shader) {
+                        mesh->shader->render();
+                        previous_shader = mesh->shader;
+                    }
+                    mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
                 }
-                mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
-
+                
                 glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, 0);
                 glBindVertexArrayAPPLE(0);
             }

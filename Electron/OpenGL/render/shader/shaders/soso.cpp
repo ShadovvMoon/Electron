@@ -20,12 +20,13 @@ void soso::setup(std::string path) {
     baseTexture     = glGetUniformLocation(program, "baseTexture");
     multipurposeMap = glGetUniformLocation(program, "multipurposeMap");
     detailMap       = glGetUniformLocation(program, "detailMap");
-    //cubeMap         = glGetUniformLocation(program, "cubeMap");
+    cubeMap         = glGetUniformLocation(program, "cubeTextureMap");
+    maps            = glGetUniformLocation(program, "maps");
+    scale           = glGetUniformLocation(program, "scale");
     
-    maps  = glGetUniformLocation(program, "maps");
-    scale = glGetUniformLocation(program, "scale");
     glBindAttribLocation(program, 1, "texCoord_buffer");
-    printf("done\n");
+    glBindAttribLocation(program, 2, "normal_buffer");
+    printf("done %d %d %d %d\n", baseTexture, multipurposeMap, detailMap, cubeMap);
 }
 
 void soso::start() {
@@ -33,6 +34,7 @@ void soso::start() {
     glUniform1i(baseTexture, 0);
     glUniform1i(detailMap, 1);
     glUniform1i(multipurposeMap, 2);
+    glUniform1i(cubeMap, 3);
 }
 
 void soso::stop() {
@@ -67,14 +69,12 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
         useMulti = true;
     }
     
-    /*
     printf("cube setup\n");
     HaloTagDependency cube = *(HaloTagDependency*)(shaderTag->Data() + 0x164);
     if (cube.tag_id.tag_index != NULLED_TAG_ID) {
-        cubeMap = manager->texture_manager()->create_texture(map, cube);
+        cubeMap = manager->texture_manager()->create_cubemap(map, cube);
         useCube = true;
     }
-    */
     
     printf("shader setup\n");
     soso *shader = (soso *)(manager->get_shader(shader_SOSO));
@@ -88,6 +88,7 @@ bool soso_object::is(ShaderType type) {
 void soso_object::render() {
     
     // Texturing
+    glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
     baseMap->bind();
     
@@ -101,11 +102,16 @@ void soso_object::render() {
         multipurposeMap->bind();
     }
     
+    glActiveTexture(GL_TEXTURE3);
+    if (useCube) {
+        cubeMap->bind();
+    }
+    
     // Blending
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Scales
     glUniform4f(scaleId, uscale, vscale, detailScale, detailScaleV);
-    glUniform3f(mapsId , b2f(useMulti), b2f(useDetail), b2f(useCube));
+    glUniform3f(mapsId , b2f(useMulti), b2f(useDetail), useCube ? 0.5:0.0);
 }

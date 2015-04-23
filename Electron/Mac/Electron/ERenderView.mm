@@ -63,28 +63,32 @@ Control *controls = (Control *)malloc(sizeof(Control));
     return YES;
 }
 
+-(void)updateMasks:(NSEvent *)theEvent {
+    controls->shift = (([theEvent modifierFlags] & NSShiftKeyMask) != 0);
+    controls->control = (([theEvent modifierFlags] & NSControlKeyMask) != 0);
+}
+
 CGPoint prevDown;
 CGPoint prevDownLeft;
 -(void)mouseDown:(NSEvent *)theEvent {
+    [self updateMasks:theEvent];
     prevDownLeft = [NSEvent mouseLocation];
     renderer->mouseDown([theEvent locationInWindow].x, [theEvent locationInWindow].y);
 }
-- (void)mouseDragged:(NSEvent *)theEvent
-{
+- (void)mouseDragged:(NSEvent *)theEvent {
+    [self updateMasks:theEvent];
     NSPoint dragPoint = [NSEvent mouseLocation];
-    if ((([theEvent modifierFlags] & NSControlKeyMask) == 0))
-        renderer->mouseDrag((dragPoint.x - prevDownLeft.x), (dragPoint.y - prevDownLeft.y));
+    renderer->mouseDrag((dragPoint.x - prevDownLeft.x), (dragPoint.y - prevDownLeft.y));
     prevDownLeft = dragPoint;
 }
 
-- (void)rightMouseDown:(NSEvent *)event
-{
-    NSPoint downPoint = [event locationInWindow];
+- (void)rightMouseDown:(NSEvent *)event {
+    [self updateMasks:event];
     prevDown = [NSEvent mouseLocation];
 }
 
-- (void)rightMouseDragged:(NSEvent *)theEvent
-{
+- (void)rightMouseDragged:(NSEvent *)theEvent {
+    [self updateMasks:theEvent];
     NSPoint dragPoint = [NSEvent mouseLocation];
     
     if ((([theEvent modifierFlags] & NSControlKeyMask) == 0))
@@ -110,9 +114,11 @@ CGPoint prevDownLeft;
             controls->right = true;
             break;
     }
+    [self updateMasks:theEvent];
 }
 
 -(void)keyUp:(NSEvent *)theEvent {
+    
     unichar character = [[theEvent characters] characterAtIndex:0];
     switch (character)
     {
@@ -129,6 +135,7 @@ CGPoint prevDownLeft;
             controls->right = false;
             break;
     }
+    [self updateMasks:theEvent];
 }
 
 - (void)timerTick:(NSTimer *)timer

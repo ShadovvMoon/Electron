@@ -12,6 +12,8 @@
 
 class ScenInstance : public ObjectInstance {
 public:
+    ObjectInstance *duplicate();
+    SelectionType type();
     void read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size);
     void render(ShaderType pass);
 };

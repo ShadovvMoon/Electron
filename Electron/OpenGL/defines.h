@@ -21,11 +21,12 @@
 #define DEPTH_SIZE 32.0
 #define MAX_SCENARIO_OBJECTS 100000
 
-#define ShaderCount 3
+#define ShaderCount 4
 typedef enum {
-    shader_SENV = 0,
-    shader_SCHI = 1,
-    shader_SOSO = 2
+    shader_NULL = 0,
+    shader_SENV = 1,
+    shader_SCHI = 2,
+    shader_SOSO = 3
 } ShaderType;
 
 // Definitions

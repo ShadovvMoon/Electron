@@ -48,6 +48,9 @@ public:
     float yaw, pitch, roll;
     void *data;
     bool selected;
+    
+    virtual SelectionType type() = 0;
+    virtual ObjectInstance *duplicate() = 0;
     virtual void read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size) = 0;
     virtual void render(ShaderType pass) = 0;
 };
@@ -59,14 +62,13 @@ public:
     
     virtual void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario)=0;
     virtual void write(ProtonMap *map, ProtonTag *scenario) = 0;
-    virtual void render(GLuint *name, GLuint *lookup, ShaderType pass)=0;
-    virtual void select(GLuint index) = 0;
 };
 
 class ObjectManager {
 private:
     ObjectClass *scen;
     ObjectClass *vehi;
+    ObjectClass *itmc;
     std::map<uint16_t, ObjectRef*> objects;
     ObjectClass *getClass(SelectionType type);
 public:
@@ -83,7 +85,10 @@ public:
     // Selection
     std::vector<ObjectInstance*> selection;
     void clearSelection();
-    void select(float x, float y);
+    void select(bool shift, float x, float y);
+    
+    // Modifiers
+    ObjectInstance *duplicate(ObjectInstance *instance);
 };
 
 #endif /* defined(__BSP__) */

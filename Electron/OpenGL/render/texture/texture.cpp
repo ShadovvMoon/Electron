@@ -140,23 +140,17 @@ void DecodeLinearA8R8G8B8 (int width, int height, const char *texdata, unsigned 
             color.g = (cdata >>  8) & 0xFF;
             color.b = (cdata >>  0) & 0xFF;
             
-            
-            
             // //Pretty sky!
             outdata[(y * width) + x]  = (((cdata >> 24) & 0xff) << 24 ) |
             (((cdata) & 0xff0000) >> 16)|
             ((cdata) & 0xff00)|
             (((cdata) & 0xff) << 16);
-            
-            //outdata[(y * width) + x] = rgba_to_int (color);
-            
         }
     }
 }
 
-// simple paramaterization
-// alpha tested
 
+// NORMAL TEXTURE
 texture::texture(ProtonMap *map, HaloTagDependency bitm) {
 
     // Check
@@ -268,8 +262,6 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
     } else {
         printf("missing bitmap\n");
     }
-    
-    
 }
 void texture::bind() {
     if (textures.size() > 0) {
@@ -279,6 +271,144 @@ void texture::bind() {
 void texture::bind(int i) {
     glBindTexture(GL_TEXTURE_2D, textures[i]);
 }
+
+void texture_cubemap::load_side(GLenum side_target, GLenum i, ProtonTag *bitmapTag) {
+    bitm_header_t *bitmData = (bitm_header_t *)bitmapTag->Data();
+    glBindTexture(GL_TEXTURE_CUBE_MAP, tex);
+    
+    bitm_image_t *image = (bitm_image_t *)(bitmapTag->Data() + bitmapTag->PointerToOffset(bitmData->image_reflexive.address) + sizeof(bitm_image_t) * 0);
+    char *input = (char*)bitmapTag->ResourcesData() + image->offset;
+    
+    GLint format = GL_RGBA;
+    GLint internalFormat = GL_RGBA;
+    
+    // If the image is in bitmaps.map, read from that instead
+    if (image->internalized == 1) {
+        input = (char*)bitmap_data() + image->offset;
+    };
+    
+    printf("loading %s %d %d %d %d 0x%x -> %d\n", bitmapTag->Name(), image->width, image->height, image->format, image->internalized, bitmapTag->ResourcesData(), i);
+    int size = 0;
+    if (image->format == BITM_FORMAT_DXT1) {
+        format = GL_RGB;
+        internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        size = (image->width >> 2) * (image->height >> 2) * 8;
+        
+    } else if (image->format == BITM_FORMAT_DXT2AND3) {
+        format = GL_RGBA;
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        size = (image->width >> 2) * (image->height >> 2) * 16;
+        
+    } else if (image->format == BITM_FORMAT_DXT4AND5) {
+        format = GL_RGBA;
+        internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        size = (image->width >> 2) * (image->height >> 2) * 16;
+        
+    } else if (image->format == BITM_FORMAT_X8R8G8B8) {
+        //format = GL_RGB;
+        //internalFormat = GL_RGBA;
+        //size = image->width * image->height * 4;
+        char *output = (char*)malloc(4 * image->width * image->height);
+        size = image->width * image->height * 4;
+        input += size * i;
+        DecodeLinearX8R8G8B8(image->width,image->height,input,(unsigned int*)output);
+        glTexImage2D(GL_TEXTURE_2D,
+                     0,
+                     GL_RGBA,
+                     image->width,
+                     image->height,
+                     0,
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     input);
+    } else if (image->format == BITM_FORMAT_A8R8G8B8) {
+        //format = GL_RGBA;
+        //internalFormat = GL_RGBA;
+        //size = image->width * image->height * 4;
+        char *output = (char*)malloc(4 * image->width * image->height);
+        size = image->width * image->height * 4;
+        input += size * i;
+        DecodeLinearA8R8G8B8(image->width,image->height,input,(unsigned int*)output);
+        glTexImage2D(side_target,
+                     0,
+                     GL_RGBA,
+                     image->width,
+                     image->height,
+                     0,
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     input);
+        return;
+    } else if (image->format == BITM_FORMAT_R5G6B5) {
+        printf("R5G6B5\n");
+        char *output = (char*)malloc(4 * image->width * image->height);
+        size = image->width * image->height * 2;
+        input += size * i;
+        DecodeLinearR5G6B5(image->width,image->height,input,(unsigned int*)output);
+        glTexImage2D(side_target,
+                     0,
+                     GL_RGBA,
+                     image->width,
+                     image->height,
+                     0,
+                     GL_RGBA,
+                     GL_UNSIGNED_BYTE,
+                     output);
+        return;
+    } else {
+        printf("unknown format %d\n", image->format);
+        return;
+    }
+    
+    printf("side %d expected %d offset %d\n", size, image->size, size * i);
+    glCompressedTexImage2D(side_target, 0, internalFormat, image->width, image->height, 0, size, (input+size*i));
+}
+
+// CUBEMAP
+texture_cubemap::texture_cubemap(ProtonMap *map, HaloTagDependency bitm) {
+    
+    // Check
+    if (bitm.tag_id.tag_index == NULLED_TAG_ID) {
+        printf("invalid bitmap\n");
+        return;
+    }
+    
+    // Load the texture (texture 0 for now)
+    ProtonTag *bitmapTag = map->tags.at(bitm.tag_id.tag_index).get();
+    if (bitmapTag) {
+        bitm_header_t *bitmData = (bitm_header_t *)bitmapTag->Data();
+        
+        printf("loading cube with %d sides\n", bitmData->image_reflexive.count);
+        
+        // generate a cube-map texture to hold all the sides
+        glDeleteTextures(1, &tex);
+        glGenTextures(1, &tex);
+        
+        glBindTexture(GL_TEXTURE_CUBE_MAP, tex);
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, bitmapTag);
+        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, bitmapTag);
+        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, bitmapTag);
+        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, bitmapTag);
+        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, bitmapTag);
+        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, bitmapTag);
+        
+        // format cube map texture
+        printf("done\n");
+    } else {
+        printf("missing bitmap\n");
+    }
+}
+void texture_cubemap::bind() {
+    glBindTexture(GL_TEXTURE_CUBE_MAP, tex);
+}
+
+
+
 texture *TextureManager::create_texture(ProtonMap *map, HaloTagDependency bitm) {
     printf("%d\n", bitm.tag_id.tag_index);
     
@@ -291,5 +421,19 @@ texture *TextureManager::create_texture(ProtonMap *map, HaloTagDependency bitm) 
     // Create a new texture
     texture *tex = new texture(map, bitm);
     textures[bitm.tag_id.tag_index] = tex;
+    return tex;
+}
+texture_cubemap *TextureManager::create_cubemap(ProtonMap *map, HaloTagDependency bitm) {
+    printf("%d\n", bitm.tag_id.tag_index);
+    
+    // Has this cubemap been loaded before? Check the cache
+    //std::map<uint16_t, texture_cubemap*>::iterator iter = textures_cube.find(bitm.tag_id.tag_index);
+    //if (iter != textures_cube.end()) {
+    //    return (texture_cubemap*)iter->second;
+    //}
+    
+    // Create a new texture
+    texture_cubemap *tex = new texture_cubemap(map, bitm);
+    //textures_cube[bitm.tag_id.tag_index] = tex;
     return tex;
 }

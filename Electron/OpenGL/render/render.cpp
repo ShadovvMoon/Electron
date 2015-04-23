@@ -93,18 +93,31 @@ void ERenderer::mouseDrag(float dx, float dy) {
             vector3d *coord = new vector3d(instance->x, instance->y, instance->z);
             vector3d *move = new vector3d(dx/200, -dy/200, 0);
             vector3d *viewDirection = new vector3d(0,0,0);
+            if (controller->control) {
+                move->x = 0;
+                move->y = 0;
+                move->z = dy/10;
+            }
             viewDirection->set(camera->position);
             viewDirection->sub(coord);
-            
             float s_acceleration = 1.0;
-            float mx = (s_acceleration * move->y * viewDirection->x);
-            float my = (s_acceleration * move->y * viewDirection->y);
-            mx += (s_acceleration * move->x * ((0 * viewDirection->z) - (1 * viewDirection->y)));
-            my += (s_acceleration * move->x * ((1 * viewDirection->x) - (0 * viewDirection->z)));
-
+            float mx;
+            float my;
+            float mz;
+            if (controller->control) {
+                mx = 0.0;
+                my = 0.0;
+                mz = s_acceleration * move->z;
+            } else {
+                mx = (s_acceleration * move->y * viewDirection->x);
+                my = (s_acceleration * move->y * viewDirection->y);
+                mz = 0.0;
+                mx += (s_acceleration * move->x * ((0 * viewDirection->z) - (1 * viewDirection->y)));
+                my += (s_acceleration * move->x * ((1 * viewDirection->x) - (0 * viewDirection->z)));
+            }
             instance->x += mx;
             instance->y += my;
-            
+            instance->z += mz;
             delete coord;
             delete move;
             delete viewDirection;
@@ -113,7 +126,11 @@ void ERenderer::mouseDrag(float dx, float dy) {
 }
 
 void ERenderer::mouseDown(float dx, float dy) {
-    objects->select(dx, dy);
+    if (controller == nullptr) {
+        return;
+    }
+    
+    objects->select(controller->shift, dx, dy);
 }
 
 void ERenderer::applyControl(Control *control){
@@ -144,6 +161,7 @@ void ERenderer::applyControl(Control *control){
     } else {
         strafe_tick = now();
     }
+    controller = control;
     tick = now();
 }
 
@@ -171,8 +189,7 @@ void ERenderer::render() {
     if (scenarioTag != NULLED_TAG_ID) {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
-        
-        for (int pass = shader_SENV; pass <= shader_SOSO; pass++ )
+        for (int pass = shader_NULL; pass <= shader_SOSO; pass++ )
         {
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);

@@ -21,11 +21,15 @@ void senv::setup(std::string path) {
     primaryDetailMap    = glGetUniformLocation(program, "primaryDetailMap");
     secondaryDetailMap  = glGetUniformLocation(program, "secondaryDetailMap");
     lightMap            = glGetUniformLocation(program, "lightMap");
+    cubeMap             = glGetUniformLocation(program, "cubeTextureMap");
+    bumpMap             = glGetUniformLocation(program, "bumpMap");
     
     maps = glGetUniformLocation(program, "maps");
     maps2 = glGetUniformLocation(program, "maps2");
+    maps3 = glGetUniformLocation(program, "maps3");
     glBindAttribLocation(program, 1, "texCoord_buffer");
     glBindAttribLocation(program, 2, "texCoord_buffer_light");
+    glBindAttribLocation(program, 3, "normal_buffer");
 }
 
 void senv::start() {
@@ -34,6 +38,8 @@ void senv::start() {
     glUniform1i(primaryDetailMap, 1);
     glUniform1i(secondaryDetailMap, 2);
     glUniform1i(lightMap, 3);
+    glUniform1i(cubeMap, 4);
+    glUniform1i(bumpMap, 5);
 }
 
 void senv::stop() {
@@ -66,10 +72,26 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
         useSecondary = true;
     }
     
+    printf("bump setup\n");
+    HaloTagDependency bump = *(HaloTagDependency*)(shaderTag->Data() + 0x128);
+    if (bump.tag_id.tag_index != NULLED_TAG_ID) {
+        bumpScale = *(float*)(shaderTag->Data() + 0x124);
+        bumpMap = manager->texture_manager()->create_texture(map, bump);
+        useBump = true;
+    }
+    
+    printf("cube setup\n");
+    HaloTagDependency cube = *(HaloTagDependency*)(shaderTag->Data() + 0x324);
+    if (cube.tag_id.tag_index != NULLED_TAG_ID) {
+        cubeMap = manager->texture_manager()->create_cubemap(map, cube);
+        useCube = true;
+    }
+    
     printf("shader setup\n");
     senv *shader = (senv *)(manager->get_shader(shader_SENV));
     mapsId = shader->maps;
     maps2Id = shader->maps2;
+    maps3Id = shader->maps3;
 };
 
 bool senv_object::is(ShaderType type) {
@@ -89,6 +111,14 @@ void senv_object::render() {
     if (useSecondary) {
         secondaryDetailMap->bind();
     }
+    glActiveTexture(GL_TEXTURE4);
+    if (useCube) {
+        cubeMap->bind();
+    }
+    glActiveTexture(GL_TEXTURE5);
+    if (useBump) {
+        bumpMap->bind();
+    }
     
     // Blending
     glEnable(GL_BLEND);
@@ -96,5 +126,6 @@ void senv_object::render() {
     
     // Scales
     glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
-    glUniform2f(maps2Id, b2f(useLight), b2f(useBlend));
+    glUniform4f(maps2Id, b2f(useLight), b2f(useBlend), b2f(useCube), b2f(useBump));
+    glUniform1f(maps3Id, bumpScale);
 }

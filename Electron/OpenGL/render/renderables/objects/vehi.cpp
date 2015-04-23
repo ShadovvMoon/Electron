@@ -37,7 +37,8 @@ void VehiInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     yaw   = spawn->rotation[0];
     pitch = spawn->rotation[1];
     roll  = spawn->rotation[2];
-    data  = offset;
+    data  = malloc(size);
+    memcpy(data, offset, size);
 };
 void VehiInstance::render(ShaderType pass) {
     glPushMatrix();
@@ -47,6 +48,23 @@ void VehiInstance::render(ShaderType pass) {
     glRotatef(yaw    * (57.29577951), 0, 0, 1);
     reference->render(pass);
     glPopMatrix();
+}
+//not finished
+ObjectInstance *VehiInstance::duplicate() {
+    VehiInstance *clone = new VehiInstance;
+    clone->reference = reference;
+    clone->x = x;
+    clone->y = y;
+    clone->z = z;
+    clone->yaw   = yaw;
+    clone->pitch = pitch;
+    clone->roll  = roll;
+    clone->data  = malloc(VEHICLE_SPAWN_CHUNK);
+    memcpy(clone->data, data, VEHICLE_SPAWN_CHUNK);
+    return clone;
+}
+SelectionType VehiInstance::type() {
+    return s_vehicle;
 }
 
 void VehiClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
@@ -76,20 +94,32 @@ void VehiClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
 }
 
 void VehiClass::write(ProtonMap *map, ProtonTag *scenario) {
-}
-
-void VehiClass::select(GLuint index) {
-    objects[index]->selected = true;
-}
-
-void VehiClass::render(GLuint *name, GLuint *lookup, ShaderType pass) {
+    HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
+    
+    // Remove the old scenery spawn reflexive data
+    printf("writing vehicle %d %d\n", tag->vehi.count, objects.size());
+    uint32_t offset = scenario->PointerToOffset(tag->vehi.address);
+    scenario->DeleteData(offset, tag->vehi.count * VEHICLE_SPAWN_CHUNK);
+    
+    // Assemble the new spawn data
+    char *data = (char*)malloc(VEHICLE_SPAWN_CHUNK * objects.size()); //cleaned
     int i;
     for (i=0; i < objects.size(); i++) {
-        glLoadName(*name);
-        if (lookup) {
-            lookup[*name] = (GLuint)((s_vehicle * MAX_SCENARIO_OBJECTS) + i);
-            (*name)++;
-        }
-        objects[i]->render(pass);
+        VehiInstance *object = (VehiInstance*)objects[i];
+        VehicleSpawn *spawn = (VehicleSpawn*)(data + i * VEHICLE_SPAWN_CHUNK);
+        memcpy(spawn, object->data, VEHICLE_SPAWN_CHUNK);
+        
+        spawn->coord[0] = object->x;
+        spawn->coord[1] = object->y;
+        spawn->coord[2] = object->z;
+        spawn->rotation[0] = object->yaw;
+        spawn->rotation[1] = object->pitch;
+        spawn->rotation[2] = object->roll;
     }
+    scenario->InsertData(offset, data, (uint32_t)(objects.size() * VEHICLE_SPAWN_CHUNK));
+    free(data);
+    
+    // Update the vehi reflexive
+    tag->vehi.count   = (uint16_t)objects.size();
+    tag->vehi.address = scenario->OffsetToPointer(offset);
 }

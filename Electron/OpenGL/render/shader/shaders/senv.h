@@ -19,9 +19,12 @@ private:
     GLint primaryDetailMap;
     GLint secondaryDetailMap;
     GLint lightMap;
+    GLint bumpMap;
+    GLint cubeMap;
 public:
     GLint maps;
     GLint maps2;
+    GLint maps3;
     
     void setup(std::string path);
     void start();
@@ -40,8 +43,16 @@ private:
     float secondaryScale;
     texture *secondaryDetailMap;
     
+    bool useBump = false;
+    float bumpScale;
+    texture *bumpMap;
+    
+    bool useCube = false;
+    texture_cubemap *cubeMap = nullptr;
+    
     GLint mapsId;
     GLint maps2Id;
+    GLint maps3Id;
 public:
     bool useLight = false;
     

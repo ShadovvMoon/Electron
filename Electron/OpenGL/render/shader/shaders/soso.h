@@ -43,7 +43,7 @@ private:
     texture *detailMap = nullptr;
     
     bool useCube = false;
-    texture *cubeMap = nullptr;
+    texture_cubemap *cubeMap = nullptr;
     
     GLint mapsId;
     GLint scaleId;

@@ -38,6 +38,10 @@
 		14272D151AE5B05B002A64A5 /* bitmaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D001AE5B05B002A64A5 /* bitmaps.cpp */; };
 		14272D161AE5B05B002A64A5 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D021AE5B05B002A64A5 /* texture.cpp */; };
 		1436196F1AE3982200D82AC8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1436196E1AE3982200D82AC8 /* GLUT.framework */; };
+		145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C41AE79A97001CCEBA /* itmc.cpp */; };
+		145A96C91AE79E55001CCEBA /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
+		145A96CC1AE79E5B001CCEBA /* null.frag in Resources */ = {isa = PBXBuildFile; fileRef = 145A96CA1AE79E5B001CCEBA /* null.frag */; };
+		145A96CD1AE79E5B001CCEBA /* null.vert in Resources */ = {isa = PBXBuildFile; fileRef = 145A96CB1AE79E5B001CCEBA /* null.vert */; };
 		14ADF3B11AE32F9000818134 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B01AE32F9000818134 /* AppDelegate.mm */; };
 		14ADF3B31AE32F9000818134 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B21AE32F9000818134 /* main.m */; };
 		14ADF3B61AE32F9000818134 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B51AE32F9000818134 /* Document.m */; };
@@ -128,6 +132,12 @@
 		14272D191AE5BA30002A64A5 /* ZZTHaloScenarioTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZTHaloScenarioTag.h; sourceTree = "<group>"; };
 		1436196E1AE3982200D82AC8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		143619771AE39B3C00D82AC8 /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../../OpenGL/defines.h; sourceTree = "<group>"; };
+		145A96C41AE79A97001CCEBA /* itmc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = itmc.cpp; sourceTree = "<group>"; };
+		145A96C51AE79A97001CCEBA /* itmc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itmc.h; sourceTree = "<group>"; };
+		145A96C71AE79E55001CCEBA /* null.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = null.cpp; sourceTree = "<group>"; };
+		145A96C81AE79E55001CCEBA /* null.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = null.h; sourceTree = "<group>"; };
+		145A96CA1AE79E5B001CCEBA /* null.frag */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = null.frag; sourceTree = "<group>"; };
+		145A96CB1AE79E5B001CCEBA /* null.vert */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = null.vert; sourceTree = "<group>"; };
 		14ADF3AA1AE32F9000818134 /* Electron.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Electron.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14ADF3AE1AE32F9000818134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14ADF3AF1AE32F9000818134 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -257,6 +267,8 @@
 				14272CED1AE5B05B002A64A5 /* scen.h */,
 				140293F11AE634EE004BD9B9 /* vehi.cpp */,
 				140293F21AE634EE004BD9B9 /* vehi.h */,
+				145A96C41AE79A97001CCEBA /* itmc.cpp */,
+				145A96C51AE79A97001CCEBA /* itmc.h */,
 			);
 			path = objects;
 			sourceTree = "<group>";
@@ -281,6 +293,8 @@
 				14272CFC1AE5B05B002A64A5 /* senv.h */,
 				14272CFD1AE5B05B002A64A5 /* soso.cpp */,
 				14272CFE1AE5B05B002A64A5 /* soso.h */,
+				145A96C71AE79E55001CCEBA /* null.cpp */,
+				145A96C81AE79E55001CCEBA /* null.h */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -294,6 +308,8 @@
 				14272CF61AE5B05B002A64A5 /* senv.vert */,
 				14272CF71AE5B05B002A64A5 /* soso.frag */,
 				14272CF81AE5B05B002A64A5 /* soso.vert */,
+				145A96CA1AE79E5B001CCEBA /* null.frag */,
+				145A96CB1AE79E5B001CCEBA /* null.vert */,
 			);
 			path = glsl;
 			sourceTree = "<group>";
@@ -506,7 +522,9 @@
 				14ADF3B91AE32F9000818134 /* Document.xib in Resources */,
 				14272D101AE5B05B002A64A5 /* soso.frag in Resources */,
 				14272D0D1AE5B05B002A64A5 /* schi.vert in Resources */,
+				145A96CD1AE79E5B001CCEBA /* null.vert in Resources */,
 				14ADF3BB1AE32F9000818134 /* Images.xcassets in Resources */,
+				145A96CC1AE79E5B001CCEBA /* null.frag in Resources */,
 				14272D0C1AE5B05B002A64A5 /* schi.frag in Resources */,
 				14272D0F1AE5B05B002A64A5 /* senv.vert in Resources */,
 				14272D111AE5B05B002A64A5 /* soso.vert in Resources */,
@@ -538,6 +556,7 @@
 				14272D131AE5B05B002A64A5 /* senv.cpp in Sources */,
 				14272D061AE5B05B002A64A5 /* render.cpp in Sources */,
 				142158301AE4FA170068557B /* alpha.cpp in Sources */,
+				145A96C91AE79E55001CCEBA /* null.cpp in Sources */,
 				142158371AE4FA170068557B /* singlecolourfit.cpp in Sources */,
 				14272D041AE5B05B002A64A5 /* camera.cpp in Sources */,
 				14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */,
@@ -558,6 +577,7 @@
 				14272D141AE5B05B002A64A5 /* soso.cpp in Sources */,
 				14272D0B1AE5B05B002A64A5 /* shader.cpp in Sources */,
 				14ADF3B11AE32F9000818134 /* AppDelegate.mm in Sources */,
+				145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */,
 				14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */,
 				142158321AE4FA170068557B /* colourblock.cpp in Sources */,
 				14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */,

@@ -10,6 +10,7 @@
 #include "shaders/senv.h"
 #include "shaders/schi.h"
 #include "shaders/soso.h"
+#include "shaders/null.h"
 
 float b2f(bool b) {
     return b?1.0:0.0;
@@ -118,6 +119,10 @@ ShaderManager::ShaderManager() {
     soso *soso_shader = new soso;
     soso_shader->setup(path);
     shaders[shader_SOSO] = (shader*)soso_shader;
+    
+    null *null_shader = new null;
+    null_shader->setup(path);
+    shaders[shader_NULL] = (shader*)null_shader;
 }
 
 shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {

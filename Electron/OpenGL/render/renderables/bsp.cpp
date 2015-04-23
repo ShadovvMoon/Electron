@@ -105,7 +105,6 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                 renderer->vertCount = vertex_number;
                 renderer->lightmap = submesh->LightmapIndex;
                 
-                
                 int v;
                 for (v = 0; v < vertex_number; v++)
                 {
@@ -143,8 +142,8 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     
     // Assemble the VAO
     #define texCoord_buffer 1
-    #define texCoord_buffer_light 2
-    #define normals_buffer 3
+    #define texCoord_buffer_light 3
+    #define normals_buffer 2
     
     //Shift these to vertex buffers
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[POS_VB]);
@@ -218,8 +217,9 @@ void BSP::render(ShaderType pass) {
         BSPRenderMesh *mesh = renderables[i];
         for (s=0; s < mesh->submeshes.size(); s++) {
             BSPRenderSubmesh *submesh = mesh->submeshes[s];
-            if (submesh->shader != nullptr && submesh->shader->is(pass)) {
-                if (submesh->shader != previous_shader) {
+            if ((submesh->shader == nullptr && pass == shader_NULL) ||
+                (submesh->shader != nullptr && submesh->shader->is(pass))) {
+                if (submesh->shader != nullptr && submesh->shader != previous_shader) {
                     submesh->shader->render();
                     previous_shader = submesh->shader;
                 }

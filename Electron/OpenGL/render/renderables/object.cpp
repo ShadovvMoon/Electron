@@ -9,6 +9,7 @@
 #include "object.h"
 #include "objects/scen.h"
 #include "objects/vehi.h"
+#include "objects/itmc.h"
 
 ObjectRef::ObjectRef(ObjectManager *manager, ProtonMap *map, HaloTagDependency tag) {
     printf("creating object ref\n");
@@ -52,6 +53,9 @@ ObjectClass *ObjectManager::getClass(SelectionType type) {
         case s_vehicle:
             return vehi;
             break;
+        case s_item:
+            return itmc;
+            break;
         default:
             break;
     }
@@ -66,10 +70,14 @@ void ObjectManager::read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scen
     scen->read(this, map, scenario);
     vehi = new VehiClass;
     vehi->read(this, map, scenario);
+    itmc = new ItmcClass;
+    itmc->read(this, map, scenario);
 }
 
 void ObjectManager::write(ProtonMap *map, ProtonTag *scenario) {
     scen->write(map, scenario);
+    vehi->write(map, scenario);
+    itmc->write(map, scenario);
 }
 
 void render_instance(ObjectInstance *instance, ShaderType pass) {
@@ -96,11 +104,13 @@ void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *nam
     int i;
     for (i=0; i < objClass->objects.size(); i++) {
         glLoadName(*name);
+        glPushName(*name);
         if (lookup) {
             lookup[*name] = (GLuint)((selection * MAX_SCENARIO_OBJECTS) + i);
             (*name)++;
         }
         render_instance(objClass->objects[i], pass);
+        glPopName();
     }
 }
 
@@ -111,24 +121,29 @@ void clear_selection(ObjectClass* objClass) {
     }
 }
 
+ObjectInstance *ObjectManager::duplicate(ObjectInstance *instance) {
+    printf("duplicate object\n");
+    SelectionType ctype = instance->type();
+    ObjectInstance *copy = instance->duplicate();
+    getClass(ctype)->objects.push_back(copy);
+    return copy;
+}
+
 void ObjectManager::render(GLuint *name, GLuint *lookup, ShaderType pass) {
-    if (lookup != nullptr) {
-        glInitNames();
-        glPushName(0);
-    }
-    
     render_subclass(scen, s_scenery, name, lookup, pass);
     render_subclass(vehi, s_vehicle, name, lookup, pass);
+    render_subclass(itmc, s_item, name, lookup, pass);
 }
 
 void ObjectManager::clearSelection() {
     selection.clear();
     clear_selection(scen);
     clear_selection(vehi);
+    clear_selection(itmc);
 }
 
-void ObjectManager::select(float x, float y) {
-    GLsizei bufferSize = 4096;
+void ObjectManager::select(bool shift, float x, float y) {
+    GLsizei bufferSize = 16384;
     GLuint nameBuf[bufferSize];
     GLuint tmpLookup[bufferSize];
     
@@ -148,6 +163,7 @@ void ObjectManager::select(float x, float y) {
     
     GLuint name = 1;
     GLuint *lookup = (GLuint *)tmpLookup;
+    glInitNames();
     this->render(&name, lookup, shader_SOSO);
     
     GLuint hits = glRenderMode(GL_RENDER);
@@ -167,8 +183,12 @@ void ObjectManager::select(float x, float y) {
         z2 = (float)*ptr/0x7fffffff;
         ptr++;
         for (j = 0; j < names; j++) {
+            if (*ptr >= bufferSize)
+                break;
+            printf("%d %d\n", bufferSize, *ptr);
             int type  = (unsigned int)(lookup[*ptr] / MAX_SCENARIO_OBJECTS);
             int index = (unsigned int)(lookup[*ptr] % MAX_SCENARIO_OBJECTS);
+            
             SelectionType ctype = static_cast<SelectionType>(type);
             ObjectInstance *instance = getClass(ctype)->objects[index];
             if (!instance->selected) {
@@ -178,5 +198,20 @@ void ObjectManager::select(float x, float y) {
         }
     }
     
+    // If shift is down, duplicate all of the selected objects
+    if (shift) {
+        std::vector<ObjectInstance*> duplicates;
+        duplicates.resize(selection.size());
+        int i;
+        for (i=0; i < selection.size(); i++) {
+            duplicates[i] = duplicate(selection[i]);
+        }
+        clearSelection();
+        selection.resize(duplicates.size());
+        for (i=0; i < selection.size(); i++) {
+            selection[i] = duplicates[i];
+            selection[i]->selected = true;
+        }
+    }
     glPopMatrix();
 }

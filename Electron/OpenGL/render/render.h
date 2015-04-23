@@ -24,6 +24,8 @@ typedef struct {
     bool left;
     bool right;
     bool back;
+    bool shift;
+    bool control;
 } Control;
 
 class ERenderer {
@@ -40,6 +42,7 @@ private:
     BSP *bsp;
     Camera *camera;
     ObjectManager *objects;
+    Control *controller = nullptr;
 public:
     ~ERenderer();
     void setup();

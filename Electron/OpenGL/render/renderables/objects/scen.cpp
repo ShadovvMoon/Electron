@@ -37,10 +37,22 @@ void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     yaw   = spawn->rotation[0];
     pitch = spawn->rotation[1];
     roll  = spawn->rotation[2];
-    data = malloc(size);
+    data  = malloc(size);
     memcpy(data, offset, size);
 };
-
+ObjectInstance *ScenInstance::duplicate() {
+    ScenInstance *clone = new ScenInstance();
+    clone->reference = reference;
+    clone->x = x;
+    clone->y = y;
+    clone->z = z;
+    clone->yaw   = yaw;
+    clone->pitch = pitch;
+    clone->roll  = roll;
+    clone->data  = malloc(SCENERY_SPAWN_CHUNK);
+    memcpy(clone->data, data, SCENERY_SPAWN_CHUNK);
+    return clone;
+}
 void ScenInstance::render(ShaderType pass) {
     if (selected) {
         glEnable(GL_COLOR_MATERIAL);
@@ -59,6 +71,9 @@ void ScenInstance::render(ShaderType pass) {
     if (selected) {
         glColor4f(1.0, 1.0, 1.0, 1.0);
     }
+}
+SelectionType ScenInstance::type() {
+    return s_scenery;
 }
 
 void ScenClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size) {
@@ -89,10 +104,10 @@ void ScenClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
 }
 
 void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
-    printf("writing scenery\n");
     HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
 
     // Remove the old scenery spawn reflexive data
+    printf("writing scenery %d %d\n", tag->scen.count, objects.size());
     uint32_t offset = scenario->PointerToOffset(tag->scen.address);
     scenario->DeleteData(offset, tag->scen.count * SCENERY_SPAWN_CHUNK);
     
@@ -103,6 +118,7 @@ void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
         ScenInstance *object = (ScenInstance*)objects[i];
         ScenerySpawn *spawn = (ScenerySpawn*)(data + i * SCENERY_SPAWN_CHUNK);
         memcpy(spawn, object->data, SCENERY_SPAWN_CHUNK);
+        
         spawn->coord[0] = object->x;
         spawn->coord[1] = object->y;
         spawn->coord[2] = object->z;
@@ -116,22 +132,5 @@ void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
     // Update the scen reflexive
     tag->scen.count   = (uint16_t)objects.size();
     tag->scen.address = scenario->OffsetToPointer(offset);
-    
-}
-
-void ScenClass::select(GLuint index) {
-    objects[index]->selected = true;
-}
-
-void ScenClass::render(GLuint *name, GLuint *lookup, ShaderType pass) {
-    int i;
-    for (i=0; i < objects.size(); i++) {
-        glLoadName(*name);
-        if (lookup) {
-            lookup[*name] = (GLuint)((s_scenery * MAX_SCENARIO_OBJECTS) + i);
-            (*name)++;
-        }
-        objects[i]->render(pass);
-    }
 }
 
