@@ -8,30 +8,14 @@
 
 #ifndef _defines_h
 #define _defines_h
+
 #define RENDER_VAO
 
-// Definitions
-#ifdef _WIN32
-#define _WINDOWS 1
-#elif _WIN64
-#define _WINDOWS 1
-#endif
-
 #include <stdio.h>
-#include <stdint.h>
-
 #include "tags/ZZTHaloScenarioTag.h"
 #include "tags/ZZTHaloObjectTag.h"
-#include "ProtonMap.h"
 
-// Custom includes
-#ifdef _WINDOWS
-#include "glew/glew.h"
-#elif __APPLE__
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
-#endif
+#include "ProtonMap.h"
 
 #define BITS_PER_PIXEL 32.0
 #define DEPTH_SIZE 32.0
@@ -44,6 +28,23 @@ typedef enum {
     shader_SCHI = 2,
     shader_SOSO = 3
 } ShaderType;
+
+// Definitions
+#ifdef _WIN32
+#define _WINDOWS 1
+#elif _WIN64
+#define _WINDOWS 1
+#endif
+
+// OpenGL includes
+#ifdef _WINDOWS
+#include "glew/glew.h"
+#include <GL/freeglut.h>
+#elif __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#endif
 
 // VBO
 #define INDEX_BUFFER 0
