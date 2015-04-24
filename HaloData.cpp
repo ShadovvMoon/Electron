@@ -10,8 +10,6 @@
 #include <string>
 #include "HaloData.h"
 
-int main(){}
-
 HaloCacheFileHeaderDemo HaloCacheFileHeader::asDemoHeader() {
     HaloCacheFileHeaderDemo demoHeader = {};
     
