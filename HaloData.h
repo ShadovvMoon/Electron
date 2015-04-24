@@ -10,8 +10,17 @@
 #define Proton_HaloData_h
 
 #include <cstdlib>
+#include <cstdint>
+
+using std::uint16_t;
+using std::uint32_t;
 
 #define NULLED_TAG_ID 0xFFFF
+#define TAGS          0x74616773
+#define GFOT          0x47666f74
+#define EHED          0x45686564
+#define FOOT          0x47666f74
+#define HEAD          0x68656164
 
 typedef enum HaloMapGame : uint32_t {
     HALO_MAP_GAME_PC = 7,
@@ -53,7 +62,7 @@ struct HaloCacheFileHeaderDemo {
     char padding1[2] = {};              //0x0
     HaloMapType mapType;                //0x2
     char padding2[0x2BC] = {};          //0x4 We're going to be seeing a lot of these in the demo header.
-    char head[4] = {'d','e','h','E'};   //0x2C0 Ehed backwards
+    uint32_t head = EHED;               //0x2C0 Ehed
     uint32_t tagDataSize;               //0x2C4
     char mapBuild[32] = {};             //0x2C8
     char padding3[0x2A0];               //0x2E8
@@ -64,14 +73,14 @@ struct HaloCacheFileHeaderDemo {
     char padding5[0x34] = {};           //0x5B4
     uint32_t fileSize;                  //0x5E8
     uint32_t tagDataOffset;             //0x5EC
-    char foot[4] = {'t','o','f','G'};   //0x5F0 Gfot backwards
+    uint32_t foot = GFOT;                //0x5F0 Gfot
     char padding6[0x20C]={};            //0x5F4
     
     struct HaloCacheFileHeader asStandardHeader();
 };
 
 struct HaloCacheFileHeader {
-    char head[4] = {'d','a','e','h'};   //0x0 head backwards (not a real head)
+    uint32_t head = HEAD;               //0x0 head (not a real head)
     HaloMapGame mapGame;                //0x4
     uint32_t fileSize;                  //0x8 file size when decompressed
     char padding1[4] = {};              //0xC
@@ -84,7 +93,7 @@ struct HaloCacheFileHeader {
     char padding3[2] = {};              //0x62
     uint32_t fileCRC32;                 //0x64 crc32 when decompressed
     char padding4[0x794]={};            //0x68
-    char foot[4] = {'t','o','o','f'};   //0x7FC foot backwards (painful)
+    uint32_t foot = FOOT;               //0x7FC foot
     
     struct HaloCacheFileHeaderDemo asDemoHeader();
 };
@@ -99,7 +108,7 @@ struct HaloCacheFileTagDataHeader {
     uint32_t partCountB;
     uint32_t vertexSize;
     uint32_t modelSize;
-    char tags[4] = {'s', 'g', 'a', 't'};
+    uint32_t tags = TAGS;
 };
 
 struct HaloCacheFileTagArrayIndex {

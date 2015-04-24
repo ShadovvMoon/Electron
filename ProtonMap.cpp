@@ -13,9 +13,9 @@ ProtonMap::ProtonMap(const void *cache_file) {
     const char *cache_file_c = (const char *)(cache_file);
     HaloCacheFileHeader header = *(HaloCacheFileHeader *)(cache_file_c);
     this->meta_address = 0x40440000;
-    if(memcmp(header.head,"daeh",4) != 0) {
+    if(memcmp(&header.head,"daeh",4) != 0) {
         HaloCacheFileHeaderDemo demoHeader = *(HaloCacheFileHeaderDemo *)(cache_file_c);
-        if(memcmp(demoHeader.head,"dehE",4) == 0) {
+        if(memcmp(&demoHeader.head,"dehE",4) == 0) {
             this->meta_address = 0x4BF10000;
             header = demoHeader.asStandardHeader();
         }
@@ -80,7 +80,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
             }
         }
         else if(memcmp(tagArray[t].tagClassA,"2dom",4) == 0) {
-            std::unique_ptr<char> newTagData(new char[tagDataLength]);
+            auto newTagData = std::make_unique<char[]>(tagDataLength);
             memcpy(newTagData.get(),baseData + tagArray[t].dataAddress,tagDataLength);
             HaloMapMod2 *mod2 = (HaloMapMod2 *)newTagData.get();
             HaloMapMod2Geo *geos = (HaloMapMod2Geo *)(newTagData.get() + mod2->geos.address - tagArray[t].dataAddress);
@@ -94,7 +94,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 }
             }
             
-            std::unique_ptr<char> resourceData(new char[resource_length]);
+            auto resourceData = std::make_unique<char[]>(resource_length);
             
             uint32_t offset = 0;
             for(uint32_t g=0;g<mod2->geos.count;g++) {
@@ -117,7 +117,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
             
         }
         else if(memcmp(tagArray[t].tagClassA,"mtib",4) == 0) {
-            std::unique_ptr<char> newTagData(new char[tagDataLength]);
+            auto newTagData = std::make_unique<char[]>(tagDataLength);
             memcpy(newTagData.get(),baseData + tagArray[t].dataAddress,tagDataLength);
             
             HaloMapBitmTag *bitm = (HaloMapBitmTag *)(newTagData.get());
@@ -129,7 +129,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 resource_length += bitmaps[b].length;
             }
             
-            std::unique_ptr<char> newResourceData(new char[resource_length]);
+            auto newResourceData = std::make_unique<char[]>(resource_length);
             uint32_t resource_offset = 0;
             
             for(uint32_t b=0;b<bitm->bitmaps.count;b++) {
@@ -143,7 +143,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
             
         }
         else if(memcmp(tagArray[t].tagClassA,"!dns",4) == 0) {
-            std::unique_ptr<char> newTagData(new char[tagDataLength]);
+            auto newTagData = std::make_unique<char[]>(tagDataLength);
             memcpy(newTagData.get(),baseData + tagArray[t].dataAddress,tagDataLength);
             
             HaloMapSndTag *snd = (HaloMapSndTag *)(newTagData.get());
@@ -158,7 +158,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 }
             }
             
-            std::unique_ptr<char> newResourceData(new char[resource_length]);
+            auto newResourceData = std::make_unique<char[]>(resource_length);
             uint32_t resource_offset = 0;
             
             for(uint32_t s=0;s<snd->ranges.count;s++) {
@@ -215,7 +215,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     
     // Count resource data length and write info for SBSP data.
     for (std::vector<int>::size_type i=0;i<map.tags.size();i++) {
-        ProtonTag *tag = map.tags.at(i).get();
+        ProtonTag *tag = map.tags[i].get();
         if(tag->resource_index == NO_RESOURCE_INDEX && memcmp(tag->tag_classes,"psbs",4) != 0) {
             tagDataLength += tag->DataLength();
         }
@@ -284,7 +284,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     uint32_t tagNameOffset = 0;
     //Tag name copying
     for(uint32_t i=0;i<metaHeader.tagCount; i++) {
-        ProtonTag *tag = map.tags.at(i).get();
+        ProtonTag *tag = map.tags[i].get();
         memcpy(tagArray[i].tag_class_a, tag->tag_classes + 0, 4);
         memcpy(tagArray[i].tag_class_b, tag->tag_classes + 4, 4);
         memcpy(tagArray[i].tag_class_c, tag->tag_classes + 8, 4);
@@ -297,7 +297,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     
     // Tag dependency resolving
     for(uint32_t i=0;i<metaHeader.tagCount; i++) {
-        ProtonTag *tag = map.tags.at(i).get();
+        ProtonTag *tag = map.tags[i].get();
         if(tag->resource_index != NO_RESOURCE_INDEX) continue;
         for(std::vector<int>::size_type d=0; d<tag->dependencies.size(); d++) {
             ProtonTagDependency *dependency = tag->dependencies.at(d).get();
@@ -333,7 +333,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     uint32_t modelCount = 0;
     
     for(uint32_t i=0;i<metaHeader.tagCount;i++) {
-        ProtonTag *tag = map.tags.at(i).get();
+        ProtonTag *tag = map.tags[i].get();
         if(tag->resource_index != NO_RESOURCE_INDEX) continue;
         if(memcmp(tag->tag_classes,"2dom",4) == 0) {
             char *tagData = tag->Data();
@@ -390,7 +390,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     if(map.principal_tag != NULLED_TAG_ID) {
         uint32_t sbspOffset = 0;
         for(uint32_t i=0;i<metaHeader.tagCount;i++) {
-            ProtonTag *tag = map.tags.at(i).get();
+            ProtonTag *tag = map.tags[i].get();
             if(memcmp(tag->tag_classes,"psbs",4) == 0) {
                 char *scenarioData = map.tags.at(map.principal_tag).get()->Data();
                 uint32_t scenarioMagic = map.tags.at(map.principal_tag).get()->tag_magic;
@@ -411,7 +411,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     uint32_t tagDataAddress = tagNameAddress + tagNameLength;
     uint32_t tagDataOffset = 0;
     for(uint32_t i=0;i<metaHeader.tagCount;i++) {
-        ProtonTag *tag = map.tags.at(i).get();
+        ProtonTag *tag = map.tags[i].get();
         tagArray[i].not_in_map = tag->resource_index == NO_RESOURCE_INDEX ? 0 : 1;
         if(tagArray[i].not_in_map) {
             tagArray[i].data_offset = tag->resource_index;
@@ -435,7 +435,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     
     uint32_t final_size = sizeof(HaloCacheFileHeader) + sbspLength + rawDataLength + modelSize + final_tag_data_length;
     
-    std::unique_ptr<char []> finalDataPtr(new char[final_size]);
+    auto finalDataPtr = std::make_unique<char[]>(final_size);
     char *finalData = finalDataPtr.get();
     header.tagDataOffset = final_size - final_tag_data_length;
     header.fileSize = final_size;
@@ -481,7 +481,7 @@ ProtonCacheFile ProtonMap::ToCacheFile() const {
     
     
     
-    ProtonCacheFile cacheFile(finalData,final_size);
+    ProtonCacheFile cacheFile(std::move(finalDataPtr),final_size);
     return cacheFile;
 }
 
@@ -500,7 +500,7 @@ ProtonMap& ProtonMap::operator=(const ProtonMap &map) {
     
     for(std::vector<int>::size_type i=0;i<map.tags.size();i++) {
         std::unique_ptr<ProtonTag> tag(new ProtonTag);
-        *(tag.get()) = *(map.tags.at(i).get());
+        *(tag.get()) = *(map.tags[i].get());
         this->tags.push_back(std::move(tag));
     }
     

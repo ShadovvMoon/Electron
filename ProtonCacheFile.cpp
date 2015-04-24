@@ -10,14 +10,17 @@
 
 ProtonCacheFile::ProtonCacheFile() {}
 
-ProtonCacheFile::ProtonCacheFile(const char *data, size_t length) {
-    this->data_ptr = std::unique_ptr<char []>(new char[length]);
+ProtonCacheFile::ProtonCacheFile(std::unique_ptr<char[]> data, size_t length)
+	: data_ptr(std::move(data)), data_length(length) {}
+
+ProtonCacheFile::ProtonCacheFile(const char *data, size_t length)
+	: data_ptr(std::make_unique<char []>(length)) {
     this->data_length = length;
     memcpy(this->data_ptr.get(), data, length);
 }
 
 ProtonCacheFile& ProtonCacheFile::operator=(const ProtonCacheFile &file) {
-    this->data_ptr = std::unique_ptr<char []>(new char[file.data_length]);
+    this->data_ptr = std::make_unique<char []>(file.data_length);
     memcpy(this->data_ptr.get(),file.data_ptr.get(),file.data_length);
     this->data_length = file.data_length;
     return *this;
