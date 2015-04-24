@@ -12,6 +12,7 @@
 #include "ProtonTag.h"
 #include "HaloData.h"
 #include "ProtonTagArray.h"
+#include "CompilerWarn.h"
 
 
 // This function initializes an indexed tag. Only Halo CE has these kinds of tags. The variable resource_index is the index for a tag in bitmaps.map, sounds.map, or loc.map, depending on class.
@@ -233,7 +234,7 @@ void ProtonTag::OffsetData(uint32_t offset, int32_t size) {
     if(this->resource_index != NO_RESOURCE_INDEX || this->Data() == NULL || this->DataLength() < sizeof(HaloTagReflexive)) return;
     if(size == 0) return;
     //if(memcmp(this->tag_classes, "rncs", 4) == 0) {
-#warning TODO: Scenario tag's reflexives are not mapped out yet. Due to the complexity of this tag, using the brute-force algorithm might break the tag on some maps.
+#pragma message WARN ("TODO: Scenario tag's reflexives are not mapped out yet. Due to the complexity of this tag, using the brute-force algorithm might break the tag on some maps.")
     //}
     /* else */ if(memcmp(this->tag_classes,"psbs",4) == 0) {
         // SBSP tag must use mapped out reflexives, or else holes might occur in the map.
@@ -276,14 +277,14 @@ void ProtonTag::AppendData(uint32_t offset, uint32_t size) {
     this->OffsetData(offset, size);
     
     for(std::vector<int>::size_type i=0;i<this->dependencies.size();i++) {
-        if(this->dependencies.at(i).get()->offset >= offset) {
-            this->dependencies.at(i).get()->offset += size;
+        if(this->dependencies[i].get()->offset >= offset) {
+            this->dependencies[i].get()->offset += size;
         }
     }
     
     uint32_t new_size = size + this->DataLength();
     
-    std::unique_ptr<char []>newdata = std::unique_ptr<char []>(new char[new_size]);
+    std::unique_ptr<char []>newdata = std::make_unique<char []>(new_size);
     memcpy(newdata.get(),this->Data(),offset);
     memcpy(newdata.get() + offset + size,this->Data() + offset,this->DataLength() - offset);
     this->SetData(newdata.get(), this->DataLength() + size);
@@ -298,24 +299,24 @@ void ProtonTag::InsertData(uint32_t offset, const char *data, uint32_t size) {
 
 // This function deletes data at an offset.
 void ProtonTag::DeleteData(uint32_t offset, uint32_t size) {
-    
+    // todo: loop condition looks like a mistake to me
     for(std::vector<int>::size_type i = this->dependencies.size() - 1;i < this->dependencies.size(); i--) {
-        if(this->dependencies.at(i).get()->offset >= offset && this->dependencies.at(i).get()->offset < offset + size) {
+        if(this->dependencies[i].get()->offset >= offset && this->dependencies[i].get()->offset < offset + size) {
             this->dependencies.erase(this->dependencies.begin() + i);
         }
     }
     
     for(std::vector<int>::size_type i=0;i<this->dependencies.size();i++) {
-        if(this->dependencies.at(i).get()->offset >= offset) {
-            this->dependencies.at(i).get()->offset -= size;
+        if(this->dependencies[i].get()->offset >= offset) {
+            this->dependencies[i].get()->offset -= size;
         }
     }
     
-    this->OffsetData(offset, -size);
+    this->OffsetData(offset, size);
     
     uint32_t new_size = this->DataLength() - size;
     
-    std::unique_ptr<char []>newdata = std::unique_ptr<char []>(new char[new_size]);
+    std::unique_ptr<char []>newdata = std::make_unique<char []>(new_size);
     
     memcpy(newdata.get(),this->Data(),offset);
     memcpy(newdata.get() + offset,this->Data() + offset + size,this->DataLength() - offset - size);
@@ -363,7 +364,7 @@ ProtonTag& ProtonTag:: operator=(const ProtonTag& tag) {
     this->tag_magic = tag.tag_magic;
     this->dependencies.clear();
     for(std::vector<int>::size_type i=0;i<tag.dependencies.size();i++) {
-        const ProtonTagDependency *old_dependency = tag.dependencies.at(i).get();
+        const ProtonTagDependency *old_dependency = tag.dependencies[i].get();
         std::unique_ptr<ProtonTagDependency> newDependency(new ProtonTagDependency);
         *newDependency.get() = *old_dependency;
         this->dependencies.push_back(std::move(newDependency));

@@ -11,11 +11,11 @@
 
 // Recursive importation...
 uint32_t ProtonTagArray::ImportTag(uint32_t tag, const ProtonTagArray &parent_tag_array, bool allow_duplicates) {
-    uint32_t tag_indices[parent_tag_array.tags.size()];
+    auto tag_indices = std::make_unique<uint32_t[]>(parent_tag_array.tags.size());
     for(std::vector<int>::size_type i=0;i<parent_tag_array.tags.size();i++) {
         tag_indices[i] = 0xFFFFFFFF;
     }
-    return this->RecursiveTagImport(tag, parent_tag_array, allow_duplicates, tag_indices);
+    return this->RecursiveTagImport(tag, parent_tag_array, allow_duplicates, tag_indices.get());
 }
 
 // Imports tag from tag_array. Returns the tag ID of the newly imported tag. If allow_duplicates is false and it finds a tag with the same name, it returns that tag instead and does not import the tag.
@@ -24,8 +24,8 @@ uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, const ProtonTagArray &
     const ProtonTag *original_tag = parent_tag_array.tags.at(tag).get();
     uint32_t duplicates = 0;
     for(std::vector<int>::size_type i=0;i<this->tags.size();i++) {
-        ProtonTag *against = this->tags.at(i).get();
-        if(memcmp(against->tag_classes,original_tag->tag_classes,4) == 0 && strcmp(original_tag->Name(), against->Name()) == 0) {
+        ProtonTag *against = this->tags[i].get();
+        if(memcmp(against->tag_classes,original_tag->tag_classes,4 /* todo: 4 and not 12? */) == 0 && strcmp(original_tag->Name(), against->Name()) == 0) {
             if(allow_duplicates) duplicates++;
             else return (uint32_t)i;
         }
@@ -41,9 +41,9 @@ uint32_t ProtonTagArray::RecursiveTagImport(uint32_t tag, const ProtonTagArray &
         importedTag->SetName(newname);
     }
     for(std::vector<int>::size_type i=0;i<original_tag->dependencies.size();i++) {
-        ProtonTagDependency *dependency = importedTag->dependencies.at(i).get();
+        ProtonTagDependency *dependency = importedTag->dependencies[i].get();
         uint32_t newTag = this->RecursiveTagImport(dependency->tag, parent_tag_array, allow_duplicates,tag_indices);
-        importedTag->dependencies.at(i).get()->tag = newTag;
+        importedTag->dependencies[i].get()->tag = newTag;
     }
     return tag_indices[tag];
 }
@@ -62,7 +62,7 @@ void ProtonTagArray::DeleteTag(uint32_t tag, bool recursive_deletion) {
     
     // Decrease all of the tags after it by 1 and also remove all references to this tag.
     for(std::vector<int>::size_type i=0;i<this->tags.size();i++) {
-        ProtonTag *tag_dep = this->tags.at(i).get();
+        ProtonTag *tag_dep = this->tags[i].get();
         for(std::vector<int>::size_type d=0;d<tag_dep->dependencies.size();d++) {
             ProtonTagDependency *dependency = tag_dep->dependencies.at(d).get();
             
@@ -99,7 +99,7 @@ void ProtonTagArray::DeleteTag(uint32_t tag, bool recursive_deletion) {
             
             if(i==dependency->tag) continue;
             
-            ProtonTag *tag_dep = this->tags.at(i).get();
+            ProtonTag *tag_dep = this->tags[i].get();
             for(std::vector<int>::size_type d=0;d<tag_dep->dependencies.size();d++) {
                 if(tag_dep->dependencies.at(d).get()->tag == dependency->tag)
                     recursive_remove = false;
@@ -120,7 +120,7 @@ ProtonTagArray& ProtonTagArray::operator=(const ProtonTagArray &tagarray) {
     
     for(std::vector<int>::size_type i=0;i<tagarray.tags.size();i++) {
         std::unique_ptr<ProtonTag> tag(new ProtonTag);
-        *(tag.get()) = *(tagarray.tags.at(i).get());
+        *(tag.get()) = *(tagarray.tags[i].get());
         this->tags.push_back(std::move(tag));
     }
     
