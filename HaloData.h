@@ -62,7 +62,7 @@ struct HaloCacheFileHeaderDemo {
     char padding1[2] = {};              //0x0
     HaloMapType mapType;                //0x2
     char padding2[0x2BC] = {};          //0x4 We're going to be seeing a lot of these in the demo header.
-    uint32_t head = EHED;         //0x2C0 Ehed
+    uint32_t head = EHED;               //0x2C0 Ehed
     uint32_t tagDataSize;               //0x2C4
     char mapBuild[32] = {};             //0x2C8
     char padding3[0x2A0];               //0x2E8
@@ -73,14 +73,14 @@ struct HaloCacheFileHeaderDemo {
     char padding5[0x34] = {};           //0x5B4
     uint32_t fileSize;                  //0x5E8
     uint32_t tagDataOffset;             //0x5EC
-    uint32_t foot = GFOT;         //0x5F0 Gfot
+    uint32_t foot = GFOT;                //0x5F0 Gfot
     char padding6[0x20C]={};            //0x5F4
     
     struct HaloCacheFileHeader asStandardHeader();
 };
 
 struct HaloCacheFileHeader {
-    uint32_t head = HEAD;         //0x0 head (not a real head)
+    uint32_t head = HEAD;               //0x0 head (not a real head)
     HaloMapGame mapGame;                //0x4
     uint32_t fileSize;                  //0x8 file size when decompressed
     char padding1[4] = {};              //0xC
@@ -93,7 +93,7 @@ struct HaloCacheFileHeader {
     char padding3[2] = {};              //0x62
     uint32_t fileCRC32;                 //0x64 crc32 when decompressed
     char padding4[0x794]={};            //0x68
-    uint32_t foot = FOOT;         //0x7FC foot
+    uint32_t foot = FOOT;               //0x7FC foot
     
     struct HaloCacheFileHeaderDemo asDemoHeader();
 };

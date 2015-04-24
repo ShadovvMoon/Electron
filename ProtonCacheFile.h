@@ -20,7 +20,7 @@ public:
     size_t Length() const;
     
     ProtonCacheFile();
-	ProtonCacheFile::ProtonCacheFile(std::unique_ptr<char[]> data, size_t length);
+    ProtonCacheFile::ProtonCacheFile(std::unique_ptr<char[]> data, size_t length);
     ProtonCacheFile(const char *data, size_t length);
     ProtonCacheFile(const ProtonCacheFile& map);
     ProtonCacheFile& operator=(const ProtonCacheFile& map);
