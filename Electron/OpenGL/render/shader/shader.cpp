@@ -88,6 +88,11 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
     GLuint program = glCreateProgram();
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
+
+	glBindAttribLocation(program, 1, "texCoord_buffer");
+	glBindAttribLocation(program, 3, "texCoord_buffer_light");
+	glBindAttribLocation(program, 2, "normal_buffer");
+
     glLinkProgram(program);
     glGetProgramiv(program, GL_LINK_STATUS, &program_ok);
     if (!program_ok)
@@ -105,8 +110,13 @@ ShaderManager::ShaderManager() {
     // Create a texture manager
     textures = new TextureManager();
     
-    std::string path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
     
+#ifdef _WINDOWS
+	std::string path = "C:/Users/admin_000/Documents/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
+#else
+	std::string path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
+#endif
+
     // Setup our shader types
     senv *senv_shader = new senv;
     senv_shader->setup(path);

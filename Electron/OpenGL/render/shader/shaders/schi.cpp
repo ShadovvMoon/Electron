@@ -19,7 +19,7 @@ void schi::setup(std::string path) {
     // Bind attributes
     baseTexture     = glGetUniformLocation(program, "baseTexture");
     maps = glGetUniformLocation(program, "maps");
-    glBindAttribLocation(program, 1, "texCoord_buffer");
+    //glBindAttribLocation(program, 1, "texCoord_buffer");
 }
 
 void schi::start() {

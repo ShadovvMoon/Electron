@@ -15,9 +15,14 @@ uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
 
 void BSPRenderBuffer::setup() {
     // Create the buffers for the vertices atttributes
-    glGenVertexArraysAPPLE(1, &geometryVAO);
-    glBindVertexArrayAPPLE(geometryVAO);
-    
+#ifdef _WINDOWS
+	glGenVertexArrays(1, &geometryVAO);
+	glBindVertexArray(geometryVAO);
+#else
+	glGenVertexArraysAPPLE(1, &geometryVAO);
+	glBindVertexArrayAPPLE(geometryVAO);
+#endif
+
     // Create the buffers for the vertices atttributes
     glGenBuffers(5, m_Buffers);
 }
@@ -118,10 +123,10 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                     vao->normals[vert]        = vert1->normal[0];
                     vao->normals[vert+1]      = vert1->normal[1];
                     vao->normals[vert+2]      = vert1->normal[2];
-                    vao->texture_uv[uv]       = vert1->uv[0];
+					vao->texture_uv[uv]       = vert1->uv[0];
                     vao->texture_uv[uv+1]     = vert1->uv[1];
-                    vao->light_uv[uv]         = vert2->uv[0];
-                    vao->light_uv[uv+1]       = vert2->uv[1];
+					vao->light_uv[uv]		  = vert2->uv[0];
+					vao->light_uv[uv+1]	      = vert2->uv[1];
                     vertex_offset++;
                 }
                 
@@ -158,7 +163,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     glBufferData(GL_ARRAY_BUFFER, vertex_size * 2 * sizeof(GLfloat), vao->texture_uv, GL_STATIC_DRAW);
     glEnableVertexAttribArray(texCoord_buffer);
     glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[NORMAL_VB]);
     glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), vao->normals, GL_STATIC_DRAW);
     glEnableVertexAttribArray(normals_buffer);
@@ -172,7 +177,12 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     glEnableVertexAttribArray(texCoord_buffer_light);
     glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
     
-    glBindVertexArrayAPPLE(0);
+#ifdef _WINDOWS
+	glBindVertexArray(0);
+#else
+	glBindVertexArrayAPPLE(0);
+#endif
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
@@ -186,9 +196,9 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
 
 void BSP::render(ShaderType pass) {
     
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glEnableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
 #ifndef RENDER_VAO
     glEnableVertexAttribArray(normals_buffer);
@@ -197,9 +207,12 @@ void BSP::render(ShaderType pass) {
 #endif
     
 #ifdef RENDER_VAO
-    glBindVertexArrayAPPLE(vao->geometryVAO);
+	#ifdef _WINDOWS
+		glBindVertexArray(vao->geometryVAO);
+	#else
+		glBindVertexArrayAPPLE(vao->geometryVAO);
+	#endif
 #else
-    glBindVertexArrayAPPLE(0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[POS_VB]);
     glVertexPointer(3, GL_FLOAT, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[TEXCOORD_VB]);
@@ -234,5 +247,9 @@ void BSP::render(ShaderType pass) {
             }
         }
     }
-    glBindVertexArrayAPPLE(0);
+#ifdef _WINDOWS
+	glBindVertexArray(0);
+#else
+	glBindVertexArrayAPPLE(0);
+#endif
 }

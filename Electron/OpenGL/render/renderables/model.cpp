@@ -72,9 +72,14 @@ typedef struct
 
 void ModelRenderMesh::setup() {
     // Create the buffers for the vertices atttributes
-    glGenVertexArraysAPPLE(1, &geometryVAO);
-    glBindVertexArrayAPPLE(geometryVAO);
-    
+#ifdef _WINDOWS
+	glGenVertexArrays(1, &geometryVAO);
+	glBindVertexArray(geometryVAO);
+#else
+	glGenVertexArraysAPPLE(1, &geometryVAO);
+	glBindVertexArrayAPPLE(geometryVAO);
+#endif
+
     // Create the buffers for the vertices atttributes
     glGenBuffers(5, m_Buffers);
 }
@@ -171,8 +176,8 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             }
             
             #define texCoord_buffer 1
-            #define normals_buffer 2
-            #define texCoord_buffer_light 3
+			#define texCoord_buffer_light 3
+			#define normals_buffer 2
             
             //Shift these to vertex buffers
             glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
@@ -201,7 +206,12 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             glEnableVertexAttribArray(texCoord_buffer_light);
             glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
             
-            glBindVertexArrayAPPLE(0);
+		#ifdef _WINDOWS
+			glBindVertexArray(0);
+		#else
+			glBindVertexArrayAPPLE(0);
+		#endif
+
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             
@@ -242,10 +252,10 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
 void Model::render(ShaderType pass) {
     if (!ready) return;
     
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_TEXTURE_CUBE_MAP);
+    //glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_CUBE_MAP);
     glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
 #ifndef RENDER_VAO
     glEnableVertexAttribArray(texCoord_buffer);
@@ -263,9 +273,12 @@ void Model::render(ShaderType pass) {
             if ((mesh->shader == nullptr && pass == shader_NULL) ||
                 (mesh->shader != nullptr && mesh->shader->is(pass))) {
 #ifdef RENDER_VAO
-                glBindVertexArrayAPPLE(mesh->geometryVAO);
+			#ifdef _WINDOWS
+				glBindVertexArray(mesh->geometryVAO);
+			#else
+				glBindVertexArrayAPPLE(mesh->geometryVAO);
+			#endif
 #else
-                glBindVertexArrayAPPLE(0);
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[POS_VB]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TEXCOORD_VB]);
@@ -283,7 +296,11 @@ void Model::render(ShaderType pass) {
                 }
                 
                 glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, 0);
-                glBindVertexArrayAPPLE(0);
+			#ifdef _WINDOWS
+				glBindVertexArray(0);
+			#else
+				glBindVertexArrayAPPLE(0);
+			#endif
             }
         }
     }

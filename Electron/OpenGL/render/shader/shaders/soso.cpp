@@ -24,8 +24,8 @@ void soso::setup(std::string path) {
     maps            = glGetUniformLocation(program, "maps");
     scale           = glGetUniformLocation(program, "scale");
     
-    glBindAttribLocation(program, 1, "texCoord_buffer");
-    glBindAttribLocation(program, 2, "normal_buffer");
+	//glBindAttribLocation(program, 1, "texCoord_buffer");
+    //glBindAttribLocation(program, 2, "normal_buffer");
     printf("done %d %d %d %d\n", baseTexture, multipurposeMap, detailMap, cubeMap);
 }
 

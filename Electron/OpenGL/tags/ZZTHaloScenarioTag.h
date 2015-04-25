@@ -222,8 +222,6 @@ typedef struct
     float normal[3];
     float uv[2];
 }UNCOMPRESSED_LIGHTMAP_VERT;
-
-
 typedef struct
 {
     float vertex_k[3]; //0
@@ -232,7 +230,6 @@ typedef struct
     float tangent[3];  //0x24
     float uv[2]; //0x30
 }UNCOMPRESSED_BSP_VERT;
-
 typedef struct
 {
     float vertex_k[3];

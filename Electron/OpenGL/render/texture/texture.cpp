@@ -175,7 +175,6 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
             glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
             
-            
             bitm_image_t *image = (bitm_image_t *)(bitmapTag->Data() + bitmapTag->PointerToOffset(bitmData->image_reflexive.address) + sizeof(bitm_image_t) * i);
             char *input = (char*)bitmapTag->ResourcesData() + image->offset;
             
@@ -267,7 +266,9 @@ void texture::bind() {
     }
 }
 void texture::bind(int i) {
-    glBindTexture(GL_TEXTURE_2D, textures[i]);
+	if (i >= 0 && i < textures.size()) {
+		glBindTexture(GL_TEXTURE_2D, textures[i]);
+	}
 }
 
 void texture_cubemap::load_side(GLenum side_target, GLenum i, ProtonTag *bitmapTag) {

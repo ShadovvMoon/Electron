@@ -27,9 +27,9 @@ void senv::setup(std::string path) {
     maps = glGetUniformLocation(program, "maps");
     maps2 = glGetUniformLocation(program, "maps2");
     maps3 = glGetUniformLocation(program, "maps3");
-    glBindAttribLocation(program, 1, "texCoord_buffer");
-    glBindAttribLocation(program, 2, "texCoord_buffer_light");
-    glBindAttribLocation(program, 3, "normal_buffer");
+    //glBindAttribLocation(program, 1, "texCoord_buffer");
+    //glBindAttribLocation(program, 2, "texCoord_buffer_light");
+    //glBindAttribLocation(program, 3, "normal_buffer");
 }
 
 void senv::start() {
