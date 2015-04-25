@@ -11,7 +11,6 @@
 
 #include <cstdlib>
 #include <cstdint>
-
 using std::uint16_t;
 using std::uint32_t;
 
