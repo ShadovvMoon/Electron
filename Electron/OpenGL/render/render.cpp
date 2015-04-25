@@ -13,7 +13,7 @@ milliseconds now() {
 }
 
 // Setup
-void ERenderer::setup() {
+void ERenderer::setup(const char *resources) {
     printf("setup\n");
 #ifdef _WINDOWS
     GLenum error = glewInit();
@@ -25,7 +25,7 @@ void ERenderer::setup() {
     
     // Initilisation
     camera  = new Camera;
-    shaders = new ShaderManager;
+    shaders = new ShaderManager(resources);
     bsp     = new BSP(shaders);
     objects = new ObjectManager;
     

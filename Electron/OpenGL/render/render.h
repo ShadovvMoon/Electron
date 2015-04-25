@@ -45,7 +45,7 @@ private:
     Control *controller = nullptr;
 public:
     ~ERenderer();
-    void setup();
+    void setup(const char *resources);
     void resize(float width, float height);
     void render();
     

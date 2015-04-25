@@ -22,7 +22,11 @@ Control *controls = (Control *)malloc(sizeof(Control));
         (NSOpenGLPixelFormatAttribute)BITS_PER_PIXEL,
         NSOpenGLPFADepthSize,
         (NSOpenGLPixelFormatAttribute)DEPTH_SIZE,
-        NSOpenGLPFAAccelerated,
+#ifdef RENDER_GPU
+        //NSOpenGLPFAAccelerated,
+#else
+        NSOpenGLPFARendererID, kCGLRendererGenericID,
+#endif
         NSOpenGLPFASampleBuffers, 1,
         NSOpenGLPFASamples, 4,
         0
@@ -49,8 +53,9 @@ Control *controls = (Control *)malloc(sizeof(Control));
         [[self openGLContext] makeCurrentContext];
         [[self openGLContext] setView:self];
         
+        NSString *resourcesPath = [[NSBundle mainBundle] resourcePath];
         renderer = new ERenderer;
-        renderer->setup();
+        renderer->setup([resourcesPath cStringUsingEncoding:NSUTF8StringEncoding]);
         
         // Start the draw timer
         int fps = 60;

@@ -104,7 +104,7 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
     return program;
 }
 
-ShaderManager::ShaderManager() {
+ShaderManager::ShaderManager(const char *resources) {
     printf("shader manager setup\n");
     
     // Create a texture manager
@@ -114,7 +114,7 @@ ShaderManager::ShaderManager() {
 #ifdef _WINDOWS
 	std::string path = "C:/Users/admin_000/Documents/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
 #else
-	std::string path = "/Users/samuco/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
+    std::string path = resources;
 #endif
 
     // Setup our shader types

@@ -8,7 +8,10 @@
 
 #ifndef _defines_h
 #define _defines_h
+
 #define RENDER_VAO
+#define RENDER_GPU
+//#define RENDER_FAST // Render as fast as possible
 
 // Definitions
 #ifdef _WIN32
@@ -33,8 +36,14 @@
 #include <GLUT/glut.h>
 #endif
 
+#ifdef RENDER_FAST
+#define BITS_PER_PIXEL 16.0
+#define DEPTH_SIZE 16.0
+#else
 #define BITS_PER_PIXEL 32.0
 #define DEPTH_SIZE 32.0
+#endif
+
 #define MAX_SCENARIO_OBJECTS 100000
 
 #define ShaderCount 4

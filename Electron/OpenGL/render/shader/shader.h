@@ -35,7 +35,7 @@ private:
     shader *shaders[ShaderCount];
     TextureManager *textures = nullptr;
 public:
-    ShaderManager();
+    ShaderManager(const char *resources);
     TextureManager *texture_manager();
     shader *get_shader(ShaderType pass);
     shader_object *create_shader(ProtonMap *map, HaloTagDependency shader);
