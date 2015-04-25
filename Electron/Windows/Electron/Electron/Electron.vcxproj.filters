@@ -49,6 +49,9 @@
     <Filter Include="Source Files\Proton">
       <UniqueIdentifier>{0787a5d2-b354-48d6-a808-ed9579443659}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\OpenGL\glew\GL">
+      <UniqueIdentifier>{b73c4e82-b723-411f-8994-2202a0706b22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -123,9 +126,6 @@
     <ClInclude Include="..\..\..\OpenGL\render\renderables\objects\vehi.h">
       <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OpenGL\glew\glew.h">
-      <Filter>Source Files\OpenGL\glew</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\ProtonTagArray.h">
       <Filter>Source Files\Proton</Filter>
     </ClInclude>
@@ -146,6 +146,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\ProtonTag.h">
       <Filter>Source Files\Proton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\glew\GL\glew.h">
+      <Filter>Source Files\OpenGL\glew\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\glew\GL\glxew.h">
+      <Filter>Source Files\OpenGL\glew\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\glew\GL\wglew.h">
+      <Filter>Source Files\OpenGL\glew\GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -203,9 +212,6 @@
     <ClCompile Include="..\..\..\OpenGL\render\renderables\objects\vehi.cpp">
       <Filter>Source Files\OpenGL\render\renderables\objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OpenGL\glew\glew.c">
-      <Filter>Source Files\OpenGL\glew</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\ProtonTag.cpp">
       <Filter>Source Files\Proton</Filter>
     </ClCompile>
@@ -223,6 +229,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\ProtonMap.cpp">
       <Filter>Source Files\Proton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\glew\glew.c">
+      <Filter>Source Files\OpenGL\glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\glew\visualinfo.c">
+      <Filter>Source Files\OpenGL\glew</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

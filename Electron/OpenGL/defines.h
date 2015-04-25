@@ -26,7 +26,7 @@
 
 // Custom includes
 #ifdef _WINDOWS
-#include "glew/glew.h"
+#include "glew/GL/glew.h"
 #elif __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
