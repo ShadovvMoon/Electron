@@ -111,7 +111,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                 renderer->indexCount = indexSize;
                 renderer->vertCount = vertex_number;
                 renderer->lightmap = submesh->LightmapIndex;
-                
+            
                 int v;
                 for (v = 0; v < vertex_number; v++)
                 {
@@ -211,6 +211,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     // Clean up
+#ifdef RENDER_VBO
     free(vao->vertex_array);
     free(vao->texture_uv);
     free(vao->light_uv);
@@ -218,6 +219,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     free(vao->index_array);
     free(vao->binormals);
     free(vao->tangents);
+#endif
 }
 
 void BSP::render(ShaderType pass) {
@@ -240,7 +242,7 @@ void BSP::render(ShaderType pass) {
 	#else
 		glBindVertexArrayAPPLE(vao->geometryVAO);
 	#endif
-#else
+#elseif RENDER_VBO
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[POS_VB]);
     glVertexPointer(3, GL_FLOAT, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[TEXCOORD_VB]);
@@ -251,9 +253,16 @@ void BSP::render(ShaderType pass) {
     glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[BINORMAL_VB]);
     glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[TANGENT_VB]);
+    glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[TANGENT_VB]);
     glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->m_Buffers[INDEX_BUFFER]);
+#else
+    glVertexPointer(3, GL_FLOAT, 0, vao->vertex_array);
+    glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, vao->texture_uv);
+    glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, vao->light_uv);
+    glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, vao->normals);
+    glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, vao->binormals);
+    glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, vao->tangents);
 #endif
     
     int i, s;
@@ -271,13 +280,23 @@ void BSP::render(ShaderType pass) {
                 }
                 glActiveTexture(GL_TEXTURE3);
                 mesh->lightTexture->bind(submesh->lightmap);
+                
+                #ifdef RENDER_VBO
                 glDrawElementsBaseVertex(GL_TRIANGLES,
                                          submesh->indexCount,
                                          GL_UNSIGNED_INT,
                                          (void*)(submesh->indexOffset * sizeof(GLuint)),
                                          (submesh->vertexOffset));
+                #else
+                glDrawElementsBaseVertex(GL_TRIANGLES,
+                                         submesh->indexCount,
+                                         GL_UNSIGNED_INT,
+                                         (void*)((long)vao->index_array + submesh->indexOffset * sizeof(GLuint)),
+                                         (submesh->vertexOffset));
+                #endif
             }
         }
+        break;
     }
 #ifdef RENDER_VAO_NORMAL
 	glBindVertexArray(0);

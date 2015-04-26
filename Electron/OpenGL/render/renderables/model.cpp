@@ -237,11 +237,13 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
             
             // Clean up
+            #ifdef RENDER_VBO
             free(renderer->vertex_array);
             free(renderer->texture_uv);
             free(renderer->light_uv);
             free(renderer->normals);
             free(renderer->index_array);
+            #endif
             
             printf("geom %d %d\n", i, render);
             geometries[i][render] = renderer;
@@ -301,7 +303,7 @@ void Model::render(ShaderType pass) {
 			#else
 				glBindVertexArrayAPPLE(mesh->geometryVAO);
 			#endif
-#else
+#elseif RENDER_VBO
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[POS_VB]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TEXCOORD_VB]);
@@ -313,6 +315,12 @@ void Model::render(ShaderType pass) {
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TANGENT_VB]);
                 glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
+#else
+                glVertexPointer(3, GL_FLOAT, 0, mesh->vertex_array);
+                glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, mesh->texture_uv);
+                glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->normals);
+                glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->binormals);
+                glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->tangents);
 #endif
                 if (mesh->shader != nullptr) {
                     if (mesh->shader != previous_shader) {
@@ -322,7 +330,12 @@ void Model::render(ShaderType pass) {
                     mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
                 }
                 
+            #ifdef RENDER_VBO
                 glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, 0);
+            #else
+                glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, mesh->index_array);
+            #endif
+                
 			#ifdef _WINDOWS
 				glBindVertexArray(0);
 			#else

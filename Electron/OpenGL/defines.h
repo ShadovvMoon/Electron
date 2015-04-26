@@ -9,9 +9,17 @@
 #ifndef _defines_h
 #define _defines_h
 
-#define RENDER_VAO
+// Render using vertex array objects (if false, use arrays or vbos)
+//#define RENDER_VAO
+//#define RENDER_VBO
+
+// Force hardware acceleration
 #define RENDER_GPU
+
+// Use standard VAOS (non APPLE)
 //#define RENDER_VAO_NORMAL
+
+// Don't remember what this does
 //#define RENDER_FAST // Render as fast as possible
 
 // Definitions
