@@ -261,6 +261,7 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
     }
 }
 void texture::bind() {
+    // TODO: Compressed with Color-Key Transparency [black remove!]
     if (textures.size() > 0) {
         glBindTexture(GL_TEXTURE_2D, textures[0]);
     }

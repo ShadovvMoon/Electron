@@ -24,7 +24,7 @@ void BSPRenderBuffer::setup() {
 #endif
 
     // Create the buffers for the vertices atttributes
-    glGenBuffers(5, m_Buffers);
+    glGenBuffers(7, m_Buffers);
 }
 
 BSP::BSP(ShaderManager* manager) {
@@ -72,6 +72,8 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     vao->texture_uv      = (GLfloat*)malloc(vertex_size   * 2 * sizeof(GLfloat));
     vao->light_uv        = (GLfloat*)malloc(vertex_size   * 2 * sizeof(GLfloat));
     vao->normals         = (GLfloat*)malloc(vertex_size   * 3 * sizeof(GLfloat));
+    vao->tangents        = (GLfloat*)malloc(vertex_size   * 3 * sizeof(GLfloat));
+    vao->binormals       = (GLfloat*)malloc(vertex_size   * 3 * sizeof(GLfloat));
     vao->index_array     =   (GLint*)malloc(index_size    *     sizeof(GLint));
 
     int vertex_offset = 0;
@@ -117,9 +119,17 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                     UNCOMPRESSED_LIGHTMAP_VERT  *vert2 = (UNCOMPRESSED_LIGHTMAP_VERT*)(PcVertexDataOffset + vertex_number * sizeof(UNCOMPRESSED_BSP_VERT) + v * sizeof(UNCOMPRESSED_LIGHTMAP_VERT));
                     vert = vertex_offset * 3;
                     uv = vertex_offset * 2;
+                    
+                    //TODO: Just use the offset...
                     vao->vertex_array[vert]   = vert1->vertex_k[0];
                     vao->vertex_array[vert+1] = vert1->vertex_k[1];
                     vao->vertex_array[vert+2] = vert1->vertex_k[2];
+                    vao->binormals[vert]      = vert1->binormal[0];
+                    vao->binormals[vert+1]    = vert1->binormal[1];
+                    vao->binormals[vert+2]    = vert1->binormal[2];
+                    vao->tangents[vert]       = vert1->tangent[0];
+                    vao->tangents[vert+1]     = vert1->tangent[1];
+                    vao->tangents[vert+2]     = vert1->tangent[2];
                     vao->normals[vert]        = vert1->normal[0];
                     vao->normals[vert+1]      = vert1->normal[1];
                     vao->normals[vert+2]      = vert1->normal[2];
@@ -149,6 +159,8 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     #define texCoord_buffer 1
     #define texCoord_buffer_light 3
     #define normals_buffer 2
+    #define binormals_buffer 5
+    #define tangents_buffer 6
     
     //Shift these to vertex buffers
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[POS_VB]);
@@ -177,6 +189,16 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     glEnableVertexAttribArray(texCoord_buffer_light);
     glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
     
+    glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[BINORMAL_VB]);
+    glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), vao->binormals, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(binormals_buffer);
+    glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[TANGENT_VB]);
+    glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), vao->tangents, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(tangents_buffer);
+    glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    
 #ifdef _WINDOWS
 	glBindVertexArray(0);
 #else
@@ -192,6 +214,8 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     free(vao->light_uv);
     free(vao->normals);
     free(vao->index_array);
+    free(vao->binormals);
+    free(vao->tangents);
 }
 
 void BSP::render(ShaderType pass) {
@@ -233,6 +257,7 @@ void BSP::render(ShaderType pass) {
             if ((submesh->shader == nullptr && pass == shader_NULL) ||
                 (submesh->shader != nullptr && submesh->shader->is(pass))) {
                 if (submesh->shader != nullptr && submesh->shader != previous_shader) {
+                    submesh->shader->setBaseUV(1.0, 1.0);
                     submesh->shader->render();
                     previous_shader = submesh->shader;
                 }

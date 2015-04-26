@@ -30,4 +30,5 @@ void main(void) {
     normals         = normal_buffer;
     tex_coord    = texCoord_buffer;
     gl_Position  = ftransform();
+    
 }

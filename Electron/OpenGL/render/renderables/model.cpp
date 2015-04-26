@@ -81,7 +81,7 @@ void ModelRenderMesh::setup() {
 #endif
 
     // Create the buffers for the vertices atttributes
-    glGenBuffers(5, m_Buffers);
+    glGenBuffers(7, m_Buffers);
 }
 
 Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
@@ -151,6 +151,9 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             renderer->texture_uv      = (GLfloat*)malloc(vertex_number   * 2 * sizeof(GLfloat)); // cleaned
             renderer->light_uv        = (GLfloat*)malloc(vertex_number   * 2 * sizeof(GLfloat)); // cleaned
             renderer->normals         = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat)); // cleaned
+            renderer->tangents        = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat));
+            renderer->binormals       = (GLfloat*)malloc(vertex_number   * 3 * sizeof(GLfloat));
+            
             renderer->index_array     = (GLint*)  malloc(indexSize * sizeof(GLint)); // cleaned
             
             int v;
@@ -164,6 +167,12 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
                 renderer->normals[vert]        = vert1->normal[0];
                 renderer->normals[vert+1]      = vert1->normal[1];
                 renderer->normals[vert+2]      = vert1->normal[2];
+                renderer->binormals[vert]      = vert1->binormal[0];
+                renderer->binormals[vert+1]    = vert1->binormal[1];
+                renderer->binormals[vert+2]    = vert1->binormal[2];
+                renderer->tangents[vert]       = vert1->tangent[0];
+                renderer->tangents[vert+1]     = vert1->tangent[1];
+                renderer->tangents[vert+2]     = vert1->tangent[2];
                 renderer->texture_uv[uv]       = vert1->uv[0];
                 renderer->texture_uv[uv+1]     = vert1->uv[1];
                 vert+=3; uv+=2;
@@ -176,8 +185,10 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             }
             
             #define texCoord_buffer 1
-			#define texCoord_buffer_light 3
-			#define normals_buffer 2
+            #define texCoord_buffer_light 3
+            #define normals_buffer 2
+            #define binormals_buffer 5
+            #define tangents_buffer 6
             
             //Shift these to vertex buffers
             glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
@@ -205,6 +216,16 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             glBufferData(GL_ARRAY_BUFFER, vertex_number * 2 * sizeof(GLfloat), renderer->light_uv, GL_STATIC_DRAW);
             glEnableVertexAttribArray(texCoord_buffer_light);
             glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[BINORMAL_VB]);
+            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->binormals, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(binormals_buffer);
+            glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            
+            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[TANGENT_VB]);
+            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->tangents, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(tangents_buffer);
+            glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
             
 		#ifdef _WINDOWS
 			glBindVertexArray(0);
@@ -307,8 +328,7 @@ void Model::render(ShaderType pass) {
 }
 
 Model *ModelManager::create_model(ProtonMap *map, HaloTagDependency mod2) {
-    printf("creating object %d\n", mod2.tag_id.tag_index);
-    
+
     // Has this model been loaded before? Check the cache
     std::map<uint16_t, Model*>::iterator iter = models.find(mod2.tag_id.tag_index);
     if (iter != models.end()) {

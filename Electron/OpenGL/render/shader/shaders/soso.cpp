@@ -23,6 +23,7 @@ void soso::setup(std::string path) {
     cubeMap         = glGetUniformLocation(program, "cubeTextureMap");
     maps            = glGetUniformLocation(program, "maps");
     scale           = glGetUniformLocation(program, "scale");
+    reflectionScale = glGetUniformLocation(program, "reflectionScale");
     
 	//glBindAttribLocation(program, 1, "texCoord_buffer");
     //glBindAttribLocation(program, 2, "normal_buffer");
@@ -75,11 +76,14 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
         cubeMap = manager->texture_manager()->create_cubemap(map, cube);
         useCube = true;
     }
+    reflectionPerpendicular = *(float*)(shaderTag->Data() + 0x144);
+    reflectionParallel = *(float*)(shaderTag->Data() + 0x154);
     
     printf("shader setup\n");
     soso *shader = (soso *)(manager->get_shader(shader_SOSO));
     mapsId  = shader->maps;
     scaleId = shader->scale;
+    reflectionScaleId = shader->reflectionScale;
 };
 
 bool soso_object::is(ShaderType type) {
@@ -114,4 +118,5 @@ void soso_object::render() {
     // Scales
     glUniform4f(scaleId, uscale, vscale, detailScale, detailScaleV);
     glUniform3f(mapsId , b2f(useMulti), b2f(useDetail), useCube ? 0.5:0.0);
+    glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
 }

@@ -14,12 +14,24 @@
 using std::uint16_t;
 using std::uint32_t;
 
+typedef uint16_t unichar;
+typedef uint8_t bitmask8;
+typedef uint16_t bitmask16;
+typedef uint16_t refIndex;
+typedef uint32_t bitmask32;
+
 #define NULLED_TAG_ID 0xFFFF
 #define TAGS          0x74616773
 #define GFOT          0x47666f74
 #define EHED          0x45686564
 #define FOOT          0x47666f74
 #define HEAD          0x68656164
+
+typedef struct {
+    float x;
+    float y;
+    float z;
+} HaloVector;
 
 typedef enum HaloMapGame : uint32_t {
     HALO_MAP_GAME_PC = 7,
@@ -42,6 +54,13 @@ struct HaloTagID {
     HaloTagID();
     HaloTagID(uint16_t tagIndex);
 };
+
+typedef struct {
+    float alpha;
+    float red;
+    float green;
+    float blue;
+} ColorARGB;
 
 struct HaloTagDependency {
     char tag_class[4];

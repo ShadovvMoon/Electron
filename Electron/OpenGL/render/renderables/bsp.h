@@ -14,19 +14,21 @@
 
 class BSPRenderBuffer {
 public:
-    GLuint m_Buffers[5];
+    GLuint m_Buffers[7];
     GLuint geometryVAO;
     GLfloat* vertex_array;
     GLfloat* texture_uv;
     GLfloat* light_uv;
     GLfloat* normals;
+    GLfloat* binormals;
+    GLfloat* tangents;
     GLint* index_array;
     void setup();
 };
 
 class BSPRenderSubmesh {
 public:
-    GLuint m_Buffers[5];
+    GLuint m_Buffers[7];
     
     // Rendering
     GLuint geometryVAO;

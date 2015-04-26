@@ -46,12 +46,15 @@
 
 #define MAX_SCENARIO_OBJECTS 100000
 
-#define ShaderCount 4
+#define ShaderCount 7
 typedef enum {
     shader_NULL = 0,
     shader_SENV = 1,
     shader_SCHI = 2,
-    shader_SOSO = 3
+    shader_SOSO = 3,
+    shader_SGLA = 4,
+    shader_SWAT = 5,
+    shader_SCEX = 6,
 } ShaderType;
 
 // VBO
@@ -60,6 +63,8 @@ typedef enum {
 #define NORMAL_VB 2
 #define TEXCOORD_VB 3
 #define LIGHT_VB 4
+#define BINORMAL_VB 5
+#define TANGENT_VB 6
 
 // Functions
 void errorCheck();

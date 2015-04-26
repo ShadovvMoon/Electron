@@ -11,6 +11,9 @@
 #include "shaders/schi.h"
 #include "shaders/soso.h"
 #include "shaders/null.h"
+#include "shaders/sgla.h"
+#include "shaders/swat.h"
+#include "shaders/scex.h"
 
 float b2f(bool b) {
     return b?1.0:0.0;
@@ -92,6 +95,8 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
 	glBindAttribLocation(program, 1, "texCoord_buffer");
 	glBindAttribLocation(program, 3, "texCoord_buffer_light");
 	glBindAttribLocation(program, 2, "normal_buffer");
+    glBindAttribLocation(program, 5, "binormals_buffer");
+    glBindAttribLocation(program, 6, "tangents_buffer");
 
     glLinkProgram(program);
     glGetProgramiv(program, GL_LINK_STATUS, &program_ok);
@@ -133,6 +138,18 @@ ShaderManager::ShaderManager(const char *resources) {
     null *null_shader = new null;
     null_shader->setup(path);
     shaders[shader_NULL] = (shader*)null_shader;
+    
+    sgla *sgla_shader = new sgla;
+    sgla_shader->setup(path);
+    shaders[shader_SGLA] = (shader*)sgla_shader;
+    
+    swat *swat_shader = new swat;
+    swat_shader->setup(path);
+    shaders[shader_SWAT] = (shader*)swat_shader;
+    
+    scex *scex_shader = new scex;
+    scex_shader->setup(path);
+    shaders[shader_SCEX] = (shader*)scex_shader;
 }
 
 shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {
@@ -150,6 +167,12 @@ shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency s
         shaderObj = new schi_object;
     } else if(strncmp(shaderTag->tag_classes, "osos", 4) == 0) { // senv shader
         shaderObj = new soso_object;
+    } else if(strncmp(shaderTag->tag_classes, "algs", 4) == 0) { // senv shader
+        shaderObj = new sgla_object;
+    } else if(strncmp(shaderTag->tag_classes, "taws", 4) == 0) { // senv shader
+        shaderObj = new swat_object;
+    } else if(strncmp(shaderTag->tag_classes, "xecs", 4) == 0) { // senv shader
+        shaderObj = new scex_object;
     }
     
     if (shaderObj != nullptr) {

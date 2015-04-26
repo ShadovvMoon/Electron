@@ -6,46 +6,37 @@
 //
 //
 
-#ifndef ____EShaderSoso__
-#define ____EShaderSoso__
+#ifndef ____EShaderSgla__
+#define ____EShaderSgla__
 
 #include "../shader.h"
-class soso : public shader {
+class sgla : public shader {
 private:
     GLuint program;
-    GLint baseTexture;
     GLint multipurposeMap;
-    GLint detailMap;
     GLint cubeMap;
 public:
     GLint scale;
     GLint maps;
     GLint reflectionScale;
-    
     void setup(std::string path);
     void start();
     void stop();
 };
 
-class soso_object : public shader_object {
+class sgla_object : public shader_object {
 private:
-    float uscale = 1.0;
-    float vscale = 1.0;
-    texture *baseMap = nullptr;
-    
     bool useMulti = false;
     texture *multipurposeMap = nullptr;
-    
-    bool useDetail = false;
-    float detailScale = 1.0;
-    float detailScaleV = 1.0;
-    texture *detailMap = nullptr;
     
     bool useCube = false;
     texture_cubemap *cubeMap = nullptr;
     float reflectionPerpendicular;
     float reflectionParallel;
     
+    float uscale = 1.0;
+    float vscale = 1.0;
+    float bumpScale = 1.0;
     GLint mapsId;
     GLint scaleId;
     GLint reflectionScaleId;

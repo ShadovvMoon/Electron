@@ -23,10 +23,12 @@ void senv::setup(std::string path) {
     lightMap            = glGetUniformLocation(program, "lightMap");
     cubeMap             = glGetUniformLocation(program, "cubeTextureMap");
     bumpMap             = glGetUniformLocation(program, "bumpMap");
+    scale               = glGetUniformLocation(program, "scale");
     
     maps = glGetUniformLocation(program, "maps");
     maps2 = glGetUniformLocation(program, "maps2");
     maps3 = glGetUniformLocation(program, "maps3");
+    reflectionScale = glGetUniformLocation(program, "reflectionScale");
     //glBindAttribLocation(program, 1, "texCoord_buffer");
     //glBindAttribLocation(program, 2, "texCoord_buffer_light");
     //glBindAttribLocation(program, 3, "normal_buffer");
@@ -47,6 +49,8 @@ void senv::stop() {
 }
 
 void senv_object::setBaseUV(float u, float v) {
+    uscale = u;
+    vscale = v;
 }
 
 // Senv object
@@ -86,12 +90,16 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
         cubeMap = manager->texture_manager()->create_cubemap(map, cube);
         useCube = true;
     }
+    reflectionPerpendicular = *(float*)(shaderTag->Data() + 0x2F4);
+    reflectionParallel = *(float*)(shaderTag->Data() + 0x2F8);
     
     printf("shader setup\n");
     senv *shader = (senv *)(manager->get_shader(shader_SENV));
     mapsId = shader->maps;
     maps2Id = shader->maps2;
     maps3Id = shader->maps3;
+    scaleId = shader->scale;
+    reflectionScaleId = shader->reflectionScale;
 };
 
 bool senv_object::is(ShaderType type) {
@@ -125,7 +133,9 @@ void senv_object::render() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Scales
+    glUniform2f(scaleId, uscale, vscale);
     glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
     glUniform4f(maps2Id, b2f(useLight), b2f(useBlend), b2f(useCube), b2f(useBump));
     glUniform1f(maps3Id, bumpScale);
+    glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
 }

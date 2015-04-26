@@ -189,7 +189,7 @@ void ERenderer::render() {
     if (scenarioTag != NULLED_TAG_ID) {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
-        for (int pass = shader_NULL; pass <= shader_SOSO; pass++ )
+        for (int pass = shader_NULL; pass <= shader_SCEX; pass++ )
         {
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);

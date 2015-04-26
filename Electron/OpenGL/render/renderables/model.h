@@ -14,7 +14,7 @@
 
 class ModelRenderMesh {
 public:
-    GLuint m_Buffers[5];
+    GLuint m_Buffers[7];
     
     float base_u;
     float base_v;
@@ -29,6 +29,8 @@ public:
     GLfloat* texture_uv;
     GLfloat* light_uv;
     GLfloat* normals;
+    GLfloat* binormals;
+    GLfloat* tangents;
     GLint* index_array;
     
     shader_object *shader;

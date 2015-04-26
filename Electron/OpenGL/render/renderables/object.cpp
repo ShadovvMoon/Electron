@@ -31,7 +31,7 @@ void ObjectRef::render(ShaderType pass) {
 }
 
 ObjectRef *ObjectManager::create_object(ProtonMap *map, HaloTagDependency tag) {
-    printf("creating object %d\n", tag.tag_id.tag_index);
+    fprintf(stderr, "creating object %d\n", tag.tag_id.tag_index);
     
     // Has this bitmap been loaded before? Check the cache
     std::map<uint16_t, ObjectRef*>::iterator iter = this->objects.find(tag.tag_id.tag_index);

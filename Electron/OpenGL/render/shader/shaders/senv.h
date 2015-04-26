@@ -23,6 +23,8 @@ public:
     GLint maps;
     GLint maps2;
     GLint maps3;
+    GLint reflectionScale;
+    GLint scale;
     
     void setup(std::string path);
     void start();
@@ -31,6 +33,9 @@ public:
 
 class senv_object : public shader_object {
 private:
+    float uscale = 1.0;
+    float vscale = 1.0;
+    
     texture *baseMap = nullptr;
     bool useBlend = false;
     bool usePrimary = false;
@@ -47,10 +52,14 @@ private:
     
     bool useCube = false;
     texture_cubemap *cubeMap = nullptr;
+    float reflectionPerpendicular;
+    float reflectionParallel;
     
     GLint mapsId;
     GLint maps2Id;
     GLint maps3Id;
+    GLint scaleId;
+    GLint reflectionScaleId;
 public:
     bool useLight = false;
     
