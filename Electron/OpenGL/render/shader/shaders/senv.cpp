@@ -109,6 +109,7 @@ bool senv_object::is(ShaderType type) {
 void senv_object::render() {
 
     // Texturing
+    glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
     baseMap->bind();
     glActiveTexture(GL_TEXTURE1);

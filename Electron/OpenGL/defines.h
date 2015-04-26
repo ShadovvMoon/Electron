@@ -11,6 +11,7 @@
 
 #define RENDER_VAO
 #define RENDER_GPU
+//#define RENDER_VAO_NORMAL
 //#define RENDER_FAST // Render as fast as possible
 
 // Definitions
@@ -30,8 +31,9 @@
 // Custom includes
 #ifdef _WINDOWS
 #include "glew/GL/glew.h"
+#define RENDER_VAO_NORMAL
 #elif __APPLE__
-#include <OpenGL/gl.h>
+#include <OpenGL/gl3.h>
 #include <OpenGL/glu.h>
 #include <GLUT/glut.h>
 #endif
@@ -65,6 +67,12 @@ typedef enum {
 #define LIGHT_VB 4
 #define BINORMAL_VB 5
 #define TANGENT_VB 6
+
+#define texCoord_buffer 1
+#define texCoord_buffer_light 3
+#define normals_buffer 2
+#define binormals_buffer 5
+#define tangents_buffer 6
 
 // Functions
 void errorCheck();

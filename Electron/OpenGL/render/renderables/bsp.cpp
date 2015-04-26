@@ -15,12 +15,12 @@ uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
 
 void BSPRenderBuffer::setup() {
     // Create the buffers for the vertices atttributes
-#ifdef _WINDOWS
+#ifdef RENDER_VAO_NORMAL
 	glGenVertexArrays(1, &geometryVAO);
 	glBindVertexArray(geometryVAO);
 #else
-	glGenVertexArraysAPPLE(1, &geometryVAO);
-	glBindVertexArrayAPPLE(geometryVAO);
+    glGenVertexArraysAPPLE(1, &geometryVAO);
+    glBindVertexArrayAPPLE(geometryVAO);
 #endif
 
     // Create the buffers for the vertices atttributes
@@ -169,7 +169,9 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     memcpy(my_vertex_pointer, vao->vertex_array, vertex_size * 3 * sizeof(GLfloat));
     glUnmapBuffer(GL_ARRAY_BUFFER);
     glEnableVertexAttribArray(0);
+    glEnableClientState(GL_VERTEX_ARRAY);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glDisableClientState(GL_VERTEX_ARRAY);
     
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[TEXCOORD_VB]);
     glBufferData(GL_ARRAY_BUFFER, vertex_size * 2 * sizeof(GLfloat), vao->texture_uv, GL_STATIC_DRAW);
@@ -199,7 +201,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     glEnableVertexAttribArray(tangents_buffer);
     glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
     
-#ifdef _WINDOWS
+#ifdef RENDER_VAO_NORMAL
 	glBindVertexArray(0);
 #else
 	glBindVertexArrayAPPLE(0);
@@ -228,10 +230,12 @@ void BSP::render(ShaderType pass) {
     glEnableVertexAttribArray(normals_buffer);
     glEnableVertexAttribArray(texCoord_buffer);
     glEnableVertexAttribArray(texCoord_buffer_light);
+    glEnableVertexAttribArray(binormals_buffer);
+    glEnableVertexAttribArray(tangents_buffer);
 #endif
     
 #ifdef RENDER_VAO
-	#ifdef _WINDOWS
+	#ifdef RENDER_VAO_NORMAL
 		glBindVertexArray(vao->geometryVAO);
 	#else
 		glBindVertexArrayAPPLE(vao->geometryVAO);
@@ -245,6 +249,10 @@ void BSP::render(ShaderType pass) {
     glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[NORMAL_VB]);
     glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[BINORMAL_VB]);
+    glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[TANGENT_VB]);
+    glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vao->m_Buffers[INDEX_BUFFER]);
 #endif
     
@@ -263,7 +271,6 @@ void BSP::render(ShaderType pass) {
                 }
                 glActiveTexture(GL_TEXTURE3);
                 mesh->lightTexture->bind(submesh->lightmap);
-                
                 glDrawElementsBaseVertex(GL_TRIANGLES,
                                          submesh->indexCount,
                                          GL_UNSIGNED_INT,
@@ -272,9 +279,18 @@ void BSP::render(ShaderType pass) {
             }
         }
     }
-#ifdef _WINDOWS
+#ifdef RENDER_VAO_NORMAL
 	glBindVertexArray(0);
 #else
 	glBindVertexArrayAPPLE(0);
+#endif
+    
+#ifndef RENDER_VAO
+    glDisableVertexAttribArray(texCoord_buffer_light);
+    glDisableVertexAttribArray(texCoord_buffer);
+    glDisableVertexAttribArray(normals_buffer);
+    glDisableVertexAttribArray(binormals_buffer);
+    glDisableVertexAttribArray(tangents_buffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 #endif
 }

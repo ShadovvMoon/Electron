@@ -281,6 +281,8 @@ void Model::render(ShaderType pass) {
 #ifndef RENDER_VAO
     glEnableVertexAttribArray(texCoord_buffer);
     glEnableVertexAttribArray(normals_buffer);
+    glEnableVertexAttribArray(binormals_buffer);
+    glEnableVertexAttribArray(tangents_buffer);
 #endif
     
     shader_object *previous_shader = nullptr;
@@ -306,6 +308,10 @@ void Model::render(ShaderType pass) {
                 glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[NORMAL_VB]);
                 glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[BINORMAL_VB]);
+                glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TANGENT_VB]);
+                glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
 #endif
                 if (mesh->shader != nullptr) {
@@ -325,6 +331,13 @@ void Model::render(ShaderType pass) {
             }
         }
     }
+    
+#ifndef RENDER_VAO
+    glDisableVertexAttribArray(texCoord_buffer);
+    glDisableVertexAttribArray(normals_buffer);
+    glDisableVertexAttribArray(binormals_buffer);
+    glDisableVertexAttribArray(tangents_buffer);
+#endif
 }
 
 Model *ModelManager::create_model(ProtonMap *map, HaloTagDependency mod2) {
