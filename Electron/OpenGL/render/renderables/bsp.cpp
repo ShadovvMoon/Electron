@@ -13,6 +13,308 @@ uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
     return (uint8_t*)(scenario->Data() + scenario->PointerToOffset(address));
 }
 
+typedef struct {
+    int16_t plane;
+    int16_t back;
+    int16_t front;
+} BSP3DNode;
+typedef struct {
+    float a;
+    float b;
+    float c;
+    float d;
+} Plane;
+typedef struct {
+    bitmask8 flags;
+    uint8_t bsp2dCount;
+    uint32_t firstRef;
+} Leaf;
+typedef struct {
+    uint32_t plane;
+    uint32_t bsp2DNode;
+} BSP2DRef;
+typedef struct {
+    float a;
+    float b;
+    float c;
+    uint32_t left;
+    uint32_t right;
+} BSP2DNode;
+typedef struct {
+    uint32_t plane;
+    uint32_t edge;
+    bitmask16 flags;
+    uint8_t breakableSurface;
+    uint16_t material;
+} Surface;
+typedef struct {
+    uint32_t startVert;
+    uint32_t endVert;
+    uint32_t forwardEdge;
+    uint32_t prevEdge;
+    uint32_t leftSurface;
+    uint32_t rightSurface;
+} Edge;
+typedef struct {
+    float x;
+    float y;
+    float z;
+    uint32_t firstEdge;
+} CollVert;
+typedef struct {
+    HaloTagReflexive BSP3DNodes; //0x00
+    HaloTagReflexive Planes;     //0x0C
+    HaloTagReflexive Leaves;     //0x18
+    HaloTagReflexive BSP2DRef;   //0x24
+    HaloTagReflexive BSP2DNodes; //0x30
+    HaloTagReflexive Surfaces;   //0x3C
+    HaloTagReflexive Edges;      //0x48
+    HaloTagReflexive Vertices;   //0x54
+} CollisionBSP;
+
+
+// Experiment intersection function
+
+BSP3DNode *node3d(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (BSP3DNode*)(map2mem(bspTag, collison->BSP3DNodes.address) + i * sizeof(BSP3DNode));
+}
+Plane *plane(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (Plane*)(map2mem(bspTag, collison->Planes.address) + i * sizeof(Plane));
+}
+Leaf *leaf(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (Leaf*)(map2mem(bspTag, collison->Leaves.address) + i * sizeof(Leaf));
+}
+BSP2DRef *ref2d(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (BSP2DRef*)(map2mem(bspTag, collison->BSP2DRef.address) + i * sizeof(BSP2DRef));
+}
+BSP2DNode *node2d(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (BSP2DNode*)(map2mem(bspTag, collison->BSP2DNodes.address) + i * sizeof(BSP2DNode));
+}
+Surface *surface(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (Surface*)(map2mem(bspTag, collison->Surfaces.address) + i * sizeof(Surface));
+}
+Edge *edge(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (Edge*)(map2mem(bspTag, collison->Edges.address) + i * sizeof(Edge));
+}
+CollVert *vert(ProtonTag *bspTag, CollisionBSP *collison, int i) {
+    return (CollVert*)(map2mem(bspTag, collison->Vertices.address) + i * sizeof(CollVert));
+}
+
+#include <math.h>
+float dot3n(Plane *p, vector3d *q) {
+    return p->a * q->x + p->b * q->y + p->c * q->z;
+}
+float dot2no(BSP2DNode *p, vector3d *q) {
+    return p->a * q->x + p->b * q->y;
+}
+vector3d *project(vector3d *N, vector3d *T) {
+    // First find the component of the plane normal that is the most significant
+    float x = fabs(N->x);
+    float y = fabs(N->y);
+    float z = fabs(N->z);
+    int projectionAxis = 0;
+    int sign = 0; // 0 means the projection axis was negative, 1 means positive
+    float letter = 0;
+    if (z < y || z < x){
+        if (y < x) { // X axis has the greatest contribution
+            projectionAxis = 0;
+            letter = N->x;
+        } else { // Y axis has the greatest contribution
+            projectionAxis = 1;
+            letter = N->y;
+        }
+    }
+    else { // otherwise Z had the greatest contribution
+        projectionAxis = 2;
+        letter = N->z;
+    }
+    if(letter > 0.f) {
+        sign = 1;
+    }
+    
+    // Choose the projection plane
+    static short planeIndex[3][3][3] = {
+        // Negative
+        {{2, 1},  //Z,Y
+         {0, 2}, //X,Z
+         {1, 0}}, //Y,X
+        // Positive
+        {{1, 2},  // Y, Z
+         {2, 0}, // Z, X
+         {0, 1}}};// X, Y
+    int xyz = planeIndex[sign][projectionAxis][0];
+    int xyz2 = planeIndex[sign][projectionAxis][1];
+    return new vector3d(T->get(xyz), T->get(xyz2), 0);
+}
+
+bool surfaceTest(ProtonTag *b, CollisionBSP *c, vector3d *T, uint32_t s) {
+    CollVert *P, *Q;
+    float angleSum = 0;
+    
+    int currentEdge;
+    Surface *surf = surface(b,c,s);
+    int nextEdge = surf->edge;
+    do {
+        currentEdge = nextEdge;
+        Edge *curr = edge(b,c,currentEdge);
+        if (s == curr->leftSurface) {
+            P = vert(b,c,curr->startVert);
+            Q = vert(b,c,curr->endVert);
+            nextEdge = curr->forwardEdge;
+        }
+        else {
+            P = vert(b,c,curr->endVert);
+            Q = vert(b,c,curr->startVert);
+            nextEdge = curr->prevEdge;
+        }
+
+        vector3d *v1 = new vector3d(Q->x - P->x, Q->y - P->y, Q->z - P->z); //deleted
+        vector3d *v2 = new vector3d(T->x - P->x, T->y - P->y, T->z - P->z); //deleted
+        vector3d *v3 = new vector3d(P->x - Q->x, P->y - Q->y, P->z - Q->z); //deleted
+        vector3d *v4 = new vector3d(T->x - Q->x, T->y - Q->y, T->z - Q->z); //deleted
+        angleSum += acos(v1->dot(v2)/(v1->mag() * v2->mag()));
+        angleSum += acos(v3->dot(v4)/(v3->mag() * v4->mag()));
+        delete v1;
+        delete v2;
+        delete v3;
+        delete v4;
+    }
+    while(nextEdge != surf->edge);
+    if(fabs(angleSum - 2*M_PI) < 0.01) {
+        return true;
+    }
+    return false;
+}
+bool bsp2dTest(ProtonTag *b, CollisionBSP *c, uint32_t node, vector3d *T, vector3d *Tp) {
+    if(node & 0x80000000) {
+        return surfaceTest(b,c,T,node & 0x7FFFFFFF);
+    }
+    BSP2DNode *n = node2d(b,c,node);
+    float s = dot2no(n, Tp) - n->c;
+    if( s >= 0)
+        return bsp2dTest(b, c, n->right, T, Tp);
+    return bsp2dTest(b, c, n->left, T, Tp);
+}
+
+vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint16_t l) {
+    Leaf *lea = leaf(b,c,l);
+    uint32_t reference = lea->firstRef;
+    
+    #define kBigFloat 100000.0
+    vector3d *S = new vector3d(kBigFloat,kBigFloat,kBigFloat);
+    vector3d *T = nullptr;
+    for (int i = 0; i < lea->bsp2dCount; i++) {
+        BSP2DRef *ref = ref2d(b, c, reference+i);
+        int pl = (ref->plane & 0x7FFFFFFF);
+        
+        Plane *N = plane(b,c,pl);
+        float Na,Nb,Nc;
+        if(ref->plane & 0x80000000){
+            Na = -N->a; Nb = -N->b; Nc = -N->c;
+        } else {
+            Na = N->a; Nb = N->b; Nc = N->c;
+        }
+        
+        // check if the line segment crosses the 2d plane upon which the 2dBsp was projected
+        vector3d *nN = new vector3d(Na,Nb,Nc);
+        float s = nN->dot(p) - N->d;
+        float t = nN->dot(q) - N->d;
+        if(s*t >= 0) { // if the line does not cross the plane, don't consider it
+            delete nN;
+            continue;
+        }
+        
+        // Find the intersection between the planes
+        vector3d *vec = new vector3d(0.0,0.0,0.0);
+        vec->set(q);
+        vec->sub(p);
+        float ins = (N->d - nN->dot(p))/(nN->dot(vec));
+        T = new vector3d(p);
+        T->add(vec->mul(ins));
+        
+        // Test the 2d bsp
+        vector3d *Tp = project(nN, T);
+        float distanceS = sqrtf(powf(S->x-p->x, 2) + powf(S->y-p->y, 2) + powf(S->z-p->z, 2));
+        float distanceT = sqrtf(powf(T->x-p->x, 2) + powf(T->y-p->y, 2) + powf(T->z-p->z, 2));
+        if (distanceT < distanceS && bsp2dTest(b,c,ref->bsp2DNode,T,Tp)) {
+            S->set(T);
+        }
+        delete nN;
+    }
+    return S;
+}
+
+vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, int32_t node) {
+    if(node == 0xFFFFFFFF) {
+        return nullptr; // outside of the bsp tree
+    }
+    if (node & 0x80000000) { // we've hit a leaf, perform hit test
+        return leafTest(b, c, p, q, (node & 0x7FFFFFFF));
+    }
+    
+    BSP3DNode *node3 = node3d(b,c,node);
+    Plane *N = plane(b, c, node3->plane & 0x7FFFFFFF);
+    float Na,Nb,Nc;
+    if(node3->plane & 0x80000000){
+        Na = -N->a; Nb = -N->b; Nc = -N->c;
+    } else {
+        Na = N->a; Nb = N->b; Nc = N->c;
+    }
+    
+    float s = Na*p->x + Nb*p->y + Nc*p->z - N->d; // if this is < 0 the point is behind the plane, > 0 in front
+    float t = Na*q->x + Nb*q->y + Nc*q->z - N->d; // same as above, but for Q
+    if(s > 0 && t > 0) { // both segments are infront of the plane
+        if (node3->front == node) return nullptr;
+        return traverseTree(p, q, b, c, node3->front);
+    } else if(s < 0 && t < 0) { // both segments are behind the plane
+        if (node3->back == node) return nullptr;
+        return traverseTree(p, q, b, c, node3->back);
+    } // else the vector intersects the plane
+
+    // now what...
+    printf("plane intersection\n");
+    return nullptr;
+}
+
+vector3d *BSP::intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *scenario) {
+    HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
+    int i, m;
+    for (i=0; i < bsp.count; i++) {
+        BSP_CHUNK *chunk = (BSP_CHUNK *)(map2mem(scenario, bsp.address) + sizeof(BSP_CHUNK) * i); // VERIFIED
+        ProtonTag *bspTag = map->tags.at((uint16_t)(chunk->tagId)).get();
+        uint32_t mesh_offset = *(uint32_t *)(bspTag->Data());
+        BSP_MESH *mesh = (BSP_MESH *)map2mem(bspTag, mesh_offset);
+        HaloTagReflexive collisionBSP = mesh->collBSP;
+        for (m=0; m < bsp.count; m++) {
+            CollisionBSP *collison = (CollisionBSP *)(map2mem(bspTag, collisionBSP.address) + 96 * m);
+            return traverseTree(p, q, bspTag, collison, 0);
+        }
+    }
+    return nullptr;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void BSPRenderBuffer::setup() {
     // Create the buffers for the vertices atttributes
 #ifdef RENDER_VAO_NORMAL
@@ -50,6 +352,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
         ProtonTag *bspTag = map->tags.at((uint16_t)(chunk->tagId)).get();
         uint32_t mesh_offset = *(uint32_t *)(bspTag->Data());
         BSP_MESH *mesh = (BSP_MESH *)map2mem(bspTag, mesh_offset);
+        
         int renderable_count = 0;
         for (m=0; m < mesh->submeshHeader.count; m++) {
             BSP_SUBMESH *submesh = (BSP_SUBMESH *)(map2mem(bspTag, mesh->submeshHeader.address) + sizeof(BSP_SUBMESH) * m);

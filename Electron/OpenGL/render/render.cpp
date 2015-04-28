@@ -198,6 +198,20 @@ void ERenderer::renderScene(bool fast) {
             objects->render(&number, nullptr, type);
             shader->stop();
         }
+        
+        // Intersection debugging
+        /*
+        vector3d *temp1 = new vector3d(camera->view);
+        temp1->add(camera->view);
+        temp1->mul(1000);
+        vector3d *temp2 = new vector3d(camera->position);
+        temp2->add(temp1);
+        if (bsp->intersect(camera->position, temp2, map, scenarioTag) != nullptr) {
+            printf("intersect\n");
+        }
+        delete temp1;
+        delete temp2;
+        */
     }
 }
 

@@ -11,6 +11,7 @@
 
 #include "defines.h"
 #include "../shader/shader.h"
+#include "vector3d.h"
 
 class BSPRenderBuffer {
 public:
@@ -48,7 +49,6 @@ public:
     std::vector<BSPRenderSubmesh*> submeshes;
 };
 
-
 class BSP {
     BSPRenderBuffer *vao;
     ShaderManager *shaders;
@@ -57,6 +57,9 @@ public:
     BSP(ShaderManager* manager);
     void setup(ProtonMap *map, ProtonTag *scenario);
     void render(ShaderType pass);
+    
+    
+    vector3d *intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *scenario);
 };
 
 #endif /* defined(__BSP__) */

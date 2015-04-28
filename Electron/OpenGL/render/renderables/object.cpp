@@ -173,7 +173,7 @@ void ObjectManager::select(bool shift, float x, float y) {
     gluPickMatrix((GLdouble)(x + selectWidth / 2),(GLdouble)(y + selectHeight / 2),(GLdouble)(selectWidth),(GLdouble)(selectHeight),viewport);
     gluPerspective(45.0f,(GLfloat)((GLfloat)(viewport[2] - viewport[0])/(GLfloat)(viewport[3] - viewport[1])),0.1f,400000.0f);
     glMatrixMode(GL_MODELVIEW);
-    
+
     GLuint name = 1;
     GLuint *lookup = (GLuint *)tmpLookup;
     glInitNames();

@@ -13,6 +13,11 @@ vector3d::vector3d (float sx, float sy, float sz) {
     y = sy;
     z = sz;
 }
+vector3d::vector3d (vector3d *old) {
+    x = old->x;
+    y = old->y;
+    z = old->z;
+}
 vector3d* vector3d::add(vector3d* vector) {
     x += vector->x;
     y += vector->y;
@@ -53,5 +58,22 @@ vector3d* vector3d::mul(float delta) {
     z *= delta;
     return this;
 }
+GLfloat vector3d::get(int index) {
+    switch (index) {
+        case 0:
+            return x;
+        case 1:
+            return y;
+        case 2:
+            return z;
+    }
+    return -1;
+}
 
+float vector3d::dot(vector3d *o) {
+    return x * o->x + y * o->y + z * o->z;
+}
+float vector3d::mag() {
+    return sqrtf(x*x+y*y+z*z);
+}
 
