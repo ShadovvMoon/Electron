@@ -13,6 +13,11 @@
 #define RENDER_VAO
 #define RENDER_VBO
 
+// Rendering flags
+#define SHADOW_MAP_SIZE 1024
+#define RENDER_SWAT_REFLECTION
+#define RENDER_SENV_REFLECTION
+
 // Force hardware acceleration
 #define RENDER_GPU
 

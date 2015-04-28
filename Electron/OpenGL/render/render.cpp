@@ -27,7 +27,7 @@ void ERenderer::setup(const char *resources) {
     camera  = new Camera;
     shaders = new ShaderManager(resources);
     bsp     = new BSP(shaders);
-    objects = new ObjectManager;
+    objects = new ObjectManager(camera, bsp);
     skies   = new SkyManager;
     
     // Start the tick
@@ -198,20 +198,6 @@ void ERenderer::renderScene(bool fast) {
             objects->render(&number, nullptr, type);
             shader->stop();
         }
-        
-        // Intersection debugging
-        /*
-        vector3d *temp1 = new vector3d(camera->view);
-        temp1->add(camera->view);
-        temp1->mul(1000);
-        vector3d *temp2 = new vector3d(camera->position);
-        temp2->add(temp1);
-        if (bsp->intersect(camera->position, temp2, map, scenarioTag) != nullptr) {
-            printf("intersect\n");
-        }
-        delete temp1;
-        delete temp2;
-        */
     }
 }
 
@@ -245,7 +231,26 @@ void ERenderer::render() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     camera->look();
+    
+    
+    // Render the shadow map
+    /*
+    GLuint ShadowMap;
+    glBindFramebuffer(GL_FRAMEBUFFER_EXT, FBO);
+    glDrawBuffers(0, NULL); glReadBuffer(GL_NONE);
+    glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, ShadowMap, 0);
 
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+    renderScene(false);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+
+    return;
+    */
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
     glEnableClientState(GL_VERTEX_ARRAY);
     if (shaders->needs_reflection()) {
         // Render a reflection of the scenario
@@ -275,6 +280,47 @@ void ERenderer::render() {
     // Render the scene with reflections
     renderScene(false);
     glDisableClientState(GL_VERTEX_ARRAY);
+    glPopAttrib();
+    
+    // Intersection debugging
+    /*
+    uint16_t scenarioTag = map->principal_tag;
+    if (scenarioTag != NULLED_TAG_ID) {
+        ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
+
+        glUseProgram(0);
+        glLineWidth(20.0);
+        glColor4f(1.0, 0.0, 0.0, 1.0);
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_TEXTURE_2D);
+        glBegin(GL_LINES);
+        vector3d *temp1 = new vector3d(camera->view);
+        temp1->sub(camera->position);
+        temp1->mul(100);
+        temp1->add(camera->position);
+        glVertex3f(camera->position->x, camera->position->y, camera->position->z);
+        glVertex3f(temp1->x, temp1->y, temp1->z);
+        glEnd();
+        
+        vector3d *intersect = bsp->intersect(camera->position, temp1, map, scenarioTag);
+        if (intersect != nullptr) {
+            printf("intersect %f %f %f\n", intersect->x, intersect->y, intersect->z);
+            
+            // Render something at the intersection point
+            glPushMatrix();
+            glTranslatef(intersect->x, intersect->y, intersect->z);
+            GLUquadric *sphere=gluNewQuadric();
+            gluQuadricDrawStyle( sphere, GLU_FILL);
+            gluQuadricNormals( sphere, GLU_SMOOTH);
+            gluQuadricOrientation( sphere, GLU_OUTSIDE);
+            gluQuadricTexture( sphere, GL_TRUE);
+            gluSphere(sphere,0.1,30,30);
+            gluDeleteQuadric ( sphere );
+            glPopMatrix();
+        }
+        delete temp1;
+    }
+    */
 }
 
 // Cleanup

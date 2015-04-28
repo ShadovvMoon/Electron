@@ -11,6 +11,8 @@
 
 #include "defines.h"
 #include "model.h"
+#include "bsp.h"
+#include "camera.h"
 #include <vector>
 #include <map>
 
@@ -67,11 +69,20 @@ public:
 
 class ObjectManager {
 private:
+    BSP* bsp;
+    Camera *camera;
+    ProtonMap *map;
+    ProtonTag *scenario;
+    
     ObjectClass *scen;
     ObjectClass *vehi;
     ObjectClass *itmc;
     std::map<uint16_t, ObjectRef*> objects;
     ObjectClass *getClass(SelectionType type);
+    
+    void fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass);
+    void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass);
+    void render_instance(ObjectInstance *instance, ShaderType pass);
 public:
     ModelManager *modelManager;
     
@@ -90,6 +101,8 @@ public:
     
     // Modifiers
     ObjectInstance *duplicate(ObjectInstance *instance);
+    ObjectManager(Camera *camera, BSP* bsp);
+    
 };
 
 #endif /* defined(__BSP__) */

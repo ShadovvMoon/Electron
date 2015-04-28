@@ -14,37 +14,36 @@ uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
 }
 
 typedef struct {
-    int16_t plane;
-    int16_t back;
-    int16_t front;
-} BSP3DNode;
+    uint32_t plane;
+    uint32_t back;
+    uint32_t front;
+} BSP3DNode; //size = 12
 typedef struct {
     float a;
     float b;
     float c;
     float d;
-} Plane;
+} Plane; //size = 16
 typedef struct {
-    bitmask8 flags;
-    uint8_t bsp2dCount;
+    uint16_t flags;
+    uint16_t bsp2dCount;
     uint32_t firstRef;
-} Leaf;
+} Leaf; // size = 8
 typedef struct {
     uint32_t plane;
     uint32_t bsp2DNode;
-} BSP2DRef;
+} BSP2DRef; //size = 8
 typedef struct {
     float a;
     float b;
     float c;
     uint32_t left;
     uint32_t right;
-} BSP2DNode;
+} BSP2DNode; //size = 20
 typedef struct {
     uint32_t plane;
     uint32_t edge;
-    bitmask16 flags;
-    uint8_t breakableSurface;
+    uint16_t flags;
     uint16_t material;
 } Surface;
 typedef struct {
@@ -101,6 +100,7 @@ CollVert *vert(ProtonTag *bspTag, CollisionBSP *collison, int i) {
 }
 
 #include <math.h>
+#define EPSILON 0.01
 float dot3n(Plane *p, vector3d *q) {
     return p->a * q->x + p->b * q->y + p->c * q->z;
 }
@@ -150,10 +150,10 @@ vector3d *project(vector3d *N, vector3d *T) {
 bool surfaceTest(ProtonTag *b, CollisionBSP *c, vector3d *T, uint32_t s) {
     CollVert *P, *Q;
     float angleSum = 0;
-    
     int currentEdge;
     Surface *surf = surface(b,c,s);
     int nextEdge = surf->edge;
+    int edgeCount = 0;
     do {
         currentEdge = nextEdge;
         Edge *curr = edge(b,c,currentEdge);
@@ -161,26 +161,30 @@ bool surfaceTest(ProtonTag *b, CollisionBSP *c, vector3d *T, uint32_t s) {
             P = vert(b,c,curr->startVert);
             Q = vert(b,c,curr->endVert);
             nextEdge = curr->forwardEdge;
-        }
-        else {
+        } else {
             P = vert(b,c,curr->endVert);
             Q = vert(b,c,curr->startVert);
             nextEdge = curr->prevEdge;
         }
-
-        vector3d *v1 = new vector3d(Q->x - P->x, Q->y - P->y, Q->z - P->z); //deleted
-        vector3d *v2 = new vector3d(T->x - P->x, T->y - P->y, T->z - P->z); //deleted
-        vector3d *v3 = new vector3d(P->x - Q->x, P->y - Q->y, P->z - Q->z); //deleted
-        vector3d *v4 = new vector3d(T->x - Q->x, T->y - Q->y, T->z - Q->z); //deleted
-        angleSum += acos(v1->dot(v2)/(v1->mag() * v2->mag()));
-        angleSum += acos(v3->dot(v4)/(v3->mag() * v4->mag()));
-        delete v1;
-        delete v2;
-        delete v3;
-        delete v4;
+        float v1x = Q->x - P->x;
+        float v1y = Q->y - P->y;
+        float v1z = Q->z - P->z;
+        float v2x = T->x - P->x;
+        float v2y = T->y - P->y;
+        float v2z = T->z - P->z;
+        float v3x = P->x - Q->x;
+        float v3y = P->y - Q->y;
+        float v3z = P->z - Q->z;
+        float v4x = T->x - Q->x;
+        float v4y = T->y - Q->y;
+        float v4z = T->z - Q->z;
+        angleSum += acos((v1x*v2x+v1y*v2y+v1z*v2z)/sqrtf((v1x*v1x+v1y*v1y+v1z*v1z)*(v2x*v2x+v2y*v2y+v2z*v2z)));
+        angleSum += acos((v3x*v4x+v3y*v4y+v3z*v4z)/sqrtf((v3x*v3x+v3y*v3y+v3z*v3z)*(v4x*v4x+v4y*v4y+v4z*v4z)));
+        edgeCount++;
     }
     while(nextEdge != surf->edge);
-    if(fabs(angleSum - 2*M_PI) < 0.01) {
+    float expected = (edgeCount - 2) * M_PI;
+    if(fabs(angleSum - expected) < EPSILON) {
         return true;
     }
     return false;
@@ -236,7 +240,7 @@ vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint
         vector3d *Tp = project(nN, T);
         float distanceS = sqrtf(powf(S->x-p->x, 2) + powf(S->y-p->y, 2) + powf(S->z-p->z, 2));
         float distanceT = sqrtf(powf(T->x-p->x, 2) + powf(T->y-p->y, 2) + powf(T->z-p->z, 2));
-        if (distanceT < distanceS && bsp2dTest(b,c,ref->bsp2DNode,T,Tp)) {
+        if (bsp2dTest(b,c,ref->bsp2DNode,T,Tp)) {
             S->set(T);
         }
         delete nN;
@@ -267,13 +271,59 @@ vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, 
         if (node3->front == node) return nullptr;
         return traverseTree(p, q, b, c, node3->front);
     } else if(s < 0 && t < 0) { // both segments are behind the plane
-        if (node3->back == node) return nullptr;
         return traverseTree(p, q, b, c, node3->back);
     } // else the vector intersects the plane
 
-    // now what...
-    printf("plane intersection\n");
-    return nullptr;
+    // Split the line segment
+    vector3d *V = new vector3d(q);
+    V->sub(p);
+    float ins = (N->d - (p->x*N->a+p->y*N->b+p->z*N->c))/(V->x*N->a+V->y*N->b+V->z*N->c);
+    
+    // Now we have it that so that P+ins*V lies on the plane N
+    // we have to make sure that the new line (P, Pn) can still intersect the splitting plane
+    // so we fudge ins a little bit to make sure that it can still intersect with N (since the splitting plane may contain
+    // the surface that we want to have an intersection test against in the leaf)
+    vector3d *temp = new vector3d(0.0,0.0,0.0);
+    vector3d *S = nullptr;
+    vector3d *T = nullptr;
+    if(s >= 0) {
+        temp->x = p->x + (ins+EPSILON)* V->x;
+        temp->y = p->y + (ins+EPSILON)* V->y;
+        temp->z = p->z + (ins+EPSILON)* V->z;
+        S = traverseTree(p, temp, b, c, node3->front);
+        
+        temp->x = p->x + (ins-EPSILON)* V->x;
+        temp->y = p->y + (ins-EPSILON)* V->y;
+        temp->z = p->z + (ins-EPSILON)* V->z;
+        T = traverseTree(temp, q, b, c, node3->back);
+    }
+    else {
+        temp->x = p->x + (ins+EPSILON)* V->x;
+        temp->y = p->y + (ins+EPSILON)* V->y;
+        temp->z = p->z + (ins+EPSILON)* V->z;
+        S = traverseTree(p, temp, b, c, node3->back);
+        temp->x = p->x + (ins-EPSILON)* V->x;
+        temp->y = p->y + (ins-EPSILON)* V->y;
+        temp->z = p->z + (ins-EPSILON)* V->z;
+        T = traverseTree(temp, q, b, c, node3->front);
+    }
+    delete temp;
+    if (!T && !S) {
+        return nullptr;
+    } else if (!S) {
+        return T;
+    } else if (!T) {
+        return S;
+    }
+    
+    float distanceS = sqrtf(powf(S->x-p->x, 2) + powf(S->y-p->y, 2) + powf(S->z-p->z, 2));
+    float distanceT = sqrtf(powf(T->x-p->x, 2) + powf(T->y-p->y, 2) + powf(T->z-p->z, 2));
+    if(distanceS < distanceT) {
+        delete T;
+        return S;
+    }
+    delete S;
+    return T;
 }
 
 vector3d *BSP::intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *scenario) {

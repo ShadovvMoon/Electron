@@ -72,6 +72,10 @@ void ObjectManager::read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scen
     vehi->read(this, map, scenario);
     itmc = new ItmcClass;
     itmc->read(this, map, scenario);
+    
+    // Store the map and scenario for bsp lookup
+    this->map = map;
+    this->scenario = scenario;
 }
 
 void ObjectManager::write(ProtonMap *map, ProtonTag *scenario) {
@@ -80,7 +84,16 @@ void ObjectManager::write(ProtonMap *map, ProtonTag *scenario) {
     itmc->write(map, scenario);
 }
 
-void render_instance(ObjectInstance *instance, ShaderType pass) {
+void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
+    // Frustrum culling
+    
+    
+    // Culling
+    //vector3d *position = new vector3d(instance->x, instance->y, instance->z);
+    //bsp->intersect(camera->position, position, map, scenario); too slow 
+    //delete position;
+    
+    // Render
     if (instance->selected) {
         glEnable(GL_COLOR_MATERIAL);
         glEnable(GL_BLEND);
@@ -100,7 +113,7 @@ void render_instance(ObjectInstance *instance, ShaderType pass) {
     }
 }
 
-void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass) {
+void ObjectManager::render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass) {
     int i;
     for (i=0; i < objClass->objects.size(); i++) {
         glLoadName(*name);
@@ -114,7 +127,7 @@ void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *nam
     }
 }
 
-void fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass) {
+void ObjectManager::fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass) {
     int i;
     for (i=0; i < objClass->objects.size(); i++) {
         render_instance(objClass->objects[i], pass);
@@ -146,6 +159,11 @@ void ObjectManager::render(GLuint *name, GLuint *lookup, ShaderType pass) {
         render_subclass(vehi, s_vehicle, name, lookup, pass);
         render_subclass(itmc, s_item, name, lookup, pass);
     }
+}
+
+ObjectManager::ObjectManager(Camera *camera, BSP* bsp) {
+    this->bsp = bsp;
+    this->camera = camera;
 }
 
 void ObjectManager::clearSelection() {

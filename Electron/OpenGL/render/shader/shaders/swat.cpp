@@ -51,7 +51,9 @@ void swat_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     uOffset = 0.0;
     vOffset = 0.0;
     
+#ifdef RENDER_SWAT_REFLECTION
     manager->set_needs_reflection(true);
+#endif
     swat *shader = (swat *)(manager->get_shader(shader_SWAT));
     frameSize = shader->frameSize;
     floats = shader->floats;
