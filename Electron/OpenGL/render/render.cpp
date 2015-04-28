@@ -176,7 +176,6 @@ void ERenderer::renderScene(bool fast) {
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
         // Render the sky
-        /*
         shader *scex = shaders->get_shader(shader_SCEX);
         scex->start();
         skies->render(shader_SCEX);
@@ -185,9 +184,7 @@ void ERenderer::renderScene(bool fast) {
         schi->start();
         skies->render(shader_SCHI);
         schi->stop();
-        if (fast) return;
-        */
-        
+
         // Render everything else
         //glAlphaFunc(GL_GREATER, 0.1);
         for (int pass = ShaderStart; pass <= ShaderEnd; pass++ )

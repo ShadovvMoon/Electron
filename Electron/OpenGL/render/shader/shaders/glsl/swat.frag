@@ -12,6 +12,7 @@ uniform vec2 timerOffset;
 
 // Cubemapping
 varying vec4  EyePos;
+varying vec4 fragPos;
 varying vec3 lightVec, eyeVec;
 uniform int togglebump; // false/true
 uniform int textureon; // false/true
@@ -36,8 +37,17 @@ void main(void) {
     
     vec3 wnTex0 = vec3(1.0,1.0,1.0) - (normalize(texture2D(bumpMap, mapCoords).xyz - vec3(0.5, 0.5, 0.5)));
     vec3 wnTex1 = vec3(1.0,1.0,1.0) - (normalize(texture2D(bumpMap, mapCoords2).xyz - vec3(0.5, 0.5, 0.5)));
-    vec3 n = normalize(wnTex0 + wnTex1);
-
+    
+    // Scale the normal vector based on angle with the horizontal vector
+    // calc refraction
+    float distance = sqrt(pow(fragPos.z - EyePos.z,2)) / 20.0;
+    if (distance > 1000)
+        distance = 1000;
+    else if (distance < 2)
+        distance = 2;
+    float scaled = 1/distance;
+    vec3 n = normalize(wnTex0 + wnTex1) * min(0.3, scaled);
+    
     // perform the div by w
     float recipW = 1.0 / EyePos.w;
     vec2 eye = EyePos.xy * vec2(recipW);
@@ -76,5 +86,6 @@ void main(void) {
     float cosTheta = clamp( dot( L, n ), 0,1 );
 
     vec3 color = RefractionColor;
-    gl_FragColor = mix(vec4(0.0, 0.4, 1.0, 0.5), vec4(color.x, color.y, color.z, 1.0), 1.0-cosTheta);
+    vec4 waterColour = vec4(30/255.0, 50/255.0, 48/255.0, 0.8)*2;
+    gl_FragColor = mix(waterColour, waterColour*vec4(color.x, color.y, color.z, 1.0), 0.5);
 }
