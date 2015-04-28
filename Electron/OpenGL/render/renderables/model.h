@@ -45,6 +45,9 @@ private:
     std::vector<shader_object*> shaders;
     std::vector<uint8_t> renderIndices;
 public:
+    ModelRenderMesh *** geom;
+    uint16_t *geomCount;
+    
     std::vector<std::vector<ModelRenderMesh*>> geometries;
     Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag);
     void render(ShaderType pass);

@@ -32,7 +32,7 @@ void scex::setup(std::string path) {
     uOffset          = glGetUniformLocation(program, "uOffset");
     vOffset          = glGetUniformLocation(program, "vOffset");
     colorFunction    = glGetUniformLocation(program, "colorFunction");
-    alphaFunction    = glGetUniformLocation(program, "basalphaFunctioneTexture");
+    alphaFunction    = glGetUniformLocation(program, "alphaFunction");
     mapCount         = glGetUniformLocation(program, "mapCount");
 }
 
@@ -73,6 +73,8 @@ void scex_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     
     printf("scex object setup %s\n", shaderTag->Name());
     HaloTagReflexive stage4 = *(HaloTagReflexive*)(shaderTag->Data() + 0x54);
+    
+    mapsCount = 0;
     for (int i=0; i < stage4.count; i++) {
         printf("scex setup map %d 0x%x\n", i, stage4.address);
         uint8_t *stageMap = (uint8_t*)(shaderTag->Data() + shaderTag->PointerToOffset(stage4.address) + 220 * i);
@@ -90,11 +92,9 @@ void scex_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
         stage4Maps[i]->uAScale = *(float*)(stageMap + 0xB0);
         stage4Maps[i]->vAScale = *(float*)(stageMap + 0xC0);
         stage4Maps[i]->prev = timems();
-        
-        
+        mapsCount++;
     }
-    mapsCount = stage4.count;
-    
+
     printf("shader setup\n");
     scex *shader = (scex *)(manager->get_shader(shader_SCEX));
     baseMapUV        = shader->baseMapUV;
@@ -120,7 +120,6 @@ void scex_object::render() {
     // Blending
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
     
     // Texturing
     glEnable(GL_TEXTURE_2D);

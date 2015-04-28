@@ -28,6 +28,7 @@ void ERenderer::setup(const char *resources) {
     shaders = new ShaderManager(resources);
     bsp     = new BSP(shaders);
     objects = new ObjectManager;
+    skies   = new SkyManager;
     
     // Start the tick
     tick = now();
@@ -48,16 +49,19 @@ void ERenderer::write() {
     }
 }
 
+GLuint reflect_texture;
 void ERenderer::read(ProtonMap *map) {
     printf("set map\n");
     this->map = map;
-    
+
+    // Load the map
     uint16_t scenarioTag = map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
         
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         bsp->setup(map, scenarioTag);
         objects->read(shaders, map, scenarioTag);
+        skies->read(objects, map, scenarioTag);
     }
     ready = true;
 }
@@ -165,6 +169,53 @@ void ERenderer::applyControl(Control *control){
     tick = now();
 }
 
+void ERenderer::renderScene(bool fast) {
+    uint16_t scenarioTag = map->principal_tag;
+    if (scenarioTag != NULLED_TAG_ID) {
+        ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
+        HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
+        
+        // Render the sky
+        /*
+        shader *scex = shaders->get_shader(shader_SCEX);
+        scex->start();
+        skies->render(shader_SCEX);
+        scex->stop();
+        shader *schi = shaders->get_shader(shader_SCHI);
+        schi->start();
+        skies->render(shader_SCHI);
+        schi->stop();
+        if (fast) return;
+        */
+        
+        // Render everything else
+        //glAlphaFunc(GL_GREATER, 0.1);
+        for (int pass = ShaderStart; pass <= ShaderEnd; pass++ )
+        {
+            if (fast && (pass == shader_SCEX || pass == shader_SCHI || pass == shader_SGLA || pass == shader_SWAT)) continue;
+            ShaderType type = static_cast<ShaderType>(pass);
+            shader *shader = shaders->get_shader(type);
+            shader->start();
+            bsp->render(type);
+            GLuint number = 0;
+            objects->render(&number, nullptr, type);
+            shader->stop();
+        }
+    }
+}
+
+int NextHighestPowerOf2(int n)
+{
+    n--;
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    n++;
+    return n;
+}
+
 // Main rendering loop
 void ERenderer::render() {
     if (!ready) {
@@ -178,29 +229,41 @@ void ERenderer::render() {
     
     // Enable GL states
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    glDepthFunc(GL_LEQUAL);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     camera->look();
 
-    // Render the scenario
-    uint16_t scenarioTag = map->principal_tag;
-    if (scenarioTag != NULLED_TAG_ID) {
-        ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
-        HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
-        for (int pass = shader_NULL; pass <= shader_SCEX; pass++ )
-        {
-            ShaderType type = static_cast<ShaderType>(pass);
-            shader *shader = shaders->get_shader(type);
-            shader->start();
-            bsp->render(type);
-            
-            GLuint number = 0;
-            objects->render(&number, nullptr, type);
-            shader->stop();
-        }
+    glEnableClientState(GL_VERTEX_ARRAY);
+    if (shaders->needs_reflection()) {
+        // Render a reflection of the scenario
+        GLint anViewport[4];
+        glGetIntegerv(GL_VIEWPORT, anViewport);
+        
+        float reflectionHeight = 0.0;
+        glPushMatrix();
+        glScalef(1.0, 1.0, -1.0);
+        glTranslatef(0.0f, 0.0f, 2*reflectionHeight);
+        double plane[4] = {0.0, 0.0, 1.0, -reflectionHeight}; //water at y=0
+        glEnable(GL_CLIP_PLANE0);
+        glClipPlane(GL_CLIP_PLANE0, plane);
+        renderScene(true);
+        glPopMatrix();
+        glDisable(GL_CLIP_PLANE0);
+        
+        // Export the reflection into the reflection texture
+        glBindTexture(GL_TEXTURE_2D, shaders->get_reflection(reflection_z));
+        glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0,0, NextHighestPowerOf2(anViewport[2]), NextHighestPowerOf2(anViewport[3]), 0);
+        
+        // Clear previous frame values
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(0.2,0.2,0.2,1.0);
     }
+    
+    // Render the scene with reflections
+    renderScene(false);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 // Cleanup

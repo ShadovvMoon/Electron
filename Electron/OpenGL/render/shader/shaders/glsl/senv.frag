@@ -37,7 +37,7 @@ void main(void) {
     vec4 white   = vec4(1.0,1.0,1.0,1.0);
     vec4 detail1 = mix(white, texel1 * 2.0, maps[0]);
     vec4 detail2 = mix(white, texel2 * 2.0, maps[2]);
-    vec4 detail3 = mix(white, blight, maps2[0]);
+    vec4 detail3 = mix(white, blight,       maps2[0]);
     vec4 detail  = mix(detail2, detail1, texel0.a);
     //vec4 cube    = mix(white, texel3*2, maps2[2]);
     //vec4 cubea   = mix(white, cube, texel0.a);
@@ -49,7 +49,7 @@ void main(void) {
     if ( maps2[3] > 0 || maps2[2] > 0 ) {
         vec4 reflex = vec4(0.0, 0.0, 0.0, 1.0);
         vec3 eye = normalize(eyeVec);
-        eye = vec3(eye.x * 0.5, eye.y * 0.5, eye.z);
+        //eye = vec3(eye.x * 0.5, eye.y * 0.5, eye.z);
         vec2 offsetdir = vec2( eye.x, eye.y );
         float dist = length(lightVec);
         vec3 light = normalize(lightVec);

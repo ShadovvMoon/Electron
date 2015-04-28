@@ -57,15 +57,24 @@
 #define MAX_SCENARIO_OBJECTS 100000
 
 #define ShaderCount 7
+#define ShaderStart 0
 typedef enum {
     shader_NULL = 0,
     shader_SENV = 1,
     shader_SCHI = 2,
-    shader_SOSO = 3,
-    shader_SGLA = 4,
-    shader_SWAT = 5,
-    shader_SCEX = 6,
+    shader_SGLA = 3,
+    shader_SWAT = 4,
+    shader_SCEX = 5,
+    shader_SOSO = 6,
 } ShaderType;
+#define ShaderEnd 6
+
+int NextHighestPowerOf2(int n);
+#define Reflections 2
+typedef enum {
+    reflection_z = 0,
+    reflection_sky = 1,
+} Reflection;
 
 // VBO
 #define INDEX_BUFFER 0

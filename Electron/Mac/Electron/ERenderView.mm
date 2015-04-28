@@ -13,6 +13,49 @@
 ERenderer *renderer;
 Control *controls = (Control *)malloc(sizeof(Control));
 
+- (void)prepareOpenGL
+{
+    // Synchronize buffer swaps with vertical refresh rate
+    GLint swapInt = 1;
+    [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
+    
+    // Create a display link capable of being used with all active displays
+    CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
+    
+    // Set the renderer output callback function
+    CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, self);
+    
+    // Set the display link for the current renderer
+    CGLContextObj cglContext = [[self openGLContext] CGLContextObj];
+    CGLPixelFormatObj cglPixelFormat = [[self pixelFormat] CGLPixelFormatObj];
+    CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
+    
+    // Activate the display link
+    CVDisplayLinkStart(displayLink);
+}
+
+// This is the renderer output callback function
+static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeStamp* now, const CVTimeStamp* outputTime, CVOptionFlags flagsIn, CVOptionFlags* flagsOut, void* displayLinkContext)
+{
+    CVReturn result = [(ERenderView*)displayLinkContext getFrameForTime:outputTime];
+    return result;
+}
+
+- (CVReturn)getFrameForTime:(const CVTimeStamp*)outputTime
+{
+    // Add your drawing codes here
+    renderer->applyControl(controls);
+    if ([[self window] isMainWindow]) {
+        [[self openGLContext] makeCurrentContext];
+        
+        NSSize sceneBounds = [self bounds].size;
+        renderer->resize(sceneBounds.width, sceneBounds.height);
+        renderer->render();
+        [[self openGLContext] flushBuffer];
+    }
+    return kCVReturnSuccess;
+}
+
 +(NSOpenGLPixelFormat*)pixelFormat {
     // Setup the OpenGL context
     NSOpenGLPixelFormatAttribute attr[] =
@@ -56,10 +99,6 @@ Control *controls = (Control *)malloc(sizeof(Control));
         NSString *resourcesPath = [[NSBundle mainBundle] resourcePath];
         renderer = new ERenderer;
         renderer->setup([resourcesPath cStringUsingEncoding:NSUTF8StringEncoding]);
-        
-        // Start the draw timer
-        int fps = 60;
-        drawTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0/fps) target:self selector:@selector(timerTick:) userInfo:nil repeats:YES];
     }
     return self;
 }
@@ -145,10 +184,10 @@ CGPoint prevDownLeft;
 
 - (void)timerTick:(NSTimer *)timer
 {
-    [[self openGLContext] update];
+    //[[self openGLContext] update];
     
-    renderer->applyControl(controls);
-    [self setNeedsDisplay:YES];
+    //renderer->applyControl(controls);
+    //[self setNeedsDisplay:YES];
 }
 
 -(void)awakeFromNib {
@@ -173,15 +212,10 @@ ProtonMap *map;
     [super dealloc];
 }
 
+/*
 - (void)drawRect:(NSRect)dirtyRect {
-    if ([[self window] isMainWindow]) {
-        [[self openGLContext] makeCurrentContext];
     
-        NSSize sceneBounds = [self bounds].size;
-        renderer->resize(sceneBounds.width, sceneBounds.height);
-        renderer->render();
-        [[self openGLContext] flushBuffer];
-    }
 }
+*/
 
 @end

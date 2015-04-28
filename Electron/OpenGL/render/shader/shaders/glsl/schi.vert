@@ -2,12 +2,17 @@
 
 attribute vec2 texCoord_buffer_light;
 attribute vec2 texCoord_buffer;
+attribute vec3 normal_buffer;
+attribute vec3 binormals_buffer;
+attribute vec3 tangents_buffer;
 
 varying vec2 tex_coord;
-varying vec2 tex_coord_light;
+varying vec3 normals;
 
 void main(void) {
-    tex_coord       = texCoord_buffer;
-    tex_coord_light = texCoord_buffer_light;
+    
+    // Texture coords
+    normals      = normal_buffer;
+    tex_coord    = texCoord_buffer;
     gl_Position  = ftransform();
 }

@@ -34,9 +34,9 @@ void ScenInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     x = spawn->coord[0];
     y = spawn->coord[1];
     z = spawn->coord[2];
-    yaw   = spawn->rotation[0];
-    pitch = spawn->rotation[1];
-    roll  = spawn->rotation[2];
+    yaw   = spawn->rotation[0] * CONVERSION;
+    pitch = -spawn->rotation[1] * CONVERSION;
+    roll  = spawn->rotation[2] * CONVERSION;
     data  = malloc(size);
     memcpy(data, offset, size);
 };
@@ -53,7 +53,9 @@ ObjectInstance *ScenInstance::duplicate() {
     memcpy(clone->data, data, SCENERY_SPAWN_CHUNK);
     return clone;
 }
+
 void ScenInstance::render(ShaderType pass) {
+    /*
     if (selected) {
         glEnable(GL_COLOR_MATERIAL);
         glEnable(GL_BLEND);
@@ -71,7 +73,9 @@ void ScenInstance::render(ShaderType pass) {
     if (selected) {
         glColor4f(1.0, 1.0, 1.0, 1.0);
     }
+    */
 }
+
 SelectionType ScenInstance::type() {
     return s_scenery;
 }
@@ -122,9 +126,9 @@ void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
         spawn->coord[0] = object->x;
         spawn->coord[1] = object->y;
         spawn->coord[2] = object->z;
-        spawn->rotation[0] = object->yaw;
-        spawn->rotation[1] = object->pitch;
-        spawn->rotation[2] = object->roll;
+        spawn->rotation[0] =  object->yaw / CONVERSION;
+        spawn->rotation[1] = -object->pitch / CONVERSION;
+        spawn->rotation[2] =  object->roll / CONVERSION;
     }
     scenario->InsertData(offset, data, (uint32_t)(objects.size() * SCENERY_SPAWN_CHUNK));
     free(data);

@@ -14,6 +14,7 @@
 #include <vector>
 #include <map>
 
+#define CONVERSION 57.29577951
 #define SELECTION_TYPES 8
 typedef enum
 {
@@ -44,8 +45,8 @@ public:
 class ObjectInstance {
 public:
     ObjectRef *reference;
-    float x,y,z;
-    float yaw, pitch, roll;
+    GLfloat x,y,z;
+    GLfloat yaw, pitch, roll;
     void *data;
     bool selected;
     

@@ -106,6 +106,8 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
     
     // Count geometry
     printf("counting geom\n");
+    geom = (ModelRenderMesh ***)malloc(modelData->geometry.count * sizeof(ModelRenderMesh **));
+    geomCount = (uint16_t*)malloc(modelData->geometry.count * sizeof(uint16_t));
     geometries.resize(modelData->geometry.count);
     for (i=0; i < modelData->geometry.count; i++) {
         HaloGeometry *geometry = (HaloGeometry *)(modelTag->Data() + modelTag->PointerToOffset(modelData->geometry.address) + 48 * i);
@@ -118,6 +120,8 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             renderable_count++;
         }
         geometries[i] = std::vector<ModelRenderMesh*>(renderable_count);
+        geom[i] = (ModelRenderMesh**)malloc(renderable_count * sizeof(ModelRenderMesh*));
+        geomCount[i] = renderable_count;
     }
     
     // Read geometry
@@ -247,6 +251,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             
             printf("geom %d %d\n", i, render);
             geometries[i][render] = renderer;
+            geom[i][render] = renderer;
             render++;
         }
     }
@@ -264,6 +269,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             if ((permutation->Flags[0] & 0xFF) != 1) {
                 renderIndices.push_back(permutation->LOD_MeshIndex[LOD]);
             }
+            
         }
     }
     
@@ -277,7 +283,6 @@ void Model::render(ShaderType pass) {
     
     //glEnable(GL_TEXTURE_2D);
     //glEnable(GL_TEXTURE_CUBE_MAP);
-    glEnableClientState(GL_VERTEX_ARRAY);
     //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
 #ifndef RENDER_VAO
@@ -288,12 +293,15 @@ void Model::render(ShaderType pass) {
 #endif
     
     shader_object *previous_shader = nullptr;
+    if (renderIndices.size() == 0) return; //wtf
     
     int r, i;
     for (r=0; r < renderIndices.size(); r++) {
         uint8_t renderIndex = renderIndices[r];
-        std::vector<ModelRenderMesh*>renderables = geometries[renderIndex];
-        for (i=0; i < renderables.size(); i++) {
+        //std::vector<ModelRenderMesh*>renderables = geometries[renderIndex];
+        
+        ModelRenderMesh **renderables = geom[renderIndex];
+        for (i=0; i < /*renderables.size()*/geomCount[renderIndex]; i++) {
             ModelRenderMesh *mesh = renderables[i];
             if ((mesh->shader == nullptr && pass == shader_NULL) ||
                 (mesh->shader != nullptr && mesh->shader->is(pass))) {
@@ -303,7 +311,7 @@ void Model::render(ShaderType pass) {
 			#else
 				glBindVertexArrayAPPLE(mesh->geometryVAO);
 			#endif
-#elseif RENDER_VBO
+#elif defined(RENDER_VBO)
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[POS_VB]);
                 glVertexPointer(3, GL_FLOAT, 0, 0);
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TEXCOORD_VB]);

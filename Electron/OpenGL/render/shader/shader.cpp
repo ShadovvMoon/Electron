@@ -112,6 +112,18 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
 ShaderManager::ShaderManager(const char *resources) {
     printf("shader manager setup\n");
     
+    // Create the reflection
+    reflections.resize(Reflections);
+    int i;
+    for (i=0; i < Reflections; i++) {
+        glDeleteTextures(1, &reflections[i]);
+        glGenTextures(1, &reflections[i]);
+        glBindTexture(GL_TEXTURE_2D, reflections[i]);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
     // Create a texture manager
     textures = new TextureManager();
     
@@ -190,3 +202,13 @@ shader * ShaderManager::get_shader(ShaderType pass) {
     return shaders[pass];
 }
 
+GLuint ShaderManager::get_reflection(int index) {
+    return reflections[index];
+}
+
+bool ShaderManager::needs_reflection() {
+    return reflecting;
+}
+void ShaderManager::set_needs_reflection(bool reflect) {
+    reflecting = reflect;
+}

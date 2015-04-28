@@ -34,13 +34,14 @@ void VehiInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offs
     x = spawn->coord[0];
     y = spawn->coord[1];
     z = spawn->coord[2];
-    yaw   = spawn->rotation[0];
-    pitch = spawn->rotation[1];
-    roll  = spawn->rotation[2];
+    yaw   =  spawn->rotation[0] * CONVERSION;
+    pitch = -spawn->rotation[1] * CONVERSION;
+    roll  =  spawn->rotation[2] * CONVERSION;
     data  = malloc(size);
     memcpy(data, offset, size);
 };
 void VehiInstance::render(ShaderType pass) {
+    /*
     glPushMatrix();
     glTranslatef(x, y, z);
     glRotatef(roll   * (57.29577951), 1, 0, 0);
@@ -48,6 +49,7 @@ void VehiInstance::render(ShaderType pass) {
     glRotatef(yaw    * (57.29577951), 0, 0, 1);
     reference->render(pass);
     glPopMatrix();
+    */
 }
 //not finished
 ObjectInstance *VehiInstance::duplicate() {
@@ -112,9 +114,9 @@ void VehiClass::write(ProtonMap *map, ProtonTag *scenario) {
         spawn->coord[0] = object->x;
         spawn->coord[1] = object->y;
         spawn->coord[2] = object->z;
-        spawn->rotation[0] = object->yaw;
-        spawn->rotation[1] = object->pitch;
-        spawn->rotation[2] = object->roll;
+        spawn->rotation[0] = object->yaw / CONVERSION;
+        spawn->rotation[1] = -object->pitch / CONVERSION;
+        spawn->rotation[2] = object->roll / CONVERSION;
     }
     scenario->InsertData(offset, data, (uint32_t)(objects.size() * VEHICLE_SPAWN_CHUNK));
     free(data);

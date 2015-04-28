@@ -225,7 +225,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
 void BSP::render(ShaderType pass) {
     
     //glEnable(GL_TEXTURE_2D);
-    glEnableClientState(GL_VERTEX_ARRAY);
+    //glEnableClientState(GL_VERTEX_ARRAY);
 	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     
 #ifndef RENDER_VAO
@@ -242,7 +242,7 @@ void BSP::render(ShaderType pass) {
 	#else
 		glBindVertexArrayAPPLE(vao->geometryVAO);
 	#endif
-#elseif RENDER_VBO
+#elif defined(RENDER_VBO)
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[POS_VB]);
     glVertexPointer(3, GL_FLOAT, 0, 0);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, vao->m_Buffers[TEXCOORD_VB]);

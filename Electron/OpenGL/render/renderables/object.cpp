@@ -89,9 +89,9 @@ void render_instance(ObjectInstance *instance, ShaderType pass) {
     
     glPushMatrix();
     glTranslatef(instance->x, instance->y, instance->z);
-    glRotatef(instance->roll   * (57.29577951), 1, 0, 0);
-    glRotatef(-instance->pitch * (57.29577951), 0, 1, 0);
-    glRotatef(instance->yaw    * (57.29577951), 0, 0, 1);
+    glRotatef(instance->roll , 1.0, 0.0, 0.0); //1.5%
+    glRotatef(instance->pitch, 0.0, 1.0, 0.0); //0.9%
+    glRotatef(instance->yaw  , 0.0, 0.0, 1.0); //1.2%
     instance->reference->render(pass);
     glPopMatrix();
     
@@ -114,6 +114,13 @@ void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *nam
     }
 }
 
+void fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass) {
+    int i;
+    for (i=0; i < objClass->objects.size(); i++) {
+        render_instance(objClass->objects[i], pass);
+    }
+}
+
 void clear_selection(ObjectClass* objClass) {
     int i;
     for (i=0; i < objClass->objects.size(); i++) {
@@ -130,9 +137,15 @@ ObjectInstance *ObjectManager::duplicate(ObjectInstance *instance) {
 }
 
 void ObjectManager::render(GLuint *name, GLuint *lookup, ShaderType pass) {
-    render_subclass(scen, s_scenery, name, lookup, pass);
-    render_subclass(vehi, s_vehicle, name, lookup, pass);
-    render_subclass(itmc, s_item, name, lookup, pass);
+    if (lookup == nullptr) {
+        fast_render_subclass(scen, s_scenery, pass);
+        fast_render_subclass(vehi, s_vehicle, pass);
+        fast_render_subclass(itmc, s_item, pass);
+    } else {
+        render_subclass(scen, s_scenery, name, lookup, pass);
+        render_subclass(vehi, s_vehicle, name, lookup, pass);
+        render_subclass(itmc, s_item, name, lookup, pass);
+    }
 }
 
 void ObjectManager::clearSelection() {

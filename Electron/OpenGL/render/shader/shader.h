@@ -32,12 +32,18 @@ public:
 class ShaderManager {
 private:
     std::map<uint16_t, shader_object*> shader_objects;
+    std::vector<GLuint> reflections;
     shader *shaders[ShaderCount];
     TextureManager *textures = nullptr;
+    bool reflecting = false;
 public:
     ShaderManager(const char *resources);
     TextureManager *texture_manager();
     shader *get_shader(ShaderType pass);
+
+    bool needs_reflection();
+    void set_needs_reflection(bool reflect);
+    GLuint get_reflection(int index);
     shader_object *create_shader(ProtonMap *map, HaloTagDependency shader);
 };
 

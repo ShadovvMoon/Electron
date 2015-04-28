@@ -7,6 +7,8 @@
 //
 
 #include "texture.h"
+#include "squish.h"
+using namespace squish;
 
 #define BITM_FORMAT_A8			0x00
 #define BITM_FORMAT_Y8			0x01
@@ -33,7 +35,10 @@
 // Structs
 typedef struct
 {
-    int32_t unknown[0x15];
+    uint16_t type;
+    uint16_t format;
+    //uint16_t usage;
+    int32_t unknown[0x14];
     HaloTagReflexive reflexive_to_first;
     HaloTagReflexive image_reflexive;
 } bitm_header_t;
@@ -170,7 +175,9 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
             glBindTexture(GL_TEXTURE_2D, textures[i]);
             
             // Params
+            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+            
             glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
             glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
@@ -182,6 +189,7 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
             
             bitm_image_t *image = (bitm_image_t *)(bitmapTag->Data() + bitmapTag->PointerToOffset(bitmData->image_reflexive.address) + sizeof(bitm_image_t) * i);
             char *input = (char*)bitmapTag->ResourcesData() + image->offset;
+            if (image == NULL) continue;
             
             GLint format = GL_RGBA;
             GLint internalFormat = GL_RGBA;
@@ -197,7 +205,6 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                 format = GL_RGB;
                 internalFormat = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
                 size = (image->width >> 2) * (image->height >> 2) * 8;
-                
             } else if (image->format == BITM_FORMAT_DXT2AND3) {
                 format = GL_RGBA;
                 internalFormat = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
@@ -222,7 +229,9 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                              0,
                              GL_RGBA,
                              GL_UNSIGNED_BYTE,
-                             input);
+                             output);
+                free(output);
+                continue;
             } else if (image->format == BITM_FORMAT_A8R8G8B8) {
                 //format = GL_RGBA;
                 //internalFormat = GL_RGBA;
@@ -237,7 +246,9 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                              0,
                              GL_RGBA,
                              GL_UNSIGNED_BYTE,
-                             input);
+                             output);
+                glGenerateMipmap(GL_TEXTURE_2D);
+                free(output);
                 continue;
             } else if (image->format == BITM_FORMAT_R5G6B5) {
                 printf("R5G6B5\n");
@@ -252,12 +263,14 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                              GL_RGBA,
                              GL_UNSIGNED_BYTE,
                              output);
+                free(output);
                 continue;
             } else {
                 printf("unknown format\n");
                 return;
             }
             
+          
             glCompressedTexImage2D(GL_TEXTURE_2D, i, internalFormat, image->width, image->height, 0, size, input);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
@@ -395,12 +408,12 @@ texture_cubemap::texture_cubemap(ProtonMap *map, HaloTagDependency bitm) {
         glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
         glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri (GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, bitmapTag);
-        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 1, bitmapTag);
-        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 2, bitmapTag);
-        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, bitmapTag);
-        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, bitmapTag);
-        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, bitmapTag);
+        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, bitmapTag); //left
+        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 2, bitmapTag); //right
+        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 1, bitmapTag); //front
+        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 3, bitmapTag); //back
+        load_side(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 4, bitmapTag); //up
+        load_side(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 5, bitmapTag); //down
         
         // format cube map texture
         printf("done\n");

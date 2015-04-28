@@ -31,6 +31,8 @@ void soso::setup(std::string path) {
 }
 
 void soso::start() {
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.5);
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
     glUniform1i(detailMap, 1);
@@ -39,7 +41,7 @@ void soso::start() {
 }
 
 void soso::stop() {
-    
+    glDisable(GL_ALPHA_TEST);
 }
 
 void soso_object::setBaseUV(float u, float v) {

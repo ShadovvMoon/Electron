@@ -105,4 +105,5 @@ public:
     bool is(ShaderType type);
 };
 
+std::chrono::milliseconds timems();
 #endif

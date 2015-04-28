@@ -15,6 +15,7 @@
 #include "shader/shader.h"
 #include "renderables/bsp.h"
 #include "renderables/object.h"
+#include "renderables/sky.h"
 
 #include <chrono>
 using namespace std::chrono;
@@ -42,12 +43,14 @@ private:
     BSP *bsp;
     Camera *camera;
     ObjectManager *objects;
+    SkyManager *skies;
     Control *controller = nullptr;
 public:
     ~ERenderer();
     void setup(const char *resources);
     void resize(float width, float height);
     void render();
+    void renderScene(bool fast);
     
     void read(ProtonMap *map);
     void write();

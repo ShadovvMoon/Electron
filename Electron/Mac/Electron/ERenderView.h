@@ -10,7 +10,8 @@
 
 @interface ERenderView : NSOpenGLView
 {
-    NSTimer *drawTimer;
+    CVDisplayLinkRef displayLink; //display link for managing rendering thread
+    //NSTimer *drawTimer;
 }
 -(void)setData:(NSData*)data;
 -(NSData *)getData;
