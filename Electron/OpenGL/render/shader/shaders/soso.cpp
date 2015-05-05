@@ -91,7 +91,7 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool soso_object::is(ShaderType type) {
     return (type == shader_SOSO);
 }
-void soso_object::render() {
+bool soso_object::render() {
     
     // Texturing
     glEnable(GL_TEXTURE_2D);
@@ -121,4 +121,5 @@ void soso_object::render() {
     glUniform4f(scaleId, uscale, vscale, detailScale, detailScaleV);
     glUniform3f(mapsId , b2f(useMulti), b2f(useDetail), useCube ? 0.5:0.0);
     glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
+    return true;
 }

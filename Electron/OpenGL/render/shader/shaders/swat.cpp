@@ -64,7 +64,7 @@ void swat_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool swat_object::is(ShaderType type) {
     return (type == shader_SWAT);
 }
-void swat_object::render() {
+bool swat_object::render() {
     // Update the tick
     std::chrono::milliseconds now = timems();
     double seconds = (now.count() - prev.count()) / 1000.0;
@@ -86,5 +86,5 @@ void swat_object::render() {
     glUniform4f(frameSize, viewport[2], viewport[3], NextHighestPowerOf2(viewport[2]), NextHighestPowerOf2(viewport[3]));
     glUniform1f(floats, bumpScale*2);
     glUniform2f(texOffset, uOffset, vOffset);
-    
+    return true;
 }

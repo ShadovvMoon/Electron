@@ -332,7 +332,9 @@ void Model::render(ShaderType pass) {
 #endif
                 if (mesh->shader != nullptr) {
                     if (mesh->shader != previous_shader) {
-                        mesh->shader->render();
+                        if (!mesh->shader->render()) {
+                            continue;
+                        }
                         previous_shader = mesh->shader;
                     }
                     mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);

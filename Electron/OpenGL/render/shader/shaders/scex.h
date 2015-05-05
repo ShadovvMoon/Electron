@@ -52,6 +52,7 @@ public:
     GLuint alphaFunction;
     GLuint mapCount;
     
+    
     void setup(std::string path);
     void start();
     void stop();
@@ -97,10 +98,11 @@ private:
     GLuint alphaFunction = 0;
     GLuint mapCount = 0;
     int mapsCount = 0;
+    bool skip;
     
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    void render();
+    bool render();
     void setBaseUV(float u, float v);
     bool is(ShaderType type);
 };

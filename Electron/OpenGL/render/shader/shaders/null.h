@@ -23,7 +23,7 @@ class null_object : public shader_object {
 private:
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    void render();
+    bool render();
     void setBaseUV(float u, float v);
     bool is(ShaderType type);
 };

@@ -68,7 +68,7 @@ void sgla_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool sgla_object::is(ShaderType type) {
     return (type == shader_SGLA);
 }
-void sgla_object::render() {
+bool sgla_object::render() {
     glActiveTexture(GL_TEXTURE0);
     if (useMulti) {
         multipurposeMap->bind();
@@ -87,4 +87,5 @@ void sgla_object::render() {
     glUniform3f(scaleId, uscale, vscale, bumpScale);
     glUniform2f(mapsId , b2f(useMulti), useCube ? 0.5:0.0);
     glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
+    return true;
 }

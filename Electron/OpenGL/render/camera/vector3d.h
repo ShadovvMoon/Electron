@@ -23,6 +23,7 @@ public:
     vector3d* norm();
     vector3d* mul(float delta);
     GLfloat get(int index);
+    float distance(vector3d* vector);
     float dot(vector3d *o);
     float mag();
 };

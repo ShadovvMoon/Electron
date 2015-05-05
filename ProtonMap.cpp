@@ -59,6 +59,7 @@ ProtonMap::ProtonMap(const void *cache_file) {
                 }
             }
         }
+        printf("%c%c%c%c %s %d %d\n", tagArray[t].tagClassA[0], tagArray[t].tagClassA[1], tagArray[t].tagClassA[2], tagArray[t].tagClassA[3], tagName, tagArray[t].tagID.table_id, tagArray[t].tagID.tag_index);
         
         if(tagArray[t].notInMap == 1) {
             this->tags.emplace_back(new ProtonTag(tagName,tagClasses,tagArray[t].dataAddress));

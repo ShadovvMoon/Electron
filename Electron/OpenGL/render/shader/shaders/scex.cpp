@@ -59,6 +59,15 @@ Stage4Renderable::Stage4Renderable() {
 // Senv object
 void scex_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
     
+    // Should we render this?
+    //0x5B578D is in charge of lighting
+    uint32_t flags = *(uint32_t*)(shaderTag->Data() + 0x29);
+    if (((flags>>(31-27)) & 1) != 0) {
+        skip = true;
+        return;
+    }
+    skip = false;
+    
     // Use  4 stage maps
     stage4Maps.resize(4);
     for (int i=0; i < 4; i++) {
@@ -115,7 +124,8 @@ void scex_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool scex_object::is(ShaderType type) {
     return (type == shader_SCEX);
 }
-void scex_object::render() {
+bool scex_object::render() {
+    if (skip) return true;
     
     // Blending
     glEnable(GL_BLEND);
@@ -176,5 +186,5 @@ void scex_object::render() {
     glUniform4f(vOffset, stage4Maps[0]->vOffset, stage4Maps[1]->vOffset, stage4Maps[2]->vOffset, stage4Maps[3]->vOffset);
     glUniform4i(colorFunction, stage4Maps[0]->cFunc, stage4Maps[1]->cFunc, stage4Maps[2]->cFunc, stage4Maps[3]->cFunc);
     glUniform4i(alphaFunction, stage4Maps[0]->aFunc, stage4Maps[1]->aFunc, stage4Maps[2]->aFunc, stage4Maps[3]->aFunc);
-    
+    return true;
 }

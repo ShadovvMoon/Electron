@@ -106,7 +106,7 @@ bool senv_object::is(ShaderType type) {
     return (type == shader_SENV);
 }
 
-void senv_object::render() {
+bool senv_object::render() {
 
     // Texturing
     glEnable(GL_TEXTURE_2D);
@@ -139,4 +139,5 @@ void senv_object::render() {
     glUniform4f(maps2Id, b2f(useLight), b2f(useBlend), b2f(useCube), b2f(useBump));
     glUniform1f(maps3Id, bumpScale);
     glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
+    return true;
 }

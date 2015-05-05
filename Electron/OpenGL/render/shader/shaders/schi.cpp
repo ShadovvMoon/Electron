@@ -111,7 +111,7 @@ bool schi_object::is(ShaderType type) {
     return (type == shader_SCHI);
 }
 
-void schi_object::render() {
+bool schi_object::render() {
     
     // Blending
     glEnable(GL_BLEND);
@@ -172,4 +172,5 @@ void schi_object::render() {
     glUniform4f(vOffset, stage4Maps[0]->vOffset, stage4Maps[1]->vOffset, stage4Maps[2]->vOffset, stage4Maps[3]->vOffset);
     glUniform4i(colorFunction, stage4Maps[0]->cFunc, stage4Maps[1]->cFunc, stage4Maps[2]->cFunc, stage4Maps[3]->cFunc);
     glUniform4i(alphaFunction, stage4Maps[0]->aFunc, stage4Maps[1]->aFunc, stage4Maps[2]->aFunc, stage4Maps[3]->aFunc);
+    return true;
 }
