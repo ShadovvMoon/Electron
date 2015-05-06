@@ -45,6 +45,9 @@ private:
     ObjectManager *objects;
     SkyManager *skies;
     Control *controller = nullptr;
+    
+    // shader options
+    shader_options *options;
 public:
     ~ERenderer();
     void setup(const char *resources);

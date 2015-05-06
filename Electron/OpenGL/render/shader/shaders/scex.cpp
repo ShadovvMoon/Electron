@@ -34,14 +34,18 @@ void scex::setup(std::string path) {
     colorFunction    = glGetUniformLocation(program, "colorFunction");
     alphaFunction    = glGetUniformLocation(program, "alphaFunction");
     mapCount         = glGetUniformLocation(program, "mapCount");
+    fog              = glGetUniformLocation(program, "fog");
+    fogSettings      = glGetUniformLocation(program, "fogSettings");
 }
 
-void scex::start() {
+void scex::start(shader_options *options) {
     glUseProgram(program);
     glUniform1i(mapTexture0,0);
     glUniform1i(mapTexture1,1);
     glUniform1i(mapTexture2,2);
     glUniform1i(mapTexture3,3);
+    glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
+    glUniform2f(fogSettings, options->fogdist, options->fogcut);
 }
 
 void scex::stop() {
@@ -51,6 +55,13 @@ void scex::stop() {
 void scex_object::setBaseUV(float u, float v) {
     uscale = u;
     vscale = v;
+}
+void scex_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
+    fogr = r;
+    fogg = g;
+    fogb = b;
+    fogdist = distance;
+    fogcut = cutoff;
 }
 
 Stage4Renderable::Stage4Renderable() {
@@ -125,7 +136,9 @@ bool scex_object::is(ShaderType type) {
     return (type == shader_SCEX);
 }
 bool scex_object::render() {
-    if (skip) return true;
+    if (skip) {
+        return false;
+    }
     
     // Blending
     glEnable(GL_BLEND);

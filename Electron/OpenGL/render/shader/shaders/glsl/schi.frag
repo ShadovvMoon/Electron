@@ -15,6 +15,9 @@ uniform vec4 vOffset;
 uniform ivec4 colorFunction;
 uniform ivec4 alphaFunction;
 uniform int mapCount;
+uniform vec4 fog;
+uniform vec2 fogSettings;
+
 void main(void) {
     vec2 coords  = vec2(tex_coord[0]*baseMapUV[0], tex_coord[1]*baseMapUV[1]);
     vec4 colour  = vec4(0.0,0.0,0.0,1.0);
@@ -69,4 +72,10 @@ void main(void) {
     }
     gl_FragColor = colour;
     //gl_FragColor.a = 1.0;
+    
+    // FOGGING
+    float z = (gl_FragCoord.z / gl_FragCoord.w);
+    float fogFactor = (z/fogSettings[0]);
+    fogFactor = clamp(fogFactor, 0.0, fogSettings[1]);
+    gl_FragColor = mix(gl_FragColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
 }

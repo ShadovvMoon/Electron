@@ -23,12 +23,16 @@ void swat::setup(std::string path) {
     frameSize   = glGetUniformLocation(program, "frameSize");
     floats      = glGetUniformLocation(program, "bumpScales");
     texOffset   = glGetUniformLocation(program, "timerOffset");
+    fog                 = glGetUniformLocation(program, "fog");
+    fogSettings         = glGetUniformLocation(program, "fogSettings");
 }
 
-void swat::start() {
+void swat::start(shader_options *options) {
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
     glUniform1i(bumpMap, 1);
+    glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
+    glUniform2f(fogSettings, options->fogdist, options->fogcut);
 }
 
 void swat::stop() {
@@ -36,6 +40,13 @@ void swat::stop() {
 }
 
 void swat_object::setBaseUV(float u, float v) {
+}
+void swat_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
+    fogr = r;
+    fogg = g;
+    fogb = b;
+    fogdist = distance;
+    fogcut = cutoff;
 }
 
 // Senv object

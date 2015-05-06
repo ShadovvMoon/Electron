@@ -195,7 +195,18 @@ void ObjectManager::select(bool shift, float x, float y) {
     GLuint name = 1;
     GLuint *lookup = (GLuint *)tmpLookup;
     glInitNames();
-    this->render(&name, lookup, shader_SOSO);
+    
+    shader_options *options = new shader_options;
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    ShaderType type = static_cast<ShaderType>(shader_SOSO);
+    shader *shader = modelManager->shaders->get_shader(shader_SOSO);
+    shader->start(options);
+    render(&name, lookup, shader_SOSO);
+    shader->stop();
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glPopAttrib();
+    free(options);
     
     GLuint hits = glRenderMode(GL_RENDER);
     GLuint names, *ptr = (GLuint *)nameBuf;

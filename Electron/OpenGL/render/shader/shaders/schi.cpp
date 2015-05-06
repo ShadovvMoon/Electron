@@ -31,14 +31,18 @@ void schi::setup(std::string path) {
     colorFunction    = glGetUniformLocation(program, "colorFunction");
     alphaFunction    = glGetUniformLocation(program, "alphaFunction");
     mapCount         = glGetUniformLocation(program, "mapCount");
+    fog                 = glGetUniformLocation(program, "fog");
+    fogSettings         = glGetUniformLocation(program, "fogSettings");
 }
 
-void schi::start() {
+void schi::start(shader_options *options) {
     glUseProgram(program);
     glUniform1i(mapTexture0,0);
     glUniform1i(mapTexture1,1);
     glUniform1i(mapTexture2,2);
     glUniform1i(mapTexture3,3);
+    glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
+    glUniform2f(fogSettings, options->fogdist, options->fogcut);
     errorCheck();
 }
 
@@ -49,6 +53,14 @@ void schi::stop() {
 void schi_object::setBaseUV(float u, float v) {
     uscale = u;
     vscale = v;
+}
+
+void schi_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
+    fogr = r;
+    fogg = g;
+    fogb = b;
+    fogdist = distance;
+    fogcut = cutoff;
 }
 
 // Senv object

@@ -25,6 +25,22 @@ void SkyManager::read(ObjectManager *objects, ProtonMap *map, ProtonTag *scenari
     }
 }
 
+void SkyManager::options(shader_options *options, ProtonMap *map, ProtonTag *scenario) {
+    printf("starting sky manager\n");
+    HaloTagReflexive sky = ((HaloScenarioTag*)scenario->Data())->skyBox;
+    for (int i=0; i < sky.count; i++) {
+        HaloTagDependency skyTag = *(HaloTagDependency*)(scenario->Data() + scenario->PointerToOffset(sky.address) + i * 16);
+        ProtonTag *objectTag = map->tags.at(skyTag.tag_id.tag_index).get();
+        SkyTag *skyData = (SkyTag *)objectTag->Data();
+        options->fogr = *(float*)((uint8_t*)skyData + 0x58);
+        options->fogg = *(float*)((uint8_t*)skyData + 0x58 + sizeof(float) * 1);
+        options->fogb = *(float*)((uint8_t*)skyData + 0x58 + sizeof(float) * 2);
+        options->fogcut  = *(float*)((uint8_t*)skyData + 0x6C);
+        options->fogdist = *(float*)((uint8_t*)skyData + 0x74);
+        break;
+    }
+}
+
 void SkyManager::render(ShaderType pass) {
     glDisable(GL_DEPTH_TEST);
     glDepthMask(false);

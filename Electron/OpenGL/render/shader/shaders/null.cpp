@@ -18,7 +18,7 @@ void null::setup(std::string path) {
     printf("done\n");
 }
 
-void null::start() {
+void null::start(shader_options *options) {
     glUseProgram(program);
 }
 
@@ -27,6 +27,8 @@ void null::stop() {
 }
 
 void null_object::setBaseUV(float u, float v) {
+}
+void null_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
 }
 
 // Senv object

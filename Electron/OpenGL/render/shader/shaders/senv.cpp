@@ -24,6 +24,8 @@ void senv::setup(std::string path) {
     cubeMap             = glGetUniformLocation(program, "cubeTextureMap");
     bumpMap             = glGetUniformLocation(program, "bumpMap");
     scale               = glGetUniformLocation(program, "scale");
+    fog                 = glGetUniformLocation(program, "fog");
+    fogSettings         = glGetUniformLocation(program, "fogSettings");
     
     maps = glGetUniformLocation(program, "maps");
     maps2 = glGetUniformLocation(program, "maps2");
@@ -34,7 +36,7 @@ void senv::setup(std::string path) {
     //glBindAttribLocation(program, 3, "normal_buffer");
 }
 
-void senv::start() {
+void senv::start(shader_options *options) {
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
     glUniform1i(primaryDetailMap, 1);
@@ -42,6 +44,10 @@ void senv::start() {
     glUniform1i(lightMap, 3);
     glUniform1i(cubeMap, 4);
     glUniform1i(bumpMap, 5);
+    
+    glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
+    glUniform2f(fogSettings, options->fogdist, options->fogcut);
+    
 }
 
 void senv::stop() {
@@ -51,6 +57,14 @@ void senv::stop() {
 void senv_object::setBaseUV(float u, float v) {
     uscale = u;
     vscale = v;
+}
+
+void senv_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
+    fogr = r;
+    fogg = g;
+    fogb = b;
+    fogdist = distance;
+    fogcut = cutoff;
 }
 
 // Senv object

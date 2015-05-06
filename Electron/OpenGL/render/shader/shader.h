@@ -13,10 +13,15 @@
 #ifndef ____EShader__
 #define ____EShader__
 
+typedef struct {
+    float fogr, fogg, fogb;
+    float fogdist, fogcut;
+} shader_options;
+
 class shader {
 public:
     virtual void setup(std::string path) = 0;
-    virtual void start() = 0;
+    virtual void start(shader_options *options) = 0;
     virtual void stop() = 0;
 };
 
@@ -25,6 +30,7 @@ class shader_object {
 public:
     virtual void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) = 0;
     virtual void setBaseUV(float u, float v) = 0;
+    virtual void setFogSettings(float r, float g, float b, float distance, float cutoff) = 0;
     virtual bool render() = 0;
     virtual bool is(ShaderType type) = 0;
 };
