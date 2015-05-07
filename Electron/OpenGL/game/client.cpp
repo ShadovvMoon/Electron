@@ -1149,8 +1149,13 @@ enum message_delta
     _message_delta_biped_update,
     _message_delta_vehicle_update,
     _message_delta_hud_add_item,
-    _message_delta_player_create,
-    _message_delta_player_spawn,
+    _message_delta_player_create, //111000 =
+    _message_delta_player_spawn, // probably contains team change? (000100)
+    /*
+     
+     
+     
+     */
     _message_delta_player_exit_vehicle,
     _message_delta_player_set_action_result,
     _message_delta_player_effect_start,
@@ -1193,7 +1198,7 @@ enum message_delta
      [  1] forwards
      */
     _message_delta_player_handle_powerup,
-    _message_delta_hud_chat,
+    _message_delta_hud_chat, // complete
     _message_delta_slayer_update,
     _message_delta_ctf_update,
     _message_delta_oddball_update,
@@ -1204,7 +1209,7 @@ enum message_delta
     _message_delta_game_engine_map_reset,
     _message_delta_multiplayer_hud_message,
     _message_delta_multiplayer_sound,
-    _message_delta_team_change, //client
+    _message_delta_team_change, //client (0b011010 == 010110)
     /*
      [  8] player id
      [  8] team id
@@ -1249,10 +1254,11 @@ enum message_delta
      */
     _message_delta_local_player_vehicle_update,
     _message_delta_remote_player_action_update,
-    _message_delta_super_remote_players_action_update,
+    _message_delta_super_remote_players_action_update, //0110010
+    
     _message_delta_remote_player_position_update,
     _message_delta_remote_player_vehicle_update,
-    _message_delta_remote_player_total_update_biped, //server
+    _message_delta_remote_player_total_update_biped, //server [no team]
     /*
      [  5] player number
      [ 10] 
@@ -1661,16 +1667,40 @@ void Client::main() {
                 int message_mode = sread_bits(str, &bit, 1);
                 int message_type = sread_bits(str, &bit, 6);
                 
-                if (message_mode == 1) {
+           
+                //printf("%s\n", message_delta_packet_to_string_table[message_type]);
+                int i;
+                for (i=0; i < (len-head)*8; i++) {
+                    printf("%d", read_bits(1, buffer+head, i));
+                }
+                printf("\n");
+                
+                //if (message_mode == 1) {
                     //printf("%s\n", message_delta_packet_to_string_table[message_type]);
+                    // else {
+                    //    printf("%s\n", message_delta_packet_to_string_table[message_type]);
+                    //    int i;
+                    //    for (i=0; i < (len-head)*8; i++) {
+                    //        printf("%d", read_bits(1, buffer+head, i));
+                    //    }
+                    //    printf("\n");
+                    //
+                    //}
+                    //break;
+                //} else if (message_mode == 0) { // delta
+                
+                    
+                    
+                    
+                    
                     if (message_type == _message_delta_super_remote_players_action_update) {
                         /*
-                        int i;
-                        for (i=0; i < (len-head)*8; i++) {
-                            printf("%d", read_bits(1, buffer+head, i));
-                        }
-                        printf("\n");
-                        */
+                         int i;
+                         for (i=0; i < (len-head)*8; i++) {
+                         printf("%d", read_bits(1, buffer+head, i));
+                         }
+                         printf("\n");
+                         */
                         int unknown0  = sread_bits(str, &bit, 7);
                         int movement  = sread_bits(str, &bit, 1);
                         int unknown1  = sread_bits(str, &bit, 15);
@@ -1685,16 +1715,52 @@ void Client::main() {
                             //if (forwards)   printf("forwards\n");
                             //if (backwards)  printf("backwards\n");
                         }
-                    }
-                    break;
-                } else if (message_mode == 0) { // delta
-                
-                    
-                    
-                    
-                    
-                    if (message_type == _message_delta_object_deletion) {
-                        int unknown0 = sread_bits(str, &bit, 15);
+                    } else if (message_type == _message_delta_object_deletion) {
+                        int unknown0 = sread_bits(str, &bit, 9);
+                        continue;
+                    } else if (message_type == _message_delta_super_ping_update) {
+                        int count = sread_bits(str, &bit, 4);
+                        //printf("=== PING ===\n");
+                        int i;
+                        for (i=0; i < count; i++) {
+                            int player   = sread_bits(str, &bit, 8);
+                            int ping     = sread_bits(str, &bit, 32);
+                            //printf("Player %d: %dms\n", player, ping);
+                        }
+                        break;
+                    } else if (message_type == _message_delta_weapon_start_reload) {
+                        int weapon = sread_bits(str, &bit, 7);
+                        int player = sread_bits(str, &bit, 4);
+                        int junk   = sread_bits(str, &bit, 14);
+                        //printf("player %d started reloading %d\n", player, weapon);
+                        continue;
+                    } else if (message_type == _message_delta_weapon_cancel_reload) {
+                        int weapon = sread_bits(str, &bit, 7);
+                        int player = sread_bits(str, &bit, 4);
+                        //int junk   = sread_bits(str, &bit, 14);
+                        printf("player %d cancelled reloading %d\n", player, weapon);
+                        continue;
+                    } else if (message_type == _message_delta_weapon_finish_reload) {
+                        int weapon = sread_bits(str, &bit, 7);
+                        int player = sread_bits(str, &bit, 4);
+                        int junk   = sread_bits(str, &bit, 14);
+                        //printf("player %d finished reloading %d\n", player, weapon);
+                        continue;
+                    } else if (message_type == _message_delta_hud_chat) {
+                        int player = sread_bits(str, &bit, 4);
+                        int team   = sread_bits(str, &bit, 12);
+                        int size   = sread_bits(str, &bit, 8);
+                        printf("player %d said: ", player);
+                        
+                        int i;
+                        for (i=0; i < size; i++) {
+                            int byte   = sread_bits(str, &bit, 16);
+                            printf("%c", byte);
+                        }
+                        printf("\n");
+                        continue;
+                    } else if (message_type == _message_delta_object_deletion) {
+                        int unknown0 = sread_bits(str, &bit, 9);
                         continue;
                     } else if (message_type == _message_delta_netgame_equipment_new) {
                         int unknown0 = sread_bits(str, &bit, 27);
@@ -1805,9 +1871,11 @@ void Client::main() {
                         //printf("Player %d is now at %f %f %f and using weapon %d and nade %d\n", player_number, x, y, z, weapon_index, nade_index);
                         break;
                     } else {
+                        
+                        
                         break;
                     }
-                }
+
                 break;
             }
         }
@@ -1844,8 +1912,8 @@ void Client::main() {
             
             me->controls.look_x = rx;
             me->controls.movement.forwards = true;
-            me->controls.jumping.crouch    = true;
-            me->controls.jumping.shoot     = minDist < 10;
+            me->controls.jumping.crouch    = false;
+            me->controls.jumping.shoot     = false; //minDist < 10;
         }
         
         
