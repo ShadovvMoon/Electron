@@ -42,6 +42,7 @@
 		14272D151AE5B05B002A64A5 /* bitmaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D001AE5B05B002A64A5 /* bitmaps.cpp */; };
 		14272D161AE5B05B002A64A5 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D021AE5B05B002A64A5 /* texture.cpp */; };
 		1436196F1AE3982200D82AC8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1436196E1AE3982200D82AC8 /* GLUT.framework */; };
+		144B3DD31AFB473700536206 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 144B3DD11AFB473700536206 /* gui.cpp */; };
 		145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C41AE79A97001CCEBA /* itmc.cpp */; };
 		145A96C91AE79E55001CCEBA /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
 		145A96CC1AE79E5B001CCEBA /* null.frag in Resources */ = {isa = PBXBuildFile; fileRef = 145A96CA1AE79E5B001CCEBA /* null.frag */; };
@@ -153,6 +154,8 @@
 		14272D191AE5BA30002A64A5 /* ZZTHaloScenarioTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZTHaloScenarioTag.h; sourceTree = "<group>"; };
 		1436196E1AE3982200D82AC8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		143619771AE39B3C00D82AC8 /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../../OpenGL/defines.h; sourceTree = "<group>"; };
+		144B3DD11AFB473700536206 /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
+		144B3DD21AFB473700536206 /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
 		145A96C41AE79A97001CCEBA /* itmc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = itmc.cpp; sourceTree = "<group>"; };
 		145A96C51AE79A97001CCEBA /* itmc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itmc.h; sourceTree = "<group>"; };
 		145A96C71AE79E55001CCEBA /* null.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = null.cpp; sourceTree = "<group>"; };
@@ -262,6 +265,7 @@
 				14272CDD1AE5B05B002A64A5 /* camera */,
 				14272CE21AE5B05B002A64A5 /* render.cpp */,
 				14272CE31AE5B05B002A64A5 /* render.h */,
+				144B3DD01AFB473700536206 /* gui */,
 				14272CE41AE5B05B002A64A5 /* renderables */,
 				14272CEE1AE5B05B002A64A5 /* shader */,
 				14272CFF1AE5B05B002A64A5 /* texture */,
@@ -382,6 +386,15 @@
 			);
 			name = tags;
 			path = ../../OpenGL/tags;
+			sourceTree = "<group>";
+		};
+		144B3DD01AFB473700536206 /* gui */ = {
+			isa = PBXGroup;
+			children = (
+				144B3DD11AFB473700536206 /* gui.cpp */,
+				144B3DD21AFB473700536206 /* gui.h */,
+			);
+			path = gui;
 			sourceTree = "<group>";
 		};
 		148065521AF62BF500FD5AFC /* game */ = {
@@ -619,6 +632,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				144B3DD31AFB473700536206 /* gui.cpp in Sources */,
 				142322D11AFA0719004A7E0D /* md5.c in Sources */,
 				14272D121AE5B05B002A64A5 /* schi.cpp in Sources */,
 				14272D0A1AE5B05B002A64A5 /* scen.cpp in Sources */,

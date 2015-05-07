@@ -24,14 +24,13 @@ void ERenderer::setup(const char *resources) {
 #endif
     
     // Initilisation
-    camera  = new Camera;
-    
-    shaders = new ShaderManager(resources);
-    options = new shader_options;
-    
-    bsp     = new BSP(shaders);
-    objects = new ObjectManager(camera, bsp);
-    skies   = new SkyManager;
+    camera    = new Camera;
+    shaders   = new ShaderManager(resources);
+    options   = new shader_options;
+    bsp       = new BSP(shaders);
+    objects   = new ObjectManager(camera, bsp);
+    skies     = new SkyManager;
+    interface = new GUI();
     
     // Start the tick
     tick = now();
@@ -198,7 +197,7 @@ void ERenderer::renderScene(bool fast) {
         //glAlphaFunc(GL_GREATER, 0.1);
         for (int pass = ShaderStart; pass <= ShaderEnd; pass++ )
         {
-            if (fast && (pass == shader_SCEX || pass == shader_SCHI || pass == shader_SGLA || pass == shader_SWAT)) continue;
+            if (fast && (/*pass == shader_SCEX || pass == shader_SCHI || pass == shader_SGLA ||*/pass == shader_SWAT)) continue;
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
             shader->start(options);
@@ -266,7 +265,7 @@ void ERenderer::render() {
         GLint anViewport[4];
         glGetIntegerv(GL_VIEWPORT, anViewport);
         
-        float reflectionHeight = 0.0;
+        float reflectionHeight = 0.0; //-shaders->reflection_height();
         glPushMatrix();
         glScalef(1.0, 1.0, -1.0);
         glTranslatef(0.0f, 0.0f, 2*reflectionHeight);
@@ -290,6 +289,11 @@ void ERenderer::render() {
     renderScene(false);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
+
+    // Render the GUI
+    //GLint anViewport[4];
+    //glGetIntegerv(GL_VIEWPORT, anViewport);
+    // interface->render(anViewport[2], anViewport[3]);
     
     // Intersection debugging
     /*

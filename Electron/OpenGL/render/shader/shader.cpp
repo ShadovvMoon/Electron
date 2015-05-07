@@ -212,3 +212,11 @@ bool ShaderManager::needs_reflection() {
 void ShaderManager::set_needs_reflection(bool reflect) {
     reflecting = reflect;
 }
+
+
+float ShaderManager::reflection_height() {
+    return reflect_height;
+}
+void ShaderManager::set_reflection_height(float height) {
+    reflect_height = height;
+}

@@ -11,28 +11,33 @@
 #define NETGAME_EQUIP_CHUNK 0x90
 typedef struct netgame_equipment
 {
-    uint32_t bitmask32;
+    uint32_t bitmask32;  //0
     
-    short type1; // Enum16
-    short type2; // Enum16
-    short type3; // Enum16
-    short type4; // Enum16
+    short type1; // Enum16 4
+    short type2; // Enum16 6
+    short type3; // Enum16 8
+    short type4; // Enum16 10
     
-    short team_index;
-    short spawn_time;
+    short team_index; //12
+    short spawn_time; //14 != 15
     
-    uint32_t unknown[12];
-    float coord[3];
-    float yaw;
-    HaloTagDependency item_ref;
+    uint32_t unknown[12]; //16
+    float coord[3]; //0x40
+    float yaw; //0x4C
+    HaloTagDependency item_ref; //0x50
 } NetgameEquipment;
 
 void ItmcInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size) {
     NetgameEquipment *spawn = (NetgameEquipment*)offset;
+    
+    //spawn->item_ref is an itmc, NOT an object ref
+    
+    
     reference = ((ItmcClass*)manager)->create_object(spawn->item_ref);
     x = spawn->coord[0];
     y = spawn->coord[1];
     z = spawn->coord[2];
+    printf("reading netgame item %f %f %f\n", x,y,z);
     yaw   = spawn->yaw;
     pitch = 0.0;
     roll  = 0.0;
@@ -87,6 +92,7 @@ void ItmcClass::read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t 
 }
 
 ObjectRef *ItmcClass::create_object(HaloTagDependency tag) {
+    printf("create class ObjectRef\n");
     return this->manager->create_object(this->map, tag);
 }
 void ItmcClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario) {

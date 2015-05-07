@@ -42,13 +42,16 @@ private:
     shader *shaders[ShaderCount];
     TextureManager *textures = nullptr;
     bool reflecting = false;
+    float reflect_height = 0.0;
 public:
     ShaderManager(const char *resources);
     TextureManager *texture_manager();
     shader *get_shader(ShaderType pass);
 
     bool needs_reflection();
+    float reflection_height();
     void set_needs_reflection(bool reflect);
+    void set_reflection_height(float height);
     GLuint get_reflection(int index);
     shader_object *create_shader(ProtonMap *map, HaloTagDependency shader);
 };

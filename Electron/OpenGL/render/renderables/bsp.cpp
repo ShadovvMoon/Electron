@@ -502,6 +502,10 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
                     index_offset += 3;
                 }
                 
+                if (renderer->shader->is(shader_SWAT)) {
+                    shaders->set_reflection_height(vao->vertex_array[(vertex_offset-1)*3 + 2]);
+                }
+                
                 renderables[i]->submeshes[render_pos] = renderer;
                 render_pos++;
             }
