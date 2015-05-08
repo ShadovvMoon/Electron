@@ -289,7 +289,7 @@ void ERenderer::render() {
     renderScene(false);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
-
+    
     // Render the GUI
     //GLint anViewport[4];
     //glGetIntegerv(GL_VIEWPORT, anViewport);

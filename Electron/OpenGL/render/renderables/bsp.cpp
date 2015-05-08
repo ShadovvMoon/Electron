@@ -337,7 +337,11 @@ vector3d *BSP::intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *sc
         HaloTagReflexive collisionBSP = mesh->collBSP;
         for (m=0; m < bsp.count; m++) {
             CollisionBSP *collison = (CollisionBSP *)(map2mem(bspTag, collisionBSP.address) + 96 * m);
-            return traverseTree(p, q, bspTag, collison, 0);
+            vector3d *traversal = traverseTree(p, q, bspTag, collison, 0);
+            if (traversal != nullptr) {
+                if (traversal->x == kBigFloat || traversal->y == kBigFloat || traversal->z == kBigFloat) return nullptr;
+            }
+            return traversal;
         }
     }
     return nullptr;

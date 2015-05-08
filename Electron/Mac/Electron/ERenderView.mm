@@ -9,6 +9,9 @@
 #import "ERenderView.h"
 #import "../../OpenGL/render/render.h"
 
+#include <mutex>          // std::mutex
+std::mutex mtx;           // mutex for critical section
+
 @implementation ERenderView
 ERenderer *renderer;
 Control *controls = (Control *)malloc(sizeof(Control));
@@ -46,12 +49,13 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     // Add your drawing codes here
     renderer->applyControl(controls);
     if ([[self window] isMainWindow]) {
+        mtx.lock();
         [[self openGLContext] makeCurrentContext];
-        
         NSSize sceneBounds = [self bounds].size;
         renderer->resize(sceneBounds.width, sceneBounds.height);
         renderer->render();
         [[self openGLContext] flushBuffer];
+        mtx.unlock();
     }
     return kCVReturnSuccess;
 }
@@ -117,7 +121,9 @@ CGPoint prevDownLeft;
 -(void)mouseDown:(NSEvent *)theEvent {
     [self updateMasks:theEvent];
     prevDownLeft = [NSEvent mouseLocation];
+    mtx.lock();
     renderer->mouseDown([theEvent locationInWindow].x, [theEvent locationInWindow].y);
+    mtx.unlock();
 }
 - (void)mouseDragged:(NSEvent *)theEvent {
     [self updateMasks:theEvent];

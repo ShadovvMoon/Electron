@@ -24,6 +24,7 @@ private:
     ProtonMap *map;
     void read_spawn(ProtonTag *scenario, HaloTagReflexive spawn, uint8_t size);
 public:
+    ObjectRef *itmcModel(HaloTagDependency itmc);
     ObjectRef *create_object(HaloTagDependency tag);
     void read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario);
     void write(ProtonMap *map, ProtonTag *scenario);

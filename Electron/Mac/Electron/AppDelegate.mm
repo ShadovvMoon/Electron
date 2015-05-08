@@ -21,20 +21,20 @@
     load_bitmaps([[NSString stringWithFormat:@"%@/Library/Application Support/HaloMD/GameData/Maps/bitmaps.map", NSHomeDirectory()] cStringUsingEncoding:NSUTF8StringEncoding]);
     
     // Disable app nap
-    if ([[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)]) {
-        id activity;
-        activity = [[NSProcessInfo processInfo] beginActivityWithOptions:0x00FFFFFF reason:@"receiving OSC messages"];
-        [activity retain];
-    }
+    //if ([[NSProcessInfo processInfo] respondsToSelector:@selector(beginActivityWithOptions:reason:)]) {
+    //    id activity;
+    //    activity = [[NSProcessInfo processInfo] beginActivityWithOptions:0x00FFFFFF reason:@"receiving OSC messages"];
+    //    [activity retain];
+    //}
     
     // Create a threaded client
-    char pname[255];
-    
-    int i;
-    for (i=0; i < 1; i++) {
-        sprintf(pname, "Dragon%d", i+1);
-        Client *c0  = new Client(pname, "107.191.57.51", 5000);
-    }
+    //char pname[255];
+    //
+    //int i;
+    //for (i=0; i < 1; i++) {
+    //    sprintf(pname, "Dragon%d", i+1);
+    //    Client *c0  = new Client(pname, "107.191.57.51", 5000);
+    //}
     
     
     

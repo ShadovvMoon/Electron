@@ -86,8 +86,7 @@ void ObjectManager::write(ProtonMap *map, ProtonTag *scenario) {
 
 void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
     // Frustrum culling
-    
-    
+
     // Culling
     //vector3d *position = new vector3d(instance->x, instance->y, instance->z);
     //bsp->intersect(camera->position, position, map, scenario); too slow 
@@ -95,9 +94,35 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
     
     // Render
     if (instance->selected) {
-        glEnable(GL_COLOR_MATERIAL);
-        glEnable(GL_BLEND);
-        glColor4f(1.0, 1.0, 0.0, 0.2);
+        // Render a cross as the coordinates. TODO: Replace with non fixed pipeline
+        if (pass == shader_NULL) {
+            float lineLen = 100.0;
+            float largeFloat = 1000000.0;
+            vector3d *position      = new vector3d(instance->x, instance->y, instance->z);
+            vector3d *position_down = new vector3d(instance->x, instance->y, instance->z-largeFloat);
+            vector3d *intersect = bsp->intersect(position_down, position, map, scenario);
+
+            // Is this object below the BSP? Move it above automatically
+            glEnable(GL_COLOR_MATERIAL);
+            if (intersect == nullptr) {
+                glColor4f(1.0, 0.0, 0.0, 1.0);
+            } else {
+                delete intersect;
+                glColor4f(1.0, 1.0, 1.0, 1.0);
+            }
+            delete position;
+            delete position_down;
+            
+            glLineWidth(1.0);
+            glBegin(GL_LINES);
+            glVertex3f(instance->x-lineLen, instance->y, instance->z);
+            glVertex3f(instance->x+lineLen, instance->y, instance->z);
+            glVertex3f(instance->x, instance->y-lineLen, instance->z);
+            glVertex3f(instance->x, instance->y+lineLen, instance->z);
+            glVertex3f(instance->x, instance->y, instance->z-lineLen);
+            glVertex3f(instance->x, instance->y, instance->z+lineLen);
+            glEnd();
+        }
     }
     
     glPushMatrix();
@@ -174,6 +199,8 @@ void ObjectManager::clearSelection() {
 }
 
 void ObjectManager::select(bool shift, float x, float y) {
+    printf("select %f %f\n",x,y);
+    
     const GLsizei bufferSize = 16384;
     GLuint nameBuf[bufferSize];
     GLuint tmpLookup[bufferSize];
@@ -197,6 +224,8 @@ void ObjectManager::select(bool shift, float x, float y) {
     glInitNames();
     
     shader_options *options = new shader_options;
+    
+    printf("render names\n");
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glEnableClientState(GL_VERTEX_ARRAY);
     ShaderType type = static_cast<ShaderType>(shader_SOSO);
@@ -207,6 +236,7 @@ void ObjectManager::select(bool shift, float x, float y) {
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
     free(options);
+    printf("done render names\n");
     
     GLuint hits = glRenderMode(GL_RENDER);
     GLuint names, *ptr = (GLuint *)nameBuf;

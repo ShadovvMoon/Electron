@@ -29,16 +29,12 @@ typedef struct netgame_equipment
 
 void ItmcInstance::read(ObjectClass *manager, ProtonTag *scenario, uint8_t* offset, uint8_t size) {
     NetgameEquipment *spawn = (NetgameEquipment*)offset;
-    
-    //spawn->item_ref is an itmc, NOT an object ref
-    
-    
-    reference = ((ItmcClass*)manager)->create_object(spawn->item_ref);
+    reference = ((ItmcClass*)manager)->itmcModel(spawn->item_ref);
     x = spawn->coord[0];
     y = spawn->coord[1];
     z = spawn->coord[2];
     printf("reading netgame item %f %f %f\n", x,y,z);
-    yaw   = spawn->yaw;
+    yaw   = spawn->yaw * CONVERSION;
     pitch = 0.0;
     roll  = 0.0;
     data  = malloc(size);
@@ -103,6 +99,19 @@ void ItmcClass::read(ObjectManager *manager, ProtonMap *map, ProtonTag *scenario
     HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
     printf("reading spawns\n");
     read_spawn(scenario, tag->mpEquip, NETGAME_EQUIP_CHUNK);
+}
+
+ObjectRef *ItmcClass::itmcModel(HaloTagDependency itmc) {
+    ProtonTag *objectTag = this->map->tags.at(itmc.tag_id.tag_index).get();
+    void *itmcData = (void *)objectTag->Data();
+    HaloTagReflexive *permutations = (HaloTagReflexive*)itmcData;
+    int i;
+    for (i=0; i < permutations->count; i++) {
+        uint8_t *permutation = (uint8_t*)(objectTag->Data() + objectTag->PointerToOffset(permutations->address) + i*84);
+        HaloTagDependency *object = (HaloTagDependency *)(permutation + 0x24);
+        return this->manager->create_object(this->map, *object);
+    }
+    return nullptr;
 }
 
 void ItmcClass::write(ProtonMap *map, ProtonTag *scenario) {
