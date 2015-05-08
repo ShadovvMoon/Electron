@@ -21,13 +21,17 @@ void sgla::setup(std::string path) {
     maps            = glGetUniformLocation(program, "maps");
     scale           = glGetUniformLocation(program, "scale");
     reflectionScale = glGetUniformLocation(program, "reflectionScale");
+    fog                 = glGetUniformLocation(program, "fog");
+    fogSettings         = glGetUniformLocation(program, "fogSettings");
     printf("done\n");
 }
 
-void sgla::start() {
+void sgla::start(shader_options *options) {
     glUseProgram(program);
     glUniform1i(multipurposeMap, 0);
     glUniform1i(cubeMap, 1);
+    glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
+    glUniform2f(fogSettings, options->fogdist, options->fogcut);
 }
 
 void sgla::stop() {
@@ -37,6 +41,13 @@ void sgla::stop() {
 void sgla_object::setBaseUV(float u, float v) {
     uscale = u;
     vscale = v;
+}
+void sgla_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
+    fogr = r;
+    fogg = g;
+    fogb = b;
+    fogdist = distance;
+    fogcut = cutoff;
 }
 
 // Senv object

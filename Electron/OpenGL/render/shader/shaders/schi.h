@@ -30,9 +30,10 @@ public:
     GLuint alphaFunction;
     GLuint mapCount;
     
-    
+    GLint fog;
+    GLint fogSettings;
     void setup(std::string path);
-    void start();
+    void start(shader_options *options);
     void stop();
 };
 
@@ -56,10 +57,13 @@ private:
     GLuint alphaFunction = 0;
     GLuint mapCount = 0;
     int mapsCount = 0;
+    
+    float fogr = 0.0, fogg = 0.0, fogb = 0.0, fogdist = 1.0, fogcut = 0.0;
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     bool render();
     void setBaseUV(float u, float v);
+    void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);
 };
 

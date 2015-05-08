@@ -17,13 +17,15 @@ private:
     GLint multipurposeMap;
     GLint detailMap;
     GLint cubeMap;
+    GLint fog;
+    GLint fogSettings;
 public:
     GLint scale;
     GLint maps;
     GLint reflectionScale;
     
     void setup(std::string path);
-    void start();
+    void start(shader_options *options);
     void stop();
 };
 
@@ -49,10 +51,12 @@ private:
     GLint mapsId;
     GLint scaleId;
     GLint reflectionScaleId;
+    float fogr = 0.0, fogg = 0.0, fogb = 0.0, fogdist = 1.0, fogcut = 0.0;
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
     bool render();
     void setBaseUV(float u, float v);
+    void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);
 };
 

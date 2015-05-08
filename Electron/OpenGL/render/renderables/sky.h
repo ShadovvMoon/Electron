@@ -19,6 +19,7 @@ private:
 public:
     ModelManager *modelManager;
     void read(ObjectManager *objects, ProtonMap *map, ProtonTag *scenario);
+    void options(shader_options *options, ProtonMap *map, ProtonTag *scenario);
     void render(ShaderType pass);
 };
 

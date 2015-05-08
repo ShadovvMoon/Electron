@@ -16,6 +16,7 @@
 #include "renderables/bsp.h"
 #include "renderables/object.h"
 #include "renderables/sky.h"
+#include "gui/gui.h"
 
 #include <chrono>
 using namespace std::chrono;
@@ -45,6 +46,10 @@ private:
     ObjectManager *objects;
     SkyManager *skies;
     Control *controller = nullptr;
+    GUI *interface;
+    
+    // shader options
+    shader_options *options;
 public:
     ~ERenderer();
     void setup(const char *resources);

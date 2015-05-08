@@ -24,11 +24,13 @@ void ERenderer::setup(const char *resources) {
 #endif
     
     // Initilisation
-    camera  = new Camera;
-    shaders = new ShaderManager(resources);
-    bsp     = new BSP(shaders);
-    objects = new ObjectManager(camera, bsp);
-    skies   = new SkyManager;
+    camera    = new Camera;
+    shaders   = new ShaderManager(resources);
+    options   = new shader_options;
+    bsp       = new BSP(shaders);
+    objects   = new ObjectManager(camera, bsp);
+    skies     = new SkyManager;
+    interface = new GUI();
     
     // Start the tick
     tick = now();
@@ -62,6 +64,9 @@ void ERenderer::read(ProtonMap *map) {
         bsp->setup(map, scenarioTag);
         objects->read(shaders, map, scenarioTag);
         skies->read(objects, map, scenarioTag);
+        
+        // Set the fog
+        skies->options(options, map, scenarioTag);
     }
     ready = true;
 }
@@ -176,23 +181,26 @@ void ERenderer::renderScene(bool fast) {
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
         // Render the sky
+        shader_options *clear = new shader_options;
+        clear->fogcut = 0.0;
         shader *scex = shaders->get_shader(shader_SCEX);
-        scex->start();
+        scex->start(clear);
         skies->render(shader_SCEX);
         scex->stop();
         shader *schi = shaders->get_shader(shader_SCHI);
-        schi->start();
+        schi->start(clear);
         skies->render(shader_SCHI);
         schi->stop();
+        free(clear);
 
         // Render everything else
         //glAlphaFunc(GL_GREATER, 0.1);
         for (int pass = ShaderStart; pass <= ShaderEnd; pass++ )
         {
-            if (fast && (pass == shader_SCEX || pass == shader_SCHI || pass == shader_SGLA || pass == shader_SWAT)) continue;
+            if (fast && (/*pass == shader_SCEX || pass == shader_SCHI || pass == shader_SGLA ||*/pass == shader_SWAT)) continue;
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
-            shader->start();
+            shader->start(options);
             bsp->render(type);
             GLuint number = 0;
             objects->render(&number, nullptr, type);
@@ -222,7 +230,7 @@ void ERenderer::render() {
     
     // Setup the current viewport
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.2,0.2,0.2,1.0);
+    glClearColor(options->fogr, options->fogg, options->fogb,1.0);
     
     // Enable GL states
     glEnable(GL_DEPTH_TEST);
@@ -257,7 +265,7 @@ void ERenderer::render() {
         GLint anViewport[4];
         glGetIntegerv(GL_VIEWPORT, anViewport);
         
-        float reflectionHeight = 0.0;
+        float reflectionHeight = 0.0; //-shaders->reflection_height();
         glPushMatrix();
         glScalef(1.0, 1.0, -1.0);
         glTranslatef(0.0f, 0.0f, 2*reflectionHeight);
@@ -281,6 +289,11 @@ void ERenderer::render() {
     renderScene(false);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
+
+    // Render the GUI
+    //GLint anViewport[4];
+    //glGetIntegerv(GL_VIEWPORT, anViewport);
+    // interface->render(anViewport[2], anViewport[3]);
     
     // Intersection debugging
     /*

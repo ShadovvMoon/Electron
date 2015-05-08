@@ -24,13 +24,15 @@ void soso::setup(std::string path) {
     maps            = glGetUniformLocation(program, "maps");
     scale           = glGetUniformLocation(program, "scale");
     reflectionScale = glGetUniformLocation(program, "reflectionScale");
+    fog                 = glGetUniformLocation(program, "fog");
+    fogSettings         = glGetUniformLocation(program, "fogSettings");
     
 	//glBindAttribLocation(program, 1, "texCoord_buffer");
     //glBindAttribLocation(program, 2, "normal_buffer");
     printf("done %d %d %d %d\n", baseTexture, multipurposeMap, detailMap, cubeMap);
 }
 
-void soso::start() {
+void soso::start(shader_options *options) {
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.5);
     glUseProgram(program);
@@ -38,6 +40,8 @@ void soso::start() {
     glUniform1i(detailMap, 1);
     glUniform1i(multipurposeMap, 2);
     glUniform1i(cubeMap, 3);
+    glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
+    glUniform2f(fogSettings, options->fogdist, options->fogcut);
 }
 
 void soso::stop() {
@@ -47,6 +51,13 @@ void soso::stop() {
 void soso_object::setBaseUV(float u, float v) {
     uscale = u;
     vscale = v;
+}
+void soso_object::setFogSettings(float r, float g, float b, float distance, float cutoff) {
+    fogr = r;
+    fogg = g;
+    fogb = b;
+    fogdist = distance;
+    fogcut = cutoff;
 }
 
 // Senv object

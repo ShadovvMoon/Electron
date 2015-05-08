@@ -22,6 +22,10 @@ varying mat3 TBNMatrix;
 // need to scale our framebuffer - it has a fixed width/height of 2048
 uniform vec4 frameSize;
 
+// Fog
+uniform vec4 fog;
+uniform vec2 fogSettings;
+
 const vec3 Xunitvec = vec3 (1.0, 0.0, 0.0);
 const vec3 Yunitvec = vec3 (0.0, 1.0, 0.0);
 void main(void) {
@@ -88,4 +92,10 @@ void main(void) {
     vec3 color = RefractionColor;
     vec4 waterColour = vec4(30/255.0, 50/255.0, 48/255.0, 0.8)*2;
     gl_FragColor = mix(waterColour, waterColour*vec4(color.x, color.y, color.z, 1.0), 0.5);
+    
+    // FOGGING
+    float z = (gl_FragCoord.z / gl_FragCoord.w);
+    float fogFactor = (z/fogSettings[0]);
+    fogFactor = clamp(fogFactor, 0.0, fogSettings[1]);
+    gl_FragColor = mix(gl_FragColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
 }

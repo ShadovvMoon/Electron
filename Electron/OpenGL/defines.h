@@ -10,8 +10,8 @@
 #define _defines_h
 
 // Render using vertex array objects (if false, use arrays or vbos)
-#define RENDER_VAO
-#define RENDER_VBO
+//#define RENDER_VAO
+//#define RENDER_VBO
 
 // Rendering flags
 #define SHADOW_MAP_SIZE 1024

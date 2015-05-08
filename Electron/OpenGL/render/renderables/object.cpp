@@ -31,7 +31,7 @@ void ObjectRef::render(ShaderType pass) {
 }
 
 ObjectRef *ObjectManager::create_object(ProtonMap *map, HaloTagDependency tag) {
-    fprintf(stderr, "creating object %d\n", tag.tag_id.tag_index);
+    fprintf(stderr, "creating object %d %c%c%c%c\n", tag.tag_id.tag_index, tag.tag_class[3], tag.tag_class[2], tag.tag_class[1], tag.tag_class[0]);
     
     // Has this bitmap been loaded before? Check the cache
     std::map<uint16_t, ObjectRef*>::iterator iter = this->objects.find(tag.tag_id.tag_index);
@@ -195,7 +195,18 @@ void ObjectManager::select(bool shift, float x, float y) {
     GLuint name = 1;
     GLuint *lookup = (GLuint *)tmpLookup;
     glInitNames();
-    this->render(&name, lookup, shader_SOSO);
+    
+    shader_options *options = new shader_options;
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    ShaderType type = static_cast<ShaderType>(shader_SOSO);
+    shader *shader = modelManager->shaders->get_shader(shader_SOSO);
+    shader->start(options);
+    render(&name, lookup, shader_SOSO);
+    shader->stop();
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glPopAttrib();
+    free(options);
     
     GLuint hits = glRenderMode(GL_RENDER);
     GLuint names, *ptr = (GLuint *)nameBuf;
