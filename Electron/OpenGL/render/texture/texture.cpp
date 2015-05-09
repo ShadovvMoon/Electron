@@ -231,6 +231,7 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                              GL_UNSIGNED_BYTE,
                              output);
                 free(output);
+                glGenerateMipmap(GL_TEXTURE_2D);
                 continue;
             } else if (image->format == BITM_FORMAT_A8R8G8B8) {
                 //format = GL_RGBA;
@@ -263,6 +264,7 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                              GL_RGBA,
                              GL_UNSIGNED_BYTE,
                              output);
+                glGenerateMipmap(GL_TEXTURE_2D);
                 free(output);
                 continue;
             } else {
@@ -338,7 +340,7 @@ void texture_cubemap::load_side(GLenum side_target, GLenum i, ProtonTag *bitmapT
                      0,
                      GL_RGBA,
                      GL_UNSIGNED_BYTE,
-                     input);
+                     output);
     } else if (image->format == BITM_FORMAT_A8R8G8B8) {
         //format = GL_RGBA;
         //internalFormat = GL_RGBA;
@@ -355,7 +357,7 @@ void texture_cubemap::load_side(GLenum side_target, GLenum i, ProtonTag *bitmapT
                      0,
                      GL_RGBA,
                      GL_UNSIGNED_BYTE,
-                     input);
+                     output);
         return;
     } else if (image->format == BITM_FORMAT_R5G6B5) {
         printf("R5G6B5\n");

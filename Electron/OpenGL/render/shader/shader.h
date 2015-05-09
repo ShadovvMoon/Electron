@@ -14,14 +14,21 @@
 #define ____EShader__
 
 typedef struct {
-    float fogr, fogg, fogb;
-    float fogdist, fogcut;
+    GLfloat fogr, fogg, fogb;
+    GLfloat fogdist, fogcut;
+    
+    GLfloat perspective[16];
+    GLfloat modelview[16];
+    GLfloat position[3];
+    GLfloat rotation[3];
 } shader_options;
 
 class shader {
 public:
+    GLint program;
     virtual void setup(std::string path) = 0;
     virtual void start(shader_options *options) = 0;
+    virtual void update(shader_options *options) = 0;
     virtual void stop() = 0;
 };
 

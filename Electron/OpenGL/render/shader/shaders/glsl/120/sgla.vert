@@ -1,5 +1,6 @@
 #version 120
 
+attribute vec2 vertex_buffer;
 attribute vec2 texCoord_buffer_light;
 attribute vec2 texCoord_buffer;
 attribute vec3 normal_buffer;

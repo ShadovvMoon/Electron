@@ -34,6 +34,9 @@ void swat::start(shader_options *options) {
     glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
     glUniform2f(fogSettings, options->fogdist, options->fogcut);
 }
+void swat::update(shader_options *options) {
+    
+}
 
 void swat::stop() {
     

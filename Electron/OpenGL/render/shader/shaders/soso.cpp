@@ -26,15 +26,21 @@ void soso::setup(std::string path) {
     reflectionScale = glGetUniformLocation(program, "reflectionScale");
     fog                 = glGetUniformLocation(program, "fog");
     fogSettings         = glGetUniformLocation(program, "fogSettings");
-    
+    ProjectionMatrix    = glGetUniformLocation(program, "ProjectionMatrix");
+    ModelViewMatrix     = glGetUniformLocation(program, "ModelViewMatrix");
+    Position  = glGetUniformLocation(program, "Position");
+
 	//glBindAttribLocation(program, 1, "texCoord_buffer");
     //glBindAttribLocation(program, 2, "normal_buffer");
     printf("done %d %d %d %d\n", baseTexture, multipurposeMap, detailMap, cubeMap);
 }
 
 void soso::start(shader_options *options) {
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER, 0.5);
+    //#ifndef RENDER_CORE_32
+    //glEnable(GL_ALPHA_TEST);
+    //glAlphaFunc(GL_GREATER, 0.5);
+    //#endif
+    
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
     glUniform1i(detailMap, 1);
@@ -42,10 +48,23 @@ void soso::start(shader_options *options) {
     glUniform1i(cubeMap, 3);
     glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
     glUniform2f(fogSettings, options->fogdist, options->fogcut);
+    
+    #ifdef RENDER_CORE_32
+    glUniformMatrix4fv(ProjectionMatrix, 1, false, options->perspective);
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+    #endif
+}
+void soso::update(shader_options *options) {
+#ifdef RENDER_CORE_32
+    glUniform3f(Position, options->position[0], options->position[1], options->position[2]);
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+#endif
 }
 
 void soso::stop() {
-    glDisable(GL_ALPHA_TEST);
+    //#ifndef RENDER_CORE_32
+    //glDisable(GL_ALPHA_TEST);
+    //#endif
 }
 
 void soso_object::setBaseUV(float u, float v) {
@@ -105,7 +124,7 @@ bool soso_object::is(ShaderType type) {
 bool soso_object::render() {
     
     // Texturing
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
     baseMap->bind();
     
@@ -125,8 +144,8 @@ bool soso_object::render() {
     }
     
     // Blending
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Scales
     glUniform4f(scaleId, uscale, vscale, detailScale, detailScaleV);

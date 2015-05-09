@@ -9,10 +9,6 @@
 #ifndef _defines_h
 #define _defines_h
 
-// Render using vertex array objects (if false, use arrays or vbos)
-//#define RENDER_VAO
-//#define RENDER_VBO
-
 // Rendering flags
 #define SHADOW_MAP_SIZE 1024
 #define RENDER_SWAT_REFLECTION
@@ -20,9 +16,19 @@
 
 // Force hardware acceleration
 #define RENDER_GPU
+//#define RENDER_CORE_32
+#define GL_VALIDATE
+
+// Render using vertex array objects (if false, use arrays or vbos)
+#define RENDER_VAO
+#define RENDER_VBO
 
 // Use standard VAOS (non APPLE)
-//#define RENDER_VAO_NORMAL
+#ifdef RENDER_CORE_32
+    #define RENDER_VAO
+    #define RENDER_VBO
+    #define RENDER_VAO_NORMAL
+#endif
 
 // Don't remember what this does
 //#define RENDER_FAST // Render as fast as possible

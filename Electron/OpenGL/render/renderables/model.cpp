@@ -72,7 +72,7 @@ typedef struct
 
 void ModelRenderMesh::setup() {
     // Create the buffers for the vertices atttributes
-#ifdef _WINDOWS
+#ifdef RENDER_VAO_NORMAL
 	glGenVertexArrays(1, &geometryVAO);
 	glBindVertexArray(geometryVAO);
 #else
@@ -188,13 +188,20 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
                 renderer->index_array[v]   = index[0];
             }
             
+            #define vertex_buffer 0
             #define texCoord_buffer 1
             #define texCoord_buffer_light 3
             #define normals_buffer 2
             #define binormals_buffer 5
             #define tangents_buffer 6
             
-            //Shift these to vertex buffers
+            
+#ifdef RENDER_CORE_32
+            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
+            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->vertex_array, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(vertex_buffer);
+            glVertexAttribPointer(vertex_buffer, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+#else
             glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
             glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
             GLvoid* my_vertex_pointer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -202,7 +209,8 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             glUnmapBuffer(GL_ARRAY_BUFFER);
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-            
+#endif
+
             glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[TEXCOORD_VB]);
             glBufferData(GL_ARRAY_BUFFER, vertex_number * 2 * sizeof(GLfloat), renderer->texture_uv, GL_STATIC_DRAW);
             glEnableVertexAttribArray(texCoord_buffer);
@@ -231,7 +239,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             glEnableVertexAttribArray(tangents_buffer);
             glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
             
-		#ifdef _WINDOWS
+		#ifdef RENDER_VAO_NORMAL
 			glBindVertexArray(0);
 		#else
 			glBindVertexArrayAPPLE(0);
@@ -306,7 +314,7 @@ void Model::render(ShaderType pass) {
             if ((mesh->shader == nullptr && pass == shader_NULL) ||
                 (mesh->shader != nullptr && mesh->shader->is(pass))) {
 #ifdef RENDER_VAO
-			#ifdef _WINDOWS
+			#ifdef RENDER_VAO_NORMAL
 				glBindVertexArray(mesh->geometryVAO);
 			#else
 				glBindVertexArrayAPPLE(mesh->geometryVAO);
@@ -340,13 +348,33 @@ void Model::render(ShaderType pass) {
                     mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
                 }
                 
-            #ifdef RENDER_VBO
-                glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, 0);
-            #else
-                glDrawElements(GL_TRIANGLE_STRIP, mesh->indexCount, GL_UNSIGNED_INT, mesh->index_array);
+            #ifdef GL_VALIDATE
+                GLint program;
+                glGetIntegerv(GL_CURRENT_PROGRAM, &program);
+                glValidateProgram(program);
+                
+                int bufflen = 1024;
+                int validate = 0;
+                
+                glGetProgramiv(program, GL_VALIDATE_STATUS, &validate);
+                if(validate == GL_FALSE) {
+                    printf("validation failed model %d %d\n", program, pass);
+                    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufflen);
+                    if (bufflen > 1) {
+                        GLchar* log_string = new char[bufflen + 1];
+                        glGetProgramInfoLog(program, bufflen, 0, log_string);
+                        printf("LOG: %s\n", log_string);
+                    }
+                }
             #endif
                 
-			#ifdef _WINDOWS
+            #ifdef RENDER_VBO
+                glDrawRangeElements(GL_TRIANGLE_STRIP, 0, mesh->vertCount, mesh->indexCount, GL_UNSIGNED_INT, 0);
+            #else
+                glDrawRangeElements(GL_TRIANGLE_STRIP, 0, mesh->vertCount, mesh->indexCount, GL_UNSIGNED_INT, mesh->index_array);
+            #endif
+                
+			#ifdef RENDER_VAO_NORMAL
 				glBindVertexArray(0);
 			#else
 				glBindVertexArrayAPPLE(0);

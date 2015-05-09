@@ -33,6 +33,8 @@ void schi::setup(std::string path) {
     mapCount         = glGetUniformLocation(program, "mapCount");
     fog                 = glGetUniformLocation(program, "fog");
     fogSettings         = glGetUniformLocation(program, "fogSettings");
+    ProjectionMatrix    = glGetUniformLocation(program, "ProjectionMatrix");
+    ModelViewMatrix     = glGetUniformLocation(program, "ModelViewMatrix");
 }
 
 void schi::start(shader_options *options) {
@@ -44,6 +46,16 @@ void schi::start(shader_options *options) {
     glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
     glUniform2f(fogSettings, options->fogdist, options->fogcut);
     errorCheck();
+#ifdef RENDER_CORE_32
+    glUniformMatrix4fv(ProjectionMatrix, 1, false, options->perspective);
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+#endif
+}
+
+void schi::update(shader_options *options) {
+#ifdef RENDER_CORE_32
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+#endif
 }
 
 void schi::stop() {
@@ -125,12 +137,14 @@ bool schi_object::is(ShaderType type) {
 
 bool schi_object::render() {
     
+    #ifndef RENDER_CORE_32
     // Blending
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Texturing
     glEnable(GL_TEXTURE_2D);
+    #endif
     
     int i;
     for (i=0; i < mapsCount; i++) {

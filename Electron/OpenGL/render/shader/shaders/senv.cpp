@@ -26,6 +26,8 @@ void senv::setup(std::string path) {
     scale               = glGetUniformLocation(program, "scale");
     fog                 = glGetUniformLocation(program, "fog");
     fogSettings         = glGetUniformLocation(program, "fogSettings");
+    ProjectionMatrix    = glGetUniformLocation(program, "ProjectionMatrix");
+    ModelViewMatrix     = glGetUniformLocation(program, "ModelViewMatrix");
     
     maps = glGetUniformLocation(program, "maps");
     maps2 = glGetUniformLocation(program, "maps2");
@@ -47,6 +49,13 @@ void senv::start(shader_options *options) {
     
     glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
     glUniform2f(fogSettings, options->fogdist, options->fogcut);
+    
+    #ifdef RENDER_CORE_32
+    glUniformMatrix4fv(ProjectionMatrix, 1, false, options->perspective);
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+    #endif
+}
+void senv::update(shader_options *options) {
     
 }
 
@@ -123,29 +132,33 @@ bool senv_object::is(ShaderType type) {
 bool senv_object::render() {
 
     // Texturing
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
     baseMap->bind();
+    
     glActiveTexture(GL_TEXTURE1);
     if (usePrimary) {
         primaryDetailMap->bind();
     }
+    
     glActiveTexture(GL_TEXTURE2);
     if (useSecondary) {
         secondaryDetailMap->bind();
     }
+    
     glActiveTexture(GL_TEXTURE4);
     if (useCube) {
         cubeMap->bind();
     }
+    
     glActiveTexture(GL_TEXTURE5);
     if (useBump) {
         bumpMap->bind();
     }
     
     // Blending
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Scales
     glUniform2f(scaleId, uscale, vscale);

@@ -26,6 +26,7 @@ public:
     
     void setup(std::string path);
     void start(shader_options *options);
+    void update(shader_options *options);
     void stop();
 };
 

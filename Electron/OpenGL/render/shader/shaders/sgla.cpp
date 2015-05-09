@@ -33,6 +33,9 @@ void sgla::start(shader_options *options) {
     glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
     glUniform2f(fogSettings, options->fogdist, options->fogcut);
 }
+void sgla::update(shader_options *options) {
+    
+}
 
 void sgla::stop() {
     

@@ -21,6 +21,9 @@ void null::setup(std::string path) {
 void null::start(shader_options *options) {
     glUseProgram(program);
 }
+void null::update(shader_options *options) {
+    
+}
 
 void null::stop() {
     

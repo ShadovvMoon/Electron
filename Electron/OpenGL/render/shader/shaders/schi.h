@@ -13,8 +13,6 @@
 #include "scex.h"
 
 class schi : public shader {
-private:
-    GLuint program;
 public:
     GLuint baseMapUV;
     GLuint useMap;
@@ -29,11 +27,14 @@ public:
     GLuint colorFunction;
     GLuint alphaFunction;
     GLuint mapCount;
+    GLint ProjectionMatrix;
+    GLint ModelViewMatrix;
     
     GLint fog;
     GLint fogSettings;
     void setup(std::string path);
     void start(shader_options *options);
+    void update(shader_options *options);
     void stop();
 };
 

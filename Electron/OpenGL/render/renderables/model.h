@@ -23,6 +23,7 @@ public:
     GLuint geometryVAO;
     int indexCount;
     int vertCount;
+    int vertOffset;
     
     // Arrays
     GLfloat* vertex_array;

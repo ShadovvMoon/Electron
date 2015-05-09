@@ -35,8 +35,6 @@ typedef struct {
 } Stage4Map;
 
 class scex : public shader {
-private:
-    GLuint program;
 public:
     GLuint baseMapUV;
     GLuint useMap;
@@ -53,9 +51,12 @@ public:
     GLuint mapCount;
     GLint fog;
     GLint fogSettings;
+    GLint ProjectionMatrix;
+    GLint ModelViewMatrix;
     
     void setup(std::string path);
     void start(shader_options *options);
+    void update(shader_options *options);
     void stop();
 };
 

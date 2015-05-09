@@ -11,6 +11,7 @@
 
 #include "defines.h"
 #include "vector3d.h"
+#include "shader.h"
 
 class Camera {
 public:
@@ -20,7 +21,7 @@ public:
     void rotate(float angle, float x, float y, float z);
     void move(float delta);
     void strafe(float delta);
-    void look();
+    void look(shader_options *options);
 };
 
 #endif /* defined(____render__) */

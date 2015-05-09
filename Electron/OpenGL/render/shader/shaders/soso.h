@@ -12,13 +12,14 @@
 #include "../shader.h"
 class soso : public shader {
 private:
-    GLuint program;
     GLint baseTexture;
     GLint multipurposeMap;
     GLint detailMap;
     GLint cubeMap;
     GLint fog;
     GLint fogSettings;
+    GLint ProjectionMatrix; GLint ModelViewMatrix;
+    GLint Position; GLint Rotation;
 public:
     GLint scale;
     GLint maps;
@@ -26,6 +27,7 @@ public:
     
     void setup(std::string path);
     void start(shader_options *options);
+    void update(shader_options *options);
     void stop();
 };
 

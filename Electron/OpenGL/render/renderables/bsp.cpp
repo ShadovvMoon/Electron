@@ -517,6 +517,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     }
     
     // Assemble the VAO
+    #define vertex_buffer 0
     #define texCoord_buffer 1
     #define texCoord_buffer_light 3
     #define normals_buffer 2
@@ -524,15 +525,22 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     #define tangents_buffer 6
     
     //Shift these to vertex buffers
+   
+#ifdef RENDER_CORE_32
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[POS_VB]);
-    glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
-    GLvoid* my_vertex_pointer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-    memcpy(my_vertex_pointer, vao->vertex_array, vertex_size * 3 * sizeof(GLfloat));
-    glUnmapBuffer(GL_ARRAY_BUFFER);
+    glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), vao->vertex_array, GL_STATIC_DRAW);
+    
+    glEnableVertexAttribArray(vertex_buffer);
+    glVertexAttribPointer(vertex_buffer, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+#else
+    //GLvoid* my_vertex_pointer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+    //memcpy(my_vertex_pointer, vao->vertex_array, vertex_size * 3 * sizeof(GLfloat));
+    //glUnmapBuffer(GL_ARRAY_BUFFER);
+    glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[POS_VB]);
+    glBufferData(GL_ARRAY_BUFFER, vertex_size * 3 * sizeof(GLfloat), vao->vertex_array, GL_STATIC_DRAW);
     glEnableVertexAttribArray(0);
-    glEnableClientState(GL_VERTEX_ARRAY);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-    glDisableClientState(GL_VERTEX_ARRAY);
+#endif
     
     glBindBuffer(GL_ARRAY_BUFFER, vao->m_Buffers[TEXCOORD_VB]);
     glBufferData(GL_ARRAY_BUFFER, vertex_size * 2 * sizeof(GLfloat), vao->texture_uv, GL_STATIC_DRAW);
@@ -641,21 +649,33 @@ void BSP::render(ShaderType pass) {
                     }
                     previous_shader = submesh->shader;
                 }
+                
+                #ifdef GL_VALIDATE
+                GLint program = shaders->get_shader(pass)->program;
+                glValidateProgram(program);
+                
+                int bufflen = 1024;
+                int validate = 0;
+                
+                glGetProgramiv(program, GL_VALIDATE_STATUS, &validate);
+                if(validate == GL_FALSE) {
+                    printf("validation failed bsp\n");
+                    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufflen);
+                    if (bufflen > 1) {
+                        GLchar* log_string = new char[bufflen + 1];
+                        glGetProgramInfoLog(program, bufflen, 0, log_string);
+                        printf("LOG: %s\n", log_string);
+                    }
+                }
+                #endif
+                
                 glActiveTexture(GL_TEXTURE3);
                 mesh->lightTexture->bind(submesh->lightmap);
                 
                 #ifdef RENDER_VBO
-                glDrawElementsBaseVertex(GL_TRIANGLES,
-                                         submesh->indexCount,
-                                         GL_UNSIGNED_INT,
-                                         (void*)(submesh->indexOffset * sizeof(GLuint)),
-                                         (submesh->vertexOffset));
+                glDrawRangeElementsBaseVertex(GL_TRIANGLES, submesh->vertexOffset, submesh->vertexOffset+submesh->vertCount, submesh->indexCount, GL_UNSIGNED_INT, (void*)(submesh->indexOffset * sizeof(GLuint)), submesh->vertexOffset);
                 #else
-                glDrawElementsBaseVertex(GL_TRIANGLES,
-                                         submesh->indexCount,
-                                         GL_UNSIGNED_INT,
-                                         (void*)((long)vao->index_array + submesh->indexOffset * sizeof(GLuint)),
-                                         (submesh->vertexOffset));
+                glDrawRangeElementsBaseVertex(GL_TRIANGLES, submesh->vertexOffset, submesh->vertexOffset+submesh->vertCount, submesh->indexCount, GL_UNSIGNED_INT, (void*)((long)vao->index_array + submesh->indexOffset * sizeof(GLuint)), submesh->vertexOffset);
                 #endif
             }
         }

@@ -12,7 +12,6 @@
 #include "../shader.h"
 class senv : public shader {
 private:
-    GLuint program;
     GLint baseTexture;
     GLint primaryDetailMap;
     GLint secondaryDetailMap;
@@ -22,6 +21,9 @@ private:
     
     GLint fog;
     GLint fogSettings;
+    
+    GLint ProjectionMatrix;
+    GLint ModelViewMatrix;
 public:
     GLint maps;
     GLint maps2;
@@ -31,6 +33,7 @@ public:
     
     void setup(std::string path);
     void start(shader_options *options);
+    void update(shader_options *options);
     void stop();
 };
 

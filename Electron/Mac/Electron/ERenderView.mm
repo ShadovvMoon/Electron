@@ -50,11 +50,16 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
     renderer->applyControl(controls);
     if ([[self window] isMainWindow]) {
         mtx.lock();
+        //NSDate *start = [NSDate date];
         [[self openGLContext] makeCurrentContext];
         NSSize sceneBounds = [self bounds].size;
         renderer->resize(sceneBounds.width, sceneBounds.height);
         renderer->render();
         [[self openGLContext] flushBuffer];
+        //NSTimeInterval timeInterval = -[start timeIntervalSinceNow];
+        //frames++;
+        //totalTime += timeInterval;
+        //printf("%f %f (%f %f)\n", totalTime, frames/totalTime, timeInterval, 1.0/timeInterval);
         mtx.unlock();
     }
     return kCVReturnSuccess;
@@ -70,9 +75,12 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
         NSOpenGLPFADepthSize,
         (NSOpenGLPixelFormatAttribute)DEPTH_SIZE,
 #ifdef RENDER_GPU
-        //NSOpenGLPFAAccelerated,
+        NSOpenGLPFAAccelerated,
 #else
         NSOpenGLPFARendererID, kCGLRendererGenericID,
+#endif
+#ifdef RENDER_CORE_32
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion4_1Core,
 #endif
         NSOpenGLPFASampleBuffers, 1,
         NSOpenGLPFASamples, 4,

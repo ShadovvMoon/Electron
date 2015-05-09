@@ -92,12 +92,14 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
     glAttachShader(program, vertex_shader);
     glAttachShader(program, fragment_shader);
 
+    glBindAttribLocation(program, 0, "vertex_buffer");
 	glBindAttribLocation(program, 1, "texCoord_buffer");
 	glBindAttribLocation(program, 3, "texCoord_buffer_light");
 	glBindAttribLocation(program, 2, "normal_buffer");
     glBindAttribLocation(program, 5, "binormals_buffer");
     glBindAttribLocation(program, 6, "tangents_buffer");
-
+    
+    
     glLinkProgram(program);
     glGetProgramiv(program, GL_LINK_STATUS, &program_ok);
     if (!program_ok)
@@ -132,6 +134,12 @@ ShaderManager::ShaderManager(const char *resources) {
 	std::string path = "C:/Users/admin_000/Documents/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl";
 #else
     std::string path = resources;
+#endif
+    
+#ifdef RENDER_CORE_32
+    path += "/440";
+#else
+    path += "/120";
 #endif
 
     // Setup our shader types

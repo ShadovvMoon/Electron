@@ -84,7 +84,62 @@ void ObjectManager::write(ProtonMap *map, ProtonTag *scenario) {
     itmc->write(map, scenario);
 }
 
-void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
+typedef float MATRIX[4][4]; // A 4×4 matrix
+void matmult(MATRIX &A, MATRIX B)
+{
+    MATRIX conc;
+    // Multiplies by rows and columns
+    for (int i = 0; i <4; i++)
+        for (int j = 0; j < 4; j++)
+        {
+            conc[i][j] =
+            (A[0][j] * B[i][0])+
+            (A[1][j] * B[i][1])+
+            (A[2][j] * B[i][2])+
+            (A[3][j] * B[i][3]);
+        }
+    // Copy result matrix into matrix A
+    for (int p = 0; p < 4; p++)
+        for (int q = 0; q < 4; q++)
+            A[p][q] = conc[p][q];
+}
+
+// matinit: Initializes a matrix, and sets to 'identity'
+void matinit(MATRIX &a)
+{
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            a[i][j] = 0.0f;
+    a[0][0] = 1.0f;
+    a[1][1] = 1.0f;
+    a[2][2] = 1.0f;
+    a[3][3] = 1.0f;
+}
+
+#include <xmmintrin.h>
+void M4x4_SSE(float *A, float *B, float *C) {
+    __m128 row1 = _mm_load_ps(&B[0]);
+    __m128 row2 = _mm_load_ps(&B[4]);
+    __m128 row3 = _mm_load_ps(&B[8]);
+    __m128 row4 = _mm_load_ps(&B[12]);
+    for(int i=0; i<4; i++) {
+        __m128 brod1 = _mm_set1_ps(A[4*i + 0]);
+        __m128 brod2 = _mm_set1_ps(A[4*i + 1]);
+        __m128 brod3 = _mm_set1_ps(A[4*i + 2]);
+        __m128 brod4 = _mm_set1_ps(A[4*i + 3]);
+        __m128 row = _mm_add_ps(
+                                _mm_add_ps(
+                                           _mm_mul_ps(brod1, row1),
+                                           _mm_mul_ps(brod2, row2)),
+                                _mm_add_ps(
+                                           _mm_mul_ps(brod3, row3),
+                                           _mm_mul_ps(brod4, row4)));
+        _mm_store_ps(&C[4*i], row);
+    }
+}
+
+#include <math.h>
+void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass, shader_options *options) {
     // Frustrum culling
 
     // Culling
@@ -103,6 +158,7 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
             vector3d *intersect = bsp->intersect(position_down, position, map, scenario);
 
             // Is this object below the BSP? Move it above automatically
+            #ifndef RENDER_CORE_32
             glEnable(GL_COLOR_MATERIAL);
             if (intersect == nullptr) {
                 glColor4f(1.0, 0.0, 0.0, 1.0);
@@ -122,9 +178,63 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
             glVertex3f(instance->x, instance->y, instance->z-lineLen);
             glVertex3f(instance->x, instance->y, instance->z+lineLen);
             glEnd();
+            #endif
         }
     }
     
+    #ifdef RENDER_CORE_32
+    options->position[0] = 0;
+    options->position[1] = 0;
+    options->position[2] = 0;
+
+    // Store the current modelview
+    GLfloat modelview[16];
+    memcpy(modelview, options->modelview, sizeof(GLfloat) * 16);
+    GLfloat output[16];
+    memcpy(output, options->modelview, sizeof(GLfloat) * 16);
+    
+    // Perform the translation
+    GLfloat t[16] = {1.0, 0.0, 0.0, 0.0f,
+                     0.0, 1.0, 0.0, 0.0f,
+                     0.0, 0.0, 1.0, 0.0f,
+                     instance->x, instance->y, instance->z, 1.0f};
+    // Perform the rotation
+    float angle = instance->roll;
+    float c = cos(angle/CONVERSION);
+    float s = sin(angle/CONVERSION);
+    GLfloat x[16] = {1.0, 0.0, 0.0, 0.0f,
+                     0.0,   c,   s, 0.0f,
+                     0.0,  -s,   c, 0.0f,
+                     0.0, 0.0, 0.0, 1.0f};
+    angle = instance->pitch;
+    c = cos(angle/CONVERSION);
+    s = sin(angle/CONVERSION);
+    GLfloat y[16] = {  c, 0.0,  -s, 0.0f,
+                     0.0, 1.0, 0.0, 0.0f,
+                       s, 0.0,   c, 0.0f,
+                     0.0, 0.0, 0.0, 1.0f};
+    angle = instance->yaw;
+    c = cos(angle/CONVERSION);
+    s = sin(angle/CONVERSION);
+    GLfloat z[16] = {  c,   s, 0.0, 0.0f,
+                      -s,   c, 0.0, 0.0f,
+                     0.0, 0.0, 1.0, 0.0f,
+                     0.0, 0.0, 0.0, 1.0f};
+    M4x4_SSE(t, output, output);
+    M4x4_SSE(x, output, output);
+    M4x4_SSE(y, output, output);
+    M4x4_SSE(z, output, output);
+    memcpy(options->modelview, &output, sizeof(GLfloat) * 16);
+    
+    // Render the object
+    shader *shader = modelManager->shaders->get_shader(pass);
+    shader->update(options);
+    instance->reference->render(pass);
+    
+    // Restore the modelview
+    memcpy(options->modelview, &modelview, sizeof(GLfloat) * 16);
+    
+    #else
     glPushMatrix();
     glTranslatef(instance->x, instance->y, instance->z);
     glRotatef(instance->roll , 1.0, 0.0, 0.0); //1.5%
@@ -132,13 +242,13 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass) {
     glRotatef(instance->yaw  , 0.0, 0.0, 1.0); //1.2%
     instance->reference->render(pass);
     glPopMatrix();
-    
     if (instance->selected) {
         glColor4f(1.0, 1.0, 1.0, 1.0);
     }
+    #endif
 }
 
-void ObjectManager::render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass) {
+void ObjectManager::render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass, shader_options *options) {
     int i;
     for (i=0; i < objClass->objects.size(); i++) {
         glLoadName(*name);
@@ -147,15 +257,15 @@ void ObjectManager::render_subclass(ObjectClass* objClass, SelectionType selecti
             lookup[*name] = (GLuint)((selection * MAX_SCENARIO_OBJECTS) + i);
             (*name)++;
         }
-        render_instance(objClass->objects[i], pass);
+        render_instance(objClass->objects[i], pass, options);
         glPopName();
     }
 }
 
-void ObjectManager::fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass) {
+void ObjectManager::fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass, shader_options *options) {
     int i;
     for (i=0; i < objClass->objects.size(); i++) {
-        render_instance(objClass->objects[i], pass);
+        render_instance(objClass->objects[i], pass, options);
     }
 }
 
@@ -174,15 +284,15 @@ ObjectInstance *ObjectManager::duplicate(ObjectInstance *instance) {
     return copy;
 }
 
-void ObjectManager::render(GLuint *name, GLuint *lookup, ShaderType pass) {
+void ObjectManager::render(GLuint *name, GLuint *lookup, ShaderType pass, shader_options *options) {
     if (lookup == nullptr) {
-        fast_render_subclass(scen, s_scenery, pass);
-        fast_render_subclass(vehi, s_vehicle, pass);
-        fast_render_subclass(itmc, s_item, pass);
+        fast_render_subclass(scen, s_scenery, pass, options);
+        fast_render_subclass(vehi, s_vehicle, pass, options);
+        fast_render_subclass(itmc, s_item, pass, options);
     } else {
-        render_subclass(scen, s_scenery, name, lookup, pass);
-        render_subclass(vehi, s_vehicle, name, lookup, pass);
-        render_subclass(itmc, s_item, name, lookup, pass);
+        render_subclass(scen, s_scenery, name, lookup, pass, options);
+        render_subclass(vehi, s_vehicle, name, lookup, pass, options);
+        render_subclass(itmc, s_item, name, lookup, pass, options);
     }
 }
 
@@ -231,7 +341,7 @@ void ObjectManager::select(bool shift, float x, float y) {
     ShaderType type = static_cast<ShaderType>(shader_SOSO);
     shader *shader = modelManager->shaders->get_shader(shader_SOSO);
     shader->start(options);
-    render(&name, lookup, shader_SOSO);
+    render(&name, lookup, shader_SOSO, options);
     shader->stop();
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();

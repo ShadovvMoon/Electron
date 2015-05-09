@@ -30,7 +30,7 @@ void ERenderer::setup(const char *resources) {
     bsp       = new BSP(shaders);
     objects   = new ObjectManager(camera, bsp);
     skies     = new SkyManager;
-    interface = new GUI();
+    //interface = new GUI();
     
     // Start the tick
     tick = now();
@@ -71,15 +71,56 @@ void ERenderer::read(ProtonMap *map) {
     ready = true;
 }
 
+double cotan(double i) { return(1 / tan(i)); }
+
 void ERenderer::resize(float width, float height) {
 
     // Viewport
     glViewport(0,0,width,height);
+    
+    double fovy = 45.0;
+    double aspect = width / height;
+    double znear = 0.1f;
+    double zfar = 4000000.0f;
+    double f = cotan((fovy / 2.0)); //tan(M_PI_2 - (fovy / 2.0));
+    float ymax = znear * tan(fovy * M_PI/360.0);
+    float ymin = -ymax;
+    float xmax = ymax * aspect;
+    float xmin = ymin * aspect;
+    
+    width  = xmax - xmin;
+    height = ymax - ymin;
+    
+    float depth = zfar - znear;
+    float q = -(zfar + znear) / depth;
+    float qn = -2 * (zfar * znear) / depth;
+    float w = 2 * znear / width;
+    float h = 2 * znear / height;
+    
+    options->perspective[0] = w;
+    options->perspective[1] = 0.0;
+    options->perspective[2] = 0.0;
+    options->perspective[3] = 0.0;
+    options->perspective[4] = 0.0;
+    options->perspective[5] = h;
+    options->perspective[6] = 0.0;
+    options->perspective[7] = 0.0;
+    options->perspective[8] = 0.0;
+    options->perspective[9] = 0.0;
+    options->perspective[10] = q;
+    options->perspective[11] = -1.0;
+    options->perspective[12] = -0.0;
+    options->perspective[13] = -0.0;
+    options->perspective[14] = qn;
+    options->perspective[15] = -0.0;
+
+    #ifndef RENDER_CORE_32
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0f, (width / height), 0.1f, 4000000.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    #endif
 }
 
 void errorCheck() {
@@ -181,29 +222,33 @@ void ERenderer::renderScene(bool fast) {
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
         // Render the sky
-        shader_options *clear = new shader_options;
-        clear->fogcut = 0.0;
+        float cut = options->fogcut;
+        options->fogcut = 0.0;
         shader *scex = shaders->get_shader(shader_SCEX);
-        scex->start(clear);
+        scex->start(options);
         skies->render(shader_SCEX);
         scex->stop();
         shader *schi = shaders->get_shader(shader_SCHI);
-        schi->start(clear);
+        schi->start(options);
         skies->render(shader_SCHI);
         schi->stop();
-        free(clear);
+        options->fogcut = cut;
 
         // Render everything else
         //glAlphaFunc(GL_GREATER, 0.1);
         for (int pass = ShaderStart; pass <= ShaderEnd; pass++ )
         {
             if (fast && (/*pass == shader_SCEX || pass == shader_SCHI || pass == shader_SGLA ||*/pass == shader_SWAT)) continue;
+            #ifdef RENDER_CORE_32
+            if (pass != shader_SENV && pass != shader_SOSO && pass != shader_SCEX && pass != shader_SCHI) continue;
+            #endif
+            
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
             shader->start(options);
             bsp->render(type);
             GLuint number = 0;
-            objects->render(&number, nullptr, type);
+            objects->render(&number, nullptr, type, options);
             shader->stop();
         }
     }
@@ -221,13 +266,14 @@ int NextHighestPowerOf2(int n)
     return n;
 }
 
+
 // Main rendering loop
 void ERenderer::render() {
     if (!ready) {
         return;
     }
     errorCheck();
-    
+
     // Setup the current viewport
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(options->fogr, options->fogg, options->fogb,1.0);
@@ -236,28 +282,15 @@ void ERenderer::render() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
+    
+    //#ifdef RENDER_CORE_32
+    camera->look(options);
+    renderScene(false);
+    /*#else
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    camera->look();
+    camera->look(options);
     
-    
-    // Render the shadow map
-    /*
-    GLuint ShadowMap;
-    glBindFramebuffer(GL_FRAMEBUFFER_EXT, FBO);
-    glDrawBuffers(0, NULL); glReadBuffer(GL_NONE);
-    glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, ShadowMap, 0);
-
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
-    renderScene(false);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-
-    return;
-    */
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glEnableClientState(GL_VERTEX_ARRAY);
     if (shaders->needs_reflection()) {
@@ -265,7 +298,7 @@ void ERenderer::render() {
         GLint anViewport[4];
         glGetIntegerv(GL_VIEWPORT, anViewport);
         
-        float reflectionHeight = 0.0; //-shaders->reflection_height();
+        float reflectionHeight = -shaders->reflection_height();
         glPushMatrix();
         glScalef(1.0, 1.0, -1.0);
         glTranslatef(0.0f, 0.0f, 2*reflectionHeight);
@@ -284,11 +317,32 @@ void ERenderer::render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glClearColor(0.2,0.2,0.2,1.0);
     }
-    
+
     // Render the scene with reflections
     renderScene(false);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
+    #endif
+    */
+    
+    // Render the shadow map
+    /*
+     GLuint ShadowMap;
+     glBindFramebuffer(GL_FRAMEBUFFER_EXT, FBO);
+     glDrawBuffers(0, NULL); glReadBuffer(GL_NONE);
+     glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, ShadowMap, 0);
+     
+     glClear(GL_DEPTH_BUFFER_BIT);
+     glEnable(GL_DEPTH_TEST);
+     glEnable(GL_CULL_FACE);
+     glCullFace(GL_FRONT);
+     renderScene(false);
+     glDisable(GL_CULL_FACE);
+     glDisable(GL_DEPTH_TEST);
+     
+     return;
+     */
+    
     
     // Render the GUI
     //GLint anViewport[4];

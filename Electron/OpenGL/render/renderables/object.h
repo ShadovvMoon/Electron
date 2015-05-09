@@ -80,9 +80,9 @@ private:
     std::map<uint16_t, ObjectRef*> objects;
     ObjectClass *getClass(SelectionType type);
     
-    void fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass);
-    void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass);
-    void render_instance(ObjectInstance *instance, ShaderType pass);
+    void fast_render_subclass(ObjectClass* objClass, SelectionType selection, ShaderType pass, shader_options *options);
+    void render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass, shader_options *options);
+    void render_instance(ObjectInstance *instance, ShaderType pass, shader_options *options);
 public:
     ModelManager *modelManager;
     
@@ -92,7 +92,7 @@ public:
     ObjectRef *create_object(ProtonMap *map, HaloTagDependency tag);
     
     // Rendering
-    void render(GLuint *name, GLuint *lookup, ShaderType pass);
+    void render(GLuint *name, GLuint *lookup, ShaderType pass, shader_options *options);
     
     // Selection
     std::vector<ObjectInstance*> selection;

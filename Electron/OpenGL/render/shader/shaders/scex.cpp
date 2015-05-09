@@ -36,6 +36,8 @@ void scex::setup(std::string path) {
     mapCount         = glGetUniformLocation(program, "mapCount");
     fog              = glGetUniformLocation(program, "fog");
     fogSettings      = glGetUniformLocation(program, "fogSettings");
+    ProjectionMatrix    = glGetUniformLocation(program, "ProjectionMatrix");
+    ModelViewMatrix     = glGetUniformLocation(program, "ModelViewMatrix");
 }
 
 void scex::start(shader_options *options) {
@@ -46,6 +48,15 @@ void scex::start(shader_options *options) {
     glUniform1i(mapTexture3,3);
     glUniform4f(fog, options->fogr, options->fogg, options->fogb, 1.0);
     glUniform2f(fogSettings, options->fogdist, options->fogcut);
+#ifdef RENDER_CORE_32
+    glUniformMatrix4fv(ProjectionMatrix, 1, false, options->perspective);
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+#endif
+}
+void scex::update(shader_options *options) {
+#ifdef RENDER_CORE_32
+    glUniformMatrix4fv(ModelViewMatrix , 1, false, options->modelview);
+#endif
 }
 
 void scex::stop() {
@@ -144,8 +155,10 @@ bool scex_object::render() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
+    #ifndef RENDER_CORE_32
     // Texturing
     glEnable(GL_TEXTURE_2D);
+    #endif
     
     int i;
     for (i=0; i < mapsCount; i++) {

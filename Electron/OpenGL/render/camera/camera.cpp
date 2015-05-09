@@ -95,14 +95,51 @@ void Camera::strafe(float delta) {
     //delete
 }
 
-void Camera::look() {
-    
+void Camera::look(shader_options *options) {
     vstrafe->set(view);
     vstrafe->sub(position);
     vstrafe->cross(up);
     vstrafe->norm();
 
+    #ifdef RENDER_CORE_32
+    vector3d *f = new vector3d(view);
+    f->sub(position);
+    f->norm();
+    vector3d *s = new vector3d(f);
+    up->norm();
+    s->cross(up);
+    s->norm();
+    vector3d *u = new vector3d(s);
+    u->cross(f);
+    
+    // modelview is an identity here so glMultMatrixf will just be M
+    float M[4][4] = {{ s->x,  s->y,  s->z, 0.0f},
+                     { u->x,  u->y,  u->z, 0.0f},
+                     {-f->x, -f->y, -f->z, 0.0f},
+                     {  0.0,   0.0,   0.0, 1.0f}};
+    
+    float T[4][4] = {{ 1.0,  0.0, 0.0, -position->x},
+                     { 0.0,  1.0, 0.0, -position->y},
+                     { 0.0,  0.0, 1.0, -position->z},
+                     { 0.0,  0.0, 0.0, 1.0f}};
+    
+    for (int i = 0; i < 16; i++) {
+        options->modelview[i] = 0.0;
+    }
+    for (int row = 0; row < 4; row++) {
+        for (int col = 0; col < 4; col++) {
+            for (int inner = 0; inner < 4; inner++) {
+                options->modelview[row*4+col] += M[col][inner] * T[inner][row];
+            }
+        }
+    }
+    
+    delete f;
+    delete s;
+    delete u;
+    #else
     gluLookAt(position->x, position->y, position->z,
               view->x,	   view->y,     view->z,
               up->x,       up->y,       up->z);
+    #endif
 }
