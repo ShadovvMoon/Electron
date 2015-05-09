@@ -156,6 +156,18 @@
     <ClInclude Include="..\..\..\OpenGL\glew\GL\wglew.h">
       <Filter>Source Files\OpenGL\glew\GL</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\swat.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\sgla.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\shader\shaders\scex.h">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\OpenGL\render\renderables\sky.h">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -235,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\OpenGL\glew\visualinfo.c">
       <Filter>Source Files\OpenGL\glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\swat.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\sgla.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\shader\shaders\scex.cpp">
+      <Filter>Source Files\OpenGL\render\shader\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\OpenGL\render\renderables\sky.cpp">
+      <Filter>Source Files\OpenGL\render\renderables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

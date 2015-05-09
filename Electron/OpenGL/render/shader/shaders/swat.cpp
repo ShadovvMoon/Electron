@@ -64,6 +64,7 @@ void swat_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
     
     uOffset = 0.0;
     vOffset = 0.0;
+	prev = timems();
     
 #ifdef RENDER_SWAT_REFLECTION
     manager->set_needs_reflection(true);

@@ -9,6 +9,7 @@
 #include "defines.h"
 #include "../texture/texture.h"
 #include <map>
+#include <chrono>
 
 #ifndef ____EShader__
 #define ____EShader__

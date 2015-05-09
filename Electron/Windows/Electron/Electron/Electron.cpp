@@ -75,10 +75,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	// create the renderer
 	renderer = new ERenderer();
-	renderer->setup();
+	renderer->setup("C:/Users/admin_000/Documents/GitHub/Electron/Electron/OpenGL/render/shader/shaders/glsl");
 
 	// Read a map
-	void *mapData = load_map("C:\\Users\\admin_000\\Desktop\\bloodgulch.map"); // "C:\\Users\admin_000\Desktop\bloodgulch.map");
+	void *mapData = load_map("C:\\Users\\admin_000\\Desktop\\b30.map"); // "C:\\Users\admin_000\Desktop\bloodgulch.map");
 
 	// Create a proton map file
 	ProtonMap *map = new ProtonMap(mapData);
@@ -139,8 +139,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 }
 
 // Window Procedure
-bool rdown = false;
-short rpx, rpy;
+bool rdown = false, ldown = false;
+short rpx, rpy, lpx, lpy;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 
@@ -166,6 +166,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_RBUTTONUP:
 		rdown = false;
 		break;
+	case WM_LBUTTONDOWN: {
+		lpx = LOWORD(lParam);
+		lpy = HIWORD(lParam);
+		ldown = true;
+		renderer->mouseDown((float)lpx, 1080-(float)lpy);
+		break;
+	}
+	case WM_LBUTTONUP:
+		ldown = false;
+		break;
 	case WM_MOUSEMOVE: {
 		short xPos = LOWORD(lParam);
 		short yPos = HIWORD(lParam);
@@ -173,6 +183,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			renderer->rightMouseDrag(xPos - rpx, -(yPos - rpy));
 			rpx = xPos;
 			rpy = yPos;
+		}
+		if (ldown) {
+			renderer->mouseDrag(xPos - lpx, -(yPos - lpy));
+			lpx = xPos;
+			lpy = yPos;
 		}
 		break;
 	}

@@ -73,6 +73,9 @@ void ObjectManager::read(ShaderManager *shaders, ProtonMap *map, ProtonTag *scen
     itmc = new ItmcClass;
     itmc->read(this, map, scenario);
     
+	// Clear selection
+	clearSelection();
+
     // Store the map and scenario for bsp lookup
     this->map = map;
     this->scenario = scenario;

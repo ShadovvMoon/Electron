@@ -36,10 +36,10 @@ void soso::setup(std::string path) {
 }
 
 void soso::start(shader_options *options) {
-    //#ifndef RENDER_CORE_32
-    //glEnable(GL_ALPHA_TEST);
-    //glAlphaFunc(GL_GREATER, 0.5);
-    //#endif
+    #ifndef RENDER_CORE_32
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.5);
+    #endif
     
     glUseProgram(program);
     glUniform1i(baseTexture, 0);
@@ -62,9 +62,9 @@ void soso::update(shader_options *options) {
 }
 
 void soso::stop() {
-    //#ifndef RENDER_CORE_32
-    //glDisable(GL_ALPHA_TEST);
-    //#endif
+    #ifndef RENDER_CORE_32
+	glDisable(GL_ALPHA_TEST);
+	#endif
 }
 
 void soso_object::setBaseUV(float u, float v) {

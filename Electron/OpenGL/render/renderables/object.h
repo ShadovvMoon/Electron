@@ -12,7 +12,7 @@
 #include "defines.h"
 #include "model.h"
 #include "bsp.h"
-#include "camera.h"
+#include "../camera/camera.h"
 #include <vector>
 #include <map>
 

@@ -49,6 +49,7 @@
 
 // Custom includes
 #ifdef _WINDOWS
+#define _USE_MATH_DEFINES
 #include "glew/GL/glew.h"
 #define RENDER_VAO_NORMAL
 #elif __APPLE__

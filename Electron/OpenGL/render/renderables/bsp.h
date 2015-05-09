@@ -11,7 +11,7 @@
 
 #include "defines.h"
 #include "../shader/shader.h"
-#include "vector3d.h"
+#include "../camera/vector3d.h"
 
 class BSPRenderBuffer {
 public:

@@ -282,11 +282,10 @@ void ERenderer::render() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
 
-    
-    //#ifdef RENDER_CORE_32
+    #ifdef RENDER_CORE_32
     camera->look(options);
     renderScene(false);
-    /*#else
+    #else
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     camera->look(options);
@@ -298,11 +297,11 @@ void ERenderer::render() {
         GLint anViewport[4];
         glGetIntegerv(GL_VIEWPORT, anViewport);
         
-        float reflectionHeight = -shaders->reflection_height();
+		float reflectionHeight = shaders->reflection_height();
         glPushMatrix();
         glScalef(1.0, 1.0, -1.0);
-        glTranslatef(0.0f, 0.0f, 2*reflectionHeight);
-        double plane[4] = {0.0, 0.0, 1.0, -reflectionHeight}; //water at y=0
+        glTranslatef(0.0f, 0.0f, -2*reflectionHeight);
+        double plane[4] = {0.0, 0.0, 1.0, reflectionHeight}; //water at y=0
         glEnable(GL_CLIP_PLANE0);
         glClipPlane(GL_CLIP_PLANE0, plane);
         renderScene(true);
@@ -315,15 +314,14 @@ void ERenderer::render() {
         
         // Clear previous frame values
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClearColor(0.2,0.2,0.2,1.0);
+		glClearColor(options->fogr, options->fogg, options->fogb, 1.0);
     }
 
-    // Render the scene with reflections
     renderScene(false);
     glDisableClientState(GL_VERTEX_ARRAY);
     glPopAttrib();
     #endif
-    */
+    
     
     // Render the shadow map
     /*
