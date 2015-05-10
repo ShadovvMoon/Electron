@@ -16,6 +16,14 @@ std::mutex mtx;           // mutex for critical section
 ERenderer *renderer;
 Control *controls = (Control *)malloc(sizeof(Control));
 
+-(void)setDelegate:(id)del {
+    delegate = del;
+}
+
+-(void*)renderer {
+    return renderer;
+}
+
 - (void)prepareOpenGL
 {
     // Synchronize buffer swaps with vertical refresh rate
@@ -48,20 +56,23 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 {
     // Add your drawing codes here
     renderer->applyControl(controls);
-    if ([[self window] isMainWindow]) {
+    //if ([[self window] isMainWindow]) {
         mtx.lock();
         //NSDate *start = [NSDate date];
         [[self openGLContext] makeCurrentContext];
         NSSize sceneBounds = [self bounds].size;
         renderer->resize(sceneBounds.width, sceneBounds.height);
         renderer->render();
+        if (delegate != NULL) {
+            [delegate render];
+        }
         [[self openGLContext] flushBuffer];
         //NSTimeInterval timeInterval = -[start timeIntervalSinceNow];
         //frames++;
         //totalTime += timeInterval;
         //printf("%f %f (%f %f)\n", totalTime, frames/totalTime, timeInterval, 1.0/timeInterval);
         mtx.unlock();
-    }
+    //}
     return kCVReturnSuccess;
 }
 
@@ -109,6 +120,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
         [[self openGLContext] setView:self];
         
         NSString *resourcesPath = [[NSBundle mainBundle] resourcePath];
+        delegate = NULL;
         renderer = new ERenderer;
         renderer->setup([resourcesPath cStringUsingEncoding:NSUTF8StringEncoding]);
     }

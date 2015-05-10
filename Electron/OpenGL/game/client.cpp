@@ -1660,64 +1660,124 @@ void Client::main() {
             if((b + n) > packet_len) break;
             b = read_bstr(str, n, buff, b);
             
+            
+            int i;
+            for (i=0; i < (len-head)*8; i++) {
+                printf("%d", read_bits(1, buffer+head, i));
+            }
+            printf("\n");
+            
+            
+            
             // Handle this message
             // What type of message is this?
             int bit = 0;
-            while (bit < n) {
+            while (bit < n*8) {
                 int message_mode = sread_bits(str, &bit, 1);
                 int message_type = sread_bits(str, &bit, 6);
                 
            
-                //printf("%s\n", message_delta_packet_to_string_table[message_type]);
-                int i;
-                for (i=0; i < (len-head)*8; i++) {
-                    printf("%d", read_bits(1, buffer+head, i));
-                }
-                printf("\n");
+                //int i;
+                //for (i=0; i < (len-head)*8; i++) {
+                //    printf("%d", read_bits(1, buffer+head, i));
+                //}
+                //printf("\n");
                 
-                //if (message_mode == 1) {
-                    //printf("%s\n", message_delta_packet_to_string_table[message_type]);
-                    // else {
-                    //    printf("%s\n", message_delta_packet_to_string_table[message_type]);
-                    //    int i;
-                    //    for (i=0; i < (len-head)*8; i++) {
-                    //        printf("%d", read_bits(1, buffer+head, i));
-                    //    }
-                    //    printf("\n");
-                    //
-                    //}
-                    //break;
-                //} else if (message_mode == 0) { // delta
-                
-                    
-                    
-                    
-                    
-                    if (message_type == _message_delta_super_remote_players_action_update) {
+                printf("%s\n", message_delta_packet_to_string_table[message_type]);
+                if (true || message_mode == 1) { // delta
+                    if (message_type == _message_delta_unit_kill) {
+                        printf("Unit killed\n");
+                        int i;
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+                    } else if (message_type == _message_delta_super_remote_players_action_update) {
+                        
                         /*
                          int i;
                          for (i=0; i < (len-head)*8; i++) {
-                         printf("%d", read_bits(1, buffer+head, i));
+                             printf("%d", read_bits(1, buffer+head, i));
                          }
                          printf("\n");
                          */
-                        int unknown0  = sread_bits(str, &bit, 7);
-                        int movement  = sread_bits(str, &bit, 1);
-                        int unknown1  = sread_bits(str, &bit, 15);
-                        if (movement) {
-                            int right     = sread_bits(str, &bit, 1);
-                            int left      = sread_bits(str, &bit, 1);
-                            int backwards = sread_bits(str, &bit, 1);
-                            int forwards  = sread_bits(str, &bit, 1);
+                        
+                        //01010000000 1 1 011001 1000000 0 000100000001100 0010000010000000101111111101100010001011011011110011011111101000010110
+                        
+                        int update_count = sread_bits(str, &bit, 4);
+                        for (int i = 0; i < update_count; i++) {
+                            Player *p = game->getPlayer(i);
+                            if (p == nullptr) {
+                                //printf("missing player %d\n", i);
+                            }
                             
-                            //if (right)      printf("right\n");
-                            //if (left)       printf("left\n");
-                            //if (forwards)   printf("forwards\n");
-                            //if (backwards)  printf("backwards\n");
+                            int unknown   = sread_bits(str, &bit, 1);
+                            int jumping   = sread_bits(str, &bit, 1);
+                            int turning   = sread_bits(str, &bit, 1);
+                            int movement  = sread_bits(str, &bit, 1);
+                            int unknown1  = sread_bits(str, &bit, 15);
+                            if (jumping) {
+                                int crouch   = sread_bits(str, &bit, 1);
+                                int jump     = sread_bits(str, &bit, 1);
+                                int flash    = sread_bits(str, &bit, 1);
+                                int action   = sread_bits(str, &bit, 1);
+                                int melee    = sread_bits(str, &bit, 1);
+                                int unk      = sread_bits(str, &bit, 1);
+                                int shoot    = sread_bits(str, &bit, 1);
+                                int unk1     = sread_bits(str, &bit, 1);
+                                int unk2     = sread_bits(str, &bit, 1);
+                                int longact  = sread_bits(str, &bit, 1);
+                                
+                                //if (crouch)    printf("crouch\n");
+                                //if (jump)      printf("jump\n");
+                                //if (flash)     printf("flash\n");
+                                //if (action)    printf("action\n");
+                                //if (melee)     printf("melee\n");
+                                //if (shoot)     printf("shoot\n");
+                                //if (longact)   printf("longact\n");
+                                
+                                p->controls.jumping.crouch  = crouch;
+                                p->controls.jumping.jump    =  jump;
+                                p->controls.jumping.flash   = flash;
+                                p->controls.jumping.action  = action;
+                                p->controls.jumping.melee   = melee;
+                                p->controls.jumping.shoot   = shoot;
+                                p->controls.jumping.longact = longact;
+                            }
+                            if (turning) {
+                                int y   = sread_bits(str, &bit, 8);
+                                int x   = sread_bits(str, &bit, 8);
+                                //printf("%d %d %d\n", i, x, y);
+                                p->controls.look_x = ((x / 255.0) * M_PI * 2) + M_PI / 2;
+                                p->controls.look_y = (y / 255.0) * M_PI + M_PI/2;
+                            }
+                            if (movement) {
+                                int right     = sread_bits(str, &bit, 1);
+                                int left      = sread_bits(str, &bit, 1);
+                                int backwards = sread_bits(str, &bit, 1);
+                                int forwards  = sread_bits(str, &bit, 1);
+                                
+                                //if (right)      printf("right\n");
+                                //if (left)       printf("left\n");
+                                //if (forwards)   printf("forwards\n");
+                                //if (backwards)  printf("backwards\n");
+                                
+                                p->controls.movement.right      = right==1;
+                                p->controls.movement.left       = left==1;
+                                p->controls.movement.forwards   = forwards==1;
+                                p->controls.movement.backwards  = backwards==1;
+                            }
                         }
-                    } else if (message_type == _message_delta_object_deletion) {
-                        int unknown0 = sread_bits(str, &bit, 9);
                         continue;
+                    }
+                }
+                if (message_mode == 0) { // delta
+                
+                    
+                    
+                    if (message_type == _message_delta_object_deletion) {
+                        int unknown0 = sread_bits(str, &bit, 10);
+                        continue; //confirmed
                     } else if (message_type == _message_delta_super_ping_update) {
                         int count = sread_bits(str, &bit, 4);
                         //printf("=== PING ===\n");
@@ -1738,7 +1798,7 @@ void Client::main() {
                         int weapon = sread_bits(str, &bit, 7);
                         int player = sread_bits(str, &bit, 4);
                         //int junk   = sread_bits(str, &bit, 14);
-                        printf("player %d cancelled reloading %d\n", player, weapon);
+                        //printf("player %d cancelled reloading %d\n", player, weapon);
                         continue;
                     } else if (message_type == _message_delta_weapon_finish_reload) {
                         int weapon = sread_bits(str, &bit, 7);
@@ -1759,9 +1819,6 @@ void Client::main() {
                         }
                         printf("\n");
                         continue;
-                    } else if (message_type == _message_delta_object_deletion) {
-                        int unknown0 = sread_bits(str, &bit, 9);
-                        continue;
                     } else if (message_type == _message_delta_netgame_equipment_new) {
                         int unknown0 = sread_bits(str, &bit, 27);
                         int unknown1 = sread_bits(str, &bit, 32);
@@ -1772,7 +1829,7 @@ void Client::main() {
                         float xf = 0.0; memcpy(&xf, &x, sizeof(float));
                         float yf = 0.0; memcpy(&yf, &y, sizeof(float));
                         float zf = 0.0; memcpy(&zf, &z, sizeof(float));
-                        printf("new equipment at %f %f %f\n", xf, yf, zf);
+                        //printf("new equipment at %f %f %f\n", xf, yf, zf);
                         continue;
                     } else if (message_type == _message_delta_weapon_new) {
                         int unknown0 = sread_bits(str, &bit, 32);
@@ -1784,7 +1841,7 @@ void Client::main() {
                         int unknown6 = sread_bits(str, &bit, 32);
                         int unknown7 = sread_bits(str, &bit, 32);
                         int unknown8 = sread_bits(str, &bit, 32);
-                        int unknown9 = sread_bits(str, &bit, 11);
+                        int unknown9 = sread_bits(str, &bit, 23);
                         continue;
                     } else if (message_type == _message_delta_local_player_update) {
                         int unknown0 = sread_bits(str, &bit, 11); //11010011110
@@ -1800,15 +1857,78 @@ void Client::main() {
                         me->position->x = xf;
                         me->position->y = yf;
                         me->position->z = zf;
-                        break;
+                        me->alive = true;
                         //printf("I'm at %f %f %f\n", xf, yf, zf);
-                    } else if (message_type == _message_delta_remote_player_total_update_biped) {
+                        break;
                         
-                        int player_number       = sread_bits(str, &bit, 5)-1;
+                    } else if (message_type == _message_delta_biped_new) {
+                        int tag_index = sread_bits(str, &bit, 16);
+                        int table_id  = sread_bits(str, &bit, 16);
+                        int object_id = sread_bits(str, &bit, 10);
+                        
+                        //574
+                        
+                        //460
+                        int unk0  = sread_bits(str, &bit, 32);
+                        int unk1  = sread_bits(str, &bit, 32);
+                        int unk2  = sread_bits(str, &bit, 32);
+                        int unk3  = sread_bits(str, &bit, 32);
+                        int unk4  = sread_bits(str, &bit, 32);
+                        int unk5  = sread_bits(str, &bit, 32);
+                        int unk6  = sread_bits(str, &bit, 32);
+                        int unk7  = sread_bits(str, &bit, 32);
+                        int unk8  = sread_bits(str, &bit, 32);
+                        int unk9  = sread_bits(str, &bit, 32);
+                        int unk10 = sread_bits(str, &bit, 32);
+                        int unk11 = sread_bits(str, &bit, 32);
+                        int unk12 = sread_bits(str, &bit, 32);
+                        int unk13 = sread_bits(str, &bit, 32);
+                        int unk15 = sread_bits(str, &bit, 12);
+                        
+                        int x = sread_bits(str, &bit, 32);
+                        int y = sread_bits(str, &bit, 32);
+                        int z = sread_bits(str, &bit, 32);
+                        
+                        float xf = 0.0; memcpy(&xf, &x, sizeof(float));
+                        float yf = 0.0; memcpy(&yf, &y, sizeof(float));
+                        float zf = 0.0; memcpy(&zf, &z, sizeof(float));
+                        
+                        int unk16 = sread_bits(str, &bit, 19);
+                        printf("NEW BIPED (0x%x) at %f %f %f\n", object_id, xf, yf, zf);
+                        continue;
+                    } else if (message_type == _message_delta_biped_update) {
+                        int player_id  = sread_bits(str, &bit, 4);
+                        int object_id  = sread_bits(str, &bit, 10);
+                        printf("BIPED %d SPAWN 0x%x\n", player_id, object_id);
+                        
+                        //int i;
+                        //for (i=0; i < (len-head)*8; i++) {
+                        //    printf("%d", read_bits(1, buffer+head, i));
+                        //}
+                        //printf("\n");
+                    } else if (message_type == _message_delta_remote_player_total_update_biped) {
+                        //printf("_message_delta_remote_player_total_update_biped\n");
+                        int player_number       = sread_bits(str, &bit, 5)-1; //BIPED NUMBER
+                        
+                        // Players are assigned a biped number when they join. If you rejoin, you get the next biped.
+                        // if you die, you keep your biped.
+                        
+                        
                         int unknown0            = sread_bits(str, &bit, 10);
                         int unknown1            = sread_bits(str, &bit, 1);
                         int controls            = sread_bits(str, &bit, 14);
                         
+                        //int unknown0            = sread_bits(str, &bit, 15);
+                        //int player_number       = sread_bits(str, &bit, 5)-1;
+                        //int controls            = sread_bits(str, &bit, 10);
+                        
+                        // p1
+                        //11001000000 1 0 100101  10000 0000000000100010011110111100000100001000100000001111100000001001110011101011111011111000101010011010000000000011000001100110000001111001111010100
+                        //11001000000 1 0 100101  10000 0000000000101000010100000100000000000010000000010100010000001110011101111001111011111000110110111010000000000011001011011011001111000100101000101
+                        //11001000000 1 0 100101 11010 1000001000 1100 00000000000111111101010100000000000001011000000111010010000001001010101010111011011111000110001000000000000000011000101101100001110010111001011111
+                        //11001000000 1 0 100101 00110 1000000100 1000 00000000000111111100011100100000000001000000011110010001000001000000010001001111101111001101101000000000000000010001100011101001101111110100000000
+                        
+                
                         /*
                          MD SERVER
                         int angley              = sread_bits(str, &bit, 20);
@@ -1839,9 +1959,8 @@ void Client::main() {
                         */
                         
                         // SAPP SERVER
-                        int angley              = sread_bits(str, &bit, 8);
-                        int anglex              = sread_bits(str, &bit, 8);
-                        int bitmask             = sread_bits(str, &bit, 4);
+                        int angle               = sread_bits(str, &bit, 15);
+                        int team                = sread_bits(str, &bit, 5);
                         int weapon_index        = sread_bits(str, &bit, 3);
                         int nade_index          = sread_bits(str, &bit, 2);
                         int x_raw               = sread_bits(str, &bit, 24);
@@ -1867,15 +1986,83 @@ void Client::main() {
                             p->position->y = y;
                             p->position->z = z;
                             p->alive = true;
+                            p->team = team;
                         }
-                        //printf("Player %d is now at %f %f %f and using weapon %d and nade %d\n", player_number, x, y, z, weapon_index, nade_index);
+                        
+                        //player 2
+                        /*
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101010001000001000001000000000000111111101010100000000000001111011001100100010000001010111101001000000111111000101010011010000000000011101100001000110000111110001110001
+                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101010000110100110100000000000000111111101010100000000000001111011001100100010000001010111101001000000111111000101010011010000000000011011100001111001100111110010111110
+                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101010001101011011100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000010110111111100010001010001001001000
+                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101010000111110100100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000011101001001010000111001100011011001
+                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101010001100101001100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000010110011101000010001010110110010100
+                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101010000001010111100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000011010001101001111100101011001001011
+                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
+                        
+                        
+                        //player 2
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101110001100100110100000000000000111111100011100000000100000001011101100000010000001001011001101011011011111001011000100000000000000010001111101011110111010011100000010
+                        Player 2 is now at 39.589470 -89.477150 0.084043 and using weapon 2 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101110000001011011100000000000000111111100011100000000100000001011101100000010000001001011001101011011011111001011000100000000000000010011111110010110001100010010001100
+                        Player 2 is now at 39.589470 -89.477150 0.084043 and using weapon 2 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101110000011110100100000000000000111111100011100000000100000001011101100000010000001001011001101011011011111001011000100000000000000010110001100010110011100111010110001
+                        Player 2 is now at 39.589470 -89.477150 0.084043 and using weapon 2 and nade 0
+
+                        // player 3
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101001001000001000100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010010001000010110100000110110010111
+                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101001000001100110100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010011101101010101010010100110011000
+                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101001001011011011100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010110111111110110000001011010100101
+                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101001001000000100100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000011111110101110000011110101000000000
+                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101001000110101001100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010111010010011101010000101011101101
+                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
+                        
+                        // player 4
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101101001000001000100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010111110000000100010011111010011010
+                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101101001110100110100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010011001101001110010101000001010011
+                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101101000011011011100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010101001010110110110010111001101010
+                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
+                        _message_delta_remote_player_total_update_biped
+                        1100100000010100101101000000000100100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010000001101100000011111010000010110
+                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
+                        */
+                        
+                        
+                        
+                        printf("Biped %d is now at %f %f %f and using weapon %d and nade %d\n", player_number, x, y, z, weapon_index, nade_index);
                         break;
                     } else {
-                        
-                        
-                        break;
+                        //printf("B %s\n", message_delta_packet_to_string_table[message_type]);
+                        //break;
                     }
-
+                }
                 break;
             }
         }
@@ -1895,6 +2082,7 @@ void Client::main() {
                 }
             }
         }
+        
         if (closest) {
             float dx = closest->position->x - me->position->x;
             float dy = closest->position->y - me->position->y;
@@ -1912,8 +2100,8 @@ void Client::main() {
             
             me->controls.look_x = rx;
             me->controls.movement.forwards = true;
-            me->controls.jumping.crouch    = false;
-            me->controls.jumping.shoot     = false; //minDist < 10;
+            me->controls.jumping.crouch    = true;
+            me->controls.jumping.shoot     = minDist < 10;
         }
         
         

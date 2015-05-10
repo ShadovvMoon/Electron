@@ -33,7 +33,6 @@
 
 class Client {
 private:
-    Game *game;
     
     // TEA encryption
     uint8_t enckey1[16];
@@ -80,6 +79,7 @@ private:
     // Threading
     void start();
 public:
+    Game *game;
     ~Client();
     Client(const char *name, const char *ip, short port);
 };

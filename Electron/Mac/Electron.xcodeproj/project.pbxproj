@@ -42,6 +42,45 @@
 		145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C41AE79A97001CCEBA /* itmc.cpp */; };
 		145A96C91AE79E55001CCEBA /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
 		1472F8581AEE1A3A00FE64DC /* sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1472F8561AEE1A3A00FE64DC /* sky.cpp */; };
+		1482BEEF1AFE20D600FA8140 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1482BEEE1AFE20D600FA8140 /* AppDelegate.mm */; };
+		1482BEF11AFE20D600FA8140 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1482BEF01AFE20D600FA8140 /* main.m */; };
+		1482BEF31AFE20D600FA8140 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1482BEF21AFE20D600FA8140 /* Images.xcassets */; };
+		1482BEF61AFE20D600FA8140 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1482BEF41AFE20D600FA8140 /* MainMenu.xib */; };
+		1482BF021AFE20D600FA8140 /* DragonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1482BF011AFE20D600FA8140 /* DragonTests.m */; };
+		1482BF091AFE212700FA8140 /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 142322C81AFA0719004A7E0D /* client.cpp */; };
+		1482BF0A1AFE212900FA8140 /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 142322CA1AFA0719004A7E0D /* game.cpp */; };
+		1482BF0B1AFE213000FA8140 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 142322CC1AFA0719004A7E0D /* md5.c */; };
+		1482BF0C1AFE213E00FA8140 /* vector3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE01AE5B05B002A64A5 /* vector3d.cpp */; };
+		1482BF0D1AFE28D200FA8140 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CDE1AE5B05B002A64A5 /* camera.cpp */; };
+		1482BF0E1AFE28D700FA8140 /* render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE21AE5B05B002A64A5 /* render.cpp */; };
+		1482BF0F1AFE28DE00FA8140 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 144B3DD11AFB473700536206 /* gui.cpp */; };
+		1482BF101AFE28E100FA8140 /* bsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE51AE5B05B002A64A5 /* bsp.cpp */; };
+		1482BF111AFE28E400FA8140 /* model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE71AE5B05B002A64A5 /* model.cpp */; };
+		1482BF121AFE28E800FA8140 /* object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE91AE5B05B002A64A5 /* object.cpp */; };
+		1482BF131AFE28EB00FA8140 /* sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1472F8561AEE1A3A00FE64DC /* sky.cpp */; };
+		1482BF141AFE28F800FA8140 /* scen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CEC1AE5B05B002A64A5 /* scen.cpp */; };
+		1482BF151AFE28FB00FA8140 /* vehi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 140293F11AE634EE004BD9B9 /* vehi.cpp */; };
+		1482BF161AFE28FF00FA8140 /* itmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C41AE79A97001CCEBA /* itmc.cpp */; };
+		1482BF171AFE290C00FA8140 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CEF1AE5B05B002A64A5 /* shader.cpp */; };
+		1482BF181AFE29C600FA8140 /* HaloData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3E31AE32FC700818134 /* HaloData.cpp */; };
+		1482BF191AFE29C700FA8140 /* ProtonCacheFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D41AE32FC200818134 /* ProtonCacheFile.cpp */; };
+		1482BF1A1AFE29C900FA8140 /* ProtonMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D61AE32FC200818134 /* ProtonMap.cpp */; };
+		1482BF1B1AFE29CA00FA8140 /* ProtonTag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D81AE32FC200818134 /* ProtonTag.cpp */; };
+		1482BF1C1AFE29CB00FA8140 /* ProtonTagArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DA1AE32FC200818134 /* ProtonTagArray.cpp */; };
+		1482BF1D1AFE29CD00FA8140 /* ProtonTagDependency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */; };
+		1482BF1E1AFE2A9000FA8140 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D021AE5B05B002A64A5 /* texture.cpp */; };
+		1482BF1F1AFE2A9100FA8140 /* bitmaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D001AE5B05B002A64A5 /* bitmaps.cpp */; };
+		1482BF201AFE2A9B00FA8140 /* schi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CF91AE5B05B002A64A5 /* schi.cpp */; };
+		1482BF211AFE2A9C00FA8140 /* senv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CFB1AE5B05B002A64A5 /* senv.cpp */; };
+		1482BF221AFE2A9D00FA8140 /* soso.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CFD1AE5B05B002A64A5 /* soso.cpp */; };
+		1482BF231AFE2AA500FA8140 /* swat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BB1AEBA9A60064D9B6 /* swat.cpp */; };
+		1482BF241AFE2AA600FA8140 /* sgla.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BE1AEBA9AD0064D9B6 /* sgla.cpp */; };
+		1482BF251AFE2AA800FA8140 /* scex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18D01AEBB25E0064D9B6 /* scex.cpp */; };
+		1482BF261AFE2AA900FA8140 /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
+		1482BF271AFE2AD700FA8140 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1436196E1AE3982200D82AC8 /* GLUT.framework */; };
+		1482BF281AFE2B5200FA8140 /* ERenderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3EF1AE3312D00818134 /* ERenderView.mm */; };
+		1482BF2C1AFE2DEB00FA8140 /* 120 in Resources */ = {isa = PBXBuildFile; fileRef = 1482BF2A1AFE2DEB00FA8140 /* 120 */; };
+		1482BF2D1AFE2DEB00FA8140 /* 440 in Resources */ = {isa = PBXBuildFile; fileRef = 1482BF2B1AFE2DEB00FA8140 /* 440 */; };
 		14ADF3B11AE32F9000818134 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B01AE32F9000818134 /* AppDelegate.mm */; };
 		14ADF3B31AE32F9000818134 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B21AE32F9000818134 /* main.m */; };
 		14ADF3B61AE32F9000818134 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3B51AE32F9000818134 /* Document.m */; };
@@ -63,6 +102,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1482BEFC1AFE20D600FA8140 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 14ADF3A21AE32F9000818134 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1482BEE81AFE20D600FA8140;
+			remoteInfo = Dragon;
+		};
 		14ADF3C41AE32F9000818134 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 14ADF3A21AE32F9000818134 /* Project object */;
@@ -113,7 +159,7 @@
 		14272CE01AE5B05B002A64A5 /* vector3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vector3d.cpp; sourceTree = "<group>"; };
 		14272CE11AE5B05B002A64A5 /* vector3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vector3d.h; sourceTree = "<group>"; };
 		14272CE21AE5B05B002A64A5 /* render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = render.cpp; sourceTree = "<group>"; };
-		14272CE31AE5B05B002A64A5 /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render.h; sourceTree = "<group>"; };
+		14272CE31AE5B05B002A64A5 /* render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = render.h; path = ../render.h; sourceTree = "<group>"; };
 		14272CE51AE5B05B002A64A5 /* bsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bsp.cpp; sourceTree = "<group>"; };
 		14272CE61AE5B05B002A64A5 /* bsp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bsp.h; sourceTree = "<group>"; };
 		14272CE71AE5B05B002A64A5 /* model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = model.cpp; sourceTree = "<group>"; };
@@ -146,6 +192,18 @@
 		145A96C81AE79E55001CCEBA /* null.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = null.h; sourceTree = "<group>"; };
 		1472F8561AEE1A3A00FE64DC /* sky.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sky.cpp; sourceTree = "<group>"; };
 		1472F8571AEE1A3A00FE64DC /* sky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sky.h; sourceTree = "<group>"; };
+		1482BEE91AFE20D600FA8140 /* Dragon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dragon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1482BEEC1AFE20D600FA8140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1482BEED1AFE20D600FA8140 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		1482BEEE1AFE20D600FA8140 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		1482BEF01AFE20D600FA8140 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1482BEF21AFE20D600FA8140 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1482BEF51AFE20D600FA8140 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		1482BEFB1AFE20D600FA8140 /* DragonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DragonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1482BF001AFE20D600FA8140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1482BF011AFE20D600FA8140 /* DragonTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DragonTests.m; sourceTree = "<group>"; };
+		1482BF2A1AFE2DEB00FA8140 /* 120 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 120; path = ../../OpenGL/render/shader/shaders/glsl/120; sourceTree = "<group>"; };
+		1482BF2B1AFE2DEB00FA8140 /* 440 */ = {isa = PBXFileReference; lastKnownFileType = folder; name = 440; path = ../../OpenGL/render/shader/shaders/glsl/440; sourceTree = "<group>"; };
 		14ADF3AA1AE32F9000818134 /* Electron.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Electron.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14ADF3AE1AE32F9000818134 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14ADF3AF1AE32F9000818134 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -184,6 +242,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1482BEE61AFE20D600FA8140 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1482BF271AFE2AD700FA8140 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1482BEF81AFE20D600FA8140 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14ADF3A71AE32F9000818134 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -240,7 +313,6 @@
 			children = (
 				14272CDD1AE5B05B002A64A5 /* camera */,
 				14272CE21AE5B05B002A64A5 /* render.cpp */,
-				14272CE31AE5B05B002A64A5 /* render.h */,
 				144B3DD01AFB473700536206 /* gui */,
 				14272CE41AE5B05B002A64A5 /* renderables */,
 				14272CEE1AE5B05B002A64A5 /* shader */,
@@ -257,6 +329,7 @@
 				14272CDF1AE5B05B002A64A5 /* camera.h */,
 				14272CE01AE5B05B002A64A5 /* vector3d.cpp */,
 				14272CE11AE5B05B002A64A5 /* vector3d.h */,
+				14272CE31AE5B05B002A64A5 /* render.h */,
 			);
 			path = camera;
 			sourceTree = "<group>";
@@ -375,6 +448,54 @@
 			name = game;
 			sourceTree = "<group>";
 		};
+		1482BEEA1AFE20D600FA8140 /* Dragon */ = {
+			isa = PBXGroup;
+			children = (
+				1482BEED1AFE20D600FA8140 /* AppDelegate.h */,
+				1482BEEE1AFE20D600FA8140 /* AppDelegate.mm */,
+				1482BEF21AFE20D600FA8140 /* Images.xcassets */,
+				1482BEF41AFE20D600FA8140 /* MainMenu.xib */,
+				1482BEEB1AFE20D600FA8140 /* Supporting Files */,
+			);
+			path = Dragon;
+			sourceTree = "<group>";
+		};
+		1482BEEB1AFE20D600FA8140 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1482BF291AFE2DE100FA8140 /* glsl */,
+				1482BEEC1AFE20D600FA8140 /* Info.plist */,
+				1482BEF01AFE20D600FA8140 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1482BEFE1AFE20D600FA8140 /* DragonTests */ = {
+			isa = PBXGroup;
+			children = (
+				1482BF011AFE20D600FA8140 /* DragonTests.m */,
+				1482BEFF1AFE20D600FA8140 /* Supporting Files */,
+			);
+			path = DragonTests;
+			sourceTree = "<group>";
+		};
+		1482BEFF1AFE20D600FA8140 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				1482BF001AFE20D600FA8140 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		1482BF291AFE2DE100FA8140 /* glsl */ = {
+			isa = PBXGroup;
+			children = (
+				1482BF2A1AFE2DEB00FA8140 /* 120 */,
+				1482BF2B1AFE2DEB00FA8140 /* 440 */,
+			);
+			name = glsl;
+			sourceTree = "<group>";
+		};
 		14ADF3A11AE32F9000818134 = {
 			isa = PBXGroup;
 			children = (
@@ -382,6 +503,8 @@
 				14ADF3F51AE3367000818134 /* OpenGL.framework */,
 				14ADF3AC1AE32F9000818134 /* Electron */,
 				14ADF3C61AE32F9000818134 /* ElectronTests */,
+				1482BEEA1AFE20D600FA8140 /* Dragon */,
+				1482BEFE1AFE20D600FA8140 /* DragonTests */,
 				14ADF3AB1AE32F9000818134 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -391,6 +514,8 @@
 			children = (
 				14ADF3AA1AE32F9000818134 /* Electron.app */,
 				14ADF3C31AE32F9000818134 /* ElectronTests.xctest */,
+				1482BEE91AFE20D600FA8140 /* Dragon.app */,
+				1482BEFB1AFE20D600FA8140 /* DragonTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -483,6 +608,41 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1482BEE81AFE20D600FA8140 /* Dragon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1482BF071AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "Dragon" */;
+			buildPhases = (
+				1482BEE51AFE20D600FA8140 /* Sources */,
+				1482BEE61AFE20D600FA8140 /* Frameworks */,
+				1482BEE71AFE20D600FA8140 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Dragon;
+			productName = Dragon;
+			productReference = 1482BEE91AFE20D600FA8140 /* Dragon.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1482BEFA1AFE20D600FA8140 /* DragonTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1482BF081AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "DragonTests" */;
+			buildPhases = (
+				1482BEF71AFE20D600FA8140 /* Sources */,
+				1482BEF81AFE20D600FA8140 /* Frameworks */,
+				1482BEF91AFE20D600FA8140 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1482BEFD1AFE20D600FA8140 /* PBXTargetDependency */,
+			);
+			name = DragonTests;
+			productName = DragonTests;
+			productReference = 1482BEFB1AFE20D600FA8140 /* DragonTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		14ADF3A91AE32F9000818134 /* Electron */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 14ADF3CD1AE32F9100818134 /* Build configuration list for PBXNativeTarget "Electron" */;
@@ -527,6 +687,13 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Samuco;
 				TargetAttributes = {
+					1482BEE81AFE20D600FA8140 = {
+						CreatedOnToolsVersion = 6.3;
+					};
+					1482BEFA1AFE20D600FA8140 = {
+						CreatedOnToolsVersion = 6.3;
+						TestTargetID = 1482BEE81AFE20D600FA8140;
+					};
 					14ADF3A91AE32F9000818134 = {
 						CreatedOnToolsVersion = 6.3;
 					};
@@ -551,11 +718,31 @@
 			targets = (
 				14ADF3A91AE32F9000818134 /* Electron */,
 				14ADF3C21AE32F9000818134 /* ElectronTests */,
+				1482BEE81AFE20D600FA8140 /* Dragon */,
+				1482BEFA1AFE20D600FA8140 /* DragonTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1482BEE71AFE20D600FA8140 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1482BF2C1AFE2DEB00FA8140 /* 120 in Resources */,
+				1482BEF31AFE20D600FA8140 /* Images.xcassets in Resources */,
+				1482BEF61AFE20D600FA8140 /* MainMenu.xib in Resources */,
+				1482BF2D1AFE2DEB00FA8140 /* 440 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1482BEF91AFE20D600FA8140 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14ADF3A81AE32F9000818134 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -580,6 +767,54 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1482BEE51AFE20D600FA8140 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1482BF151AFE28FB00FA8140 /* vehi.cpp in Sources */,
+				1482BF101AFE28E100FA8140 /* bsp.cpp in Sources */,
+				1482BF0A1AFE212900FA8140 /* game.cpp in Sources */,
+				1482BEF11AFE20D600FA8140 /* main.m in Sources */,
+				1482BEEF1AFE20D600FA8140 /* AppDelegate.mm in Sources */,
+				1482BF0C1AFE213E00FA8140 /* vector3d.cpp in Sources */,
+				1482BF1B1AFE29CA00FA8140 /* ProtonTag.cpp in Sources */,
+				1482BF281AFE2B5200FA8140 /* ERenderView.mm in Sources */,
+				1482BF0B1AFE213000FA8140 /* md5.c in Sources */,
+				1482BF091AFE212700FA8140 /* client.cpp in Sources */,
+				1482BF0D1AFE28D200FA8140 /* camera.cpp in Sources */,
+				1482BF0E1AFE28D700FA8140 /* render.cpp in Sources */,
+				1482BF0F1AFE28DE00FA8140 /* gui.cpp in Sources */,
+				1482BF1D1AFE29CD00FA8140 /* ProtonTagDependency.cpp in Sources */,
+				1482BF1C1AFE29CB00FA8140 /* ProtonTagArray.cpp in Sources */,
+				1482BF111AFE28E400FA8140 /* model.cpp in Sources */,
+				1482BF121AFE28E800FA8140 /* object.cpp in Sources */,
+				1482BF171AFE290C00FA8140 /* shader.cpp in Sources */,
+				1482BF1A1AFE29C900FA8140 /* ProtonMap.cpp in Sources */,
+				1482BF201AFE2A9B00FA8140 /* schi.cpp in Sources */,
+				1482BF221AFE2A9D00FA8140 /* soso.cpp in Sources */,
+				1482BF211AFE2A9C00FA8140 /* senv.cpp in Sources */,
+				1482BF191AFE29C700FA8140 /* ProtonCacheFile.cpp in Sources */,
+				1482BF261AFE2AA900FA8140 /* null.cpp in Sources */,
+				1482BF231AFE2AA500FA8140 /* swat.cpp in Sources */,
+				1482BF131AFE28EB00FA8140 /* sky.cpp in Sources */,
+				1482BF241AFE2AA600FA8140 /* sgla.cpp in Sources */,
+				1482BF251AFE2AA800FA8140 /* scex.cpp in Sources */,
+				1482BF1F1AFE2A9100FA8140 /* bitmaps.cpp in Sources */,
+				1482BF1E1AFE2A9000FA8140 /* texture.cpp in Sources */,
+				1482BF141AFE28F800FA8140 /* scen.cpp in Sources */,
+				1482BF161AFE28FF00FA8140 /* itmc.cpp in Sources */,
+				1482BF181AFE29C600FA8140 /* HaloData.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1482BEF71AFE20D600FA8140 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1482BF021AFE20D600FA8140 /* DragonTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14ADF3A61AE32F9000818134 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -641,6 +876,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1482BEFD1AFE20D600FA8140 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1482BEE81AFE20D600FA8140 /* Dragon */;
+			targetProxy = 1482BEFC1AFE20D600FA8140 /* PBXContainerItemProxy */;
+		};
 		14ADF3C51AE32F9000818134 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 14ADF3A91AE32F9000818134 /* Electron */;
@@ -649,6 +889,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		1482BEF41AFE20D600FA8140 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1482BEF51AFE20D600FA8140 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		14ADF3B71AE32F9000818134 /* Document.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -668,6 +916,74 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1482BF031AFE20D600FA8140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = Dragon/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1482BF041AFE20D600FA8140 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Dragon/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		1482BF051AFE20D600FA8140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DragonTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dragon.app/Contents/MacOS/Dragon";
+			};
+			name = Debug;
+		};
+		1482BF061AFE20D600FA8140 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = DragonTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Dragon.app/Contents/MacOS/Dragon";
+			};
+			name = Release;
+		};
 		14ADF3CB1AE32F9100818134 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -828,6 +1144,22 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1482BF071AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "Dragon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1482BF031AFE20D600FA8140 /* Debug */,
+				1482BF041AFE20D600FA8140 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		1482BF081AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "DragonTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1482BF051AFE20D600FA8140 /* Debug */,
+				1482BF061AFE20D600FA8140 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		14ADF3A51AE32F9000818134 /* Build configuration list for PBXProject "Electron" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -12,10 +12,13 @@
 {
     double totalTime;
     int frames;
+    id delegate;
     
     CVDisplayLinkRef displayLink; //display link for managing rendering thread
     //NSTimer *drawTimer;
 }
+-(void*)renderer;
+-(void)setDelegate:(id)del;
 -(void)setData:(NSData*)data;
 -(NSData *)getData;
 @end

@@ -39,18 +39,20 @@ private:
     
     // rendering
     bool ready = false;
+
+    
+    // shader options
+    shader_options *options;
+public:
+    BSP *bsp;
     ProtonMap *map;
     ShaderManager *shaders;
-    BSP *bsp;
     Camera *camera;
     ObjectManager *objects;
     SkyManager *skies;
     Control *controller = nullptr;
     GUI *interface;
     
-    // shader options
-    shader_options *options;
-public:
     ~ERenderer();
     void setup(const char *resources);
     void resize(float width, float height);

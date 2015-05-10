@@ -50,6 +50,7 @@ typedef struct {
 
 class Player {
 public:
+    int team = 0;
     bool alive = false;
     ControlMask controls;
     vector3d *position = nullptr;
