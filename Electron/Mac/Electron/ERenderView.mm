@@ -204,6 +204,9 @@ CGPoint prevDownLeft;
         case 'd':
             controls->right = false;
             break;
+        case 'q':
+            renderer->useSSAO = !renderer->useSSAO;
+            break;
     }
     [self updateMasks:theEvent];
 }

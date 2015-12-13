@@ -39,11 +39,29 @@ private:
     
     // rendering
     bool ready = false;
-
+    
+    // deferred rendering
+    GLuint mFBO;
+    GLuint			mDiffuse; // The diffuse render target
+    unsigned int	mDiffuseTexture; // The OpenGL texture for the diffuse render target
+    GLuint			mPosition; // The position render target
+    unsigned int	mPositionTexture; // The OpenGL texture for the position render target
+    GLuint			mNormals; // The normals render target
+    unsigned int	mNormalsTexture; // The OpenGL texture for the normals render target
+    GLuint			mDepthBuffer; // Depth buffer handle
+    unsigned int	mDepthTexture; // The OpenGL texture for the normals render target
+    unsigned int	m_width; // FBO width
+    unsigned int	m_height; // FBO height
+    unsigned int	mSSAOTexture;
     
     // shader options
     shader_options *options;
+    
+    // private functions
+    void start();
+    void stop();
 public:
+    bool useSSAO = false;
     bool render_objects = true;
     
     BSP *bsp;

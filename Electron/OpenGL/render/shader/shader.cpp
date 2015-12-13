@@ -14,6 +14,9 @@
 #include "shaders/sgla.h"
 #include "shaders/swat.h"
 #include "shaders/scex.h"
+#include "shaders/deff.hpp"
+#include "shaders/ssao.hpp"
+#include "shaders/blur.hpp"
 
 float b2f(bool b) {
     return b?1.0:0.0;
@@ -99,7 +102,6 @@ GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
     glBindAttribLocation(program, 5, "binormals_buffer");
     glBindAttribLocation(program, 6, "tangents_buffer");
     
-    
     glLinkProgram(program);
     glGetProgramiv(program, GL_LINK_STATUS, &program_ok);
     if (!program_ok)
@@ -170,6 +172,18 @@ ShaderManager::ShaderManager(const char *resources) {
     scex *scex_shader = new scex;
     scex_shader->setup(path);
     shaders[shader_SCEX] = (shader*)scex_shader;
+    
+    deff *deff_shader = new deff;
+    deff_shader->setup(path);
+    shaders[shader_DEFF] = (shader*)deff_shader;
+    
+    ssao *ssao_shader = new ssao;
+    ssao_shader->setup(path);
+    shaders[shader_SSAO] = (shader*)ssao_shader;
+    
+    blur *blur_shader = new blur;
+    blur_shader->setup(path);
+    shaders[shader_BLUR] = (shader*)blur_shader;
 }
 
 shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {

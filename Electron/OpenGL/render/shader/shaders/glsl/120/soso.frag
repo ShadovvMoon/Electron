@@ -9,6 +9,7 @@ uniform vec3 maps;  //0 = useMulti, useDetail, useCube
 uniform vec4 scale; //0 = uscale, vscale, detailScale, detailScaleV
 varying vec2 tex_coord;
 varying vec3 normals;
+varying vec4 position;
 
 // Cubemapping
 varying vec3 lightVec, eyeVec;
@@ -29,7 +30,9 @@ void main(void) {
     vec4 texel2  = texture2D(multipurposeMap, coords);
     vec4 white   = vec4(1.0,1.0,1.0,1.0);
     vec4 detail  = mix(white, texel1*2, maps[1]);
-    gl_FragColor = texel0 * detail * gl_FrontMaterial.diffuse.rgba;
+    
+    
+    vec4 outColor = texel0 * detail * gl_FrontMaterial.diffuse.rgba;
     
     // CUBEMAPPING
     if ( maps[0] > 0 && maps[2] > 0 ) {
@@ -57,12 +60,16 @@ void main(void) {
         
         float oneMinusDot = 1.0 - dot(normalize(normals), normalize(eye));
         float scale = mix(reflectionScale[0], reflectionScale[1], 0.0);
-        gl_FragColor = gl_FragColor * mix(white, reflex*2, min(texel0.a, scale));
+        outColor = outColor * mix(white, reflex*2, min(texel0.a, scale));
     }
     
     // FOGGING
     float z = (gl_FragCoord.z / gl_FragCoord.w);
     float fogFactor = (z/fogSettings[0]);
     fogFactor = clamp(fogFactor, 0.0, fogSettings[1]);
-    gl_FragColor = mix(gl_FragColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
+    outColor = mix(outColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
+    
+    gl_FragData[0] = outColor;
+    gl_FragData[1] = vec4(position.xyz,1.0);
+    gl_FragData[2] = vec4(normals.xyz,1.0);
 }

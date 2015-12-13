@@ -37,6 +37,100 @@ void ERenderer::setup(const char *resources) {
     forward_tick = now();
     strafe_tick = now();
     
+    // Set up the render frame buffer
+    glGenFramebuffers(1, &mFBO);
+    glGenRenderbuffers(1, &mDiffuse);
+    glGenRenderbuffers(1, &mPosition);
+    glGenRenderbuffers(1, &mNormals);
+    glGenRenderbuffers(1, &mDepthBuffer);
+    
+    m_width  = 4096;
+    m_height = 2048;
+    
+    // Bind the FBO so that the next operations will be bound to it
+    glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
+    
+    // Bind the diffuse render target
+    glBindRenderbuffer(GL_RENDERBUFFER, mDiffuse);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA, m_width, m_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, mDiffuse);
+    
+    // Bind the position render target
+    glBindRenderbuffer(GL_RENDERBUFFER, mPosition);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F_ARB, m_width, m_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_RENDERBUFFER, mPosition);
+    
+    // Bind the normal render target
+    glBindRenderbuffer(GL_RENDERBUFFER, mNormals);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA16F_ARB, m_width, m_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_RENDERBUFFER, mNormals);
+    
+    // Bind the depth buffer
+    glBindRenderbuffer(GL_RENDERBUFFER, mDepthBuffer);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, m_width, m_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, mDepthBuffer);
+    
+    // Generate and bind the OGL texture for diffuse
+    glGenTextures(1, &mDiffuseTexture);
+    glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // Attach the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mDiffuseTexture, 0);
+    
+    // Generate and bind the OGL texture for positions
+    glGenTextures(1, &mPositionTexture);
+    glBindTexture(GL_TEXTURE_2D, mPositionTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F_ARB, m_width, m_height, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // Attach the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mPositionTexture, 0);
+    
+    // Generate and bind the OGL texture for normals
+    glGenTextures(1, &mNormalsTexture);
+    glBindTexture(GL_TEXTURE_2D, mNormalsTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F_ARB, m_width, m_height, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // Attach the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mNormalsTexture, 0);
+    
+    // Generate and bind the OGL texture for depth
+    glGenTextures(1, &mDepthTexture);
+    glBindTexture(GL_TEXTURE_2D, mDepthTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // Attach the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthTexture, 0);
+    
+    // Generate the SSAO texture
+    glGenTextures(1, &mSSAOTexture);
+    glBindTexture(GL_TEXTURE_2D, mSSAOTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    
+    // Check if all worked fine and unbind the FBO
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if( status != GL_FRAMEBUFFER_COMPLETE)
+        fprintf(stderr, "Can't initialize an FBO render texture. FBO initialization failed.");
+    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    
     // Start
     ready = false;
     printf("ready\n");
@@ -269,6 +363,32 @@ int NextHighestPowerOf2(int n)
 }
 
 
+void ERenderer::start() {
+    // Bind our FBO and set the viewport to the proper size
+    glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
+    glPushAttrib(GL_VIEWPORT_BIT);
+    glViewport(0, 0, m_width, m_height);
+    
+    // Clear the render targets
+    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    glClearColor( 0.0f, 0.0f, 0.0f, 1.0f );
+    
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    
+    // Specify what to render an start acquiring
+    GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
+        GL_COLOR_ATTACHMENT2 };
+    glDrawBuffers(3, buffers);
+}
+
+void ERenderer::stop(){
+    // Stop acquiring and unbind the FBO
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glPopAttrib();
+}
+
+
 // Main rendering loop
 void ERenderer::render() {
     if (!ready) {
@@ -293,9 +413,10 @@ void ERenderer::render() {
     glLoadIdentity();
     camera->look(options);
     
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    if (shaders->needs_reflection()) {
+    
+    if (false) {//shaders->needs_reflection()) {
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnableClientState(GL_VERTEX_ARRAY);
         // Render a reflection of the scenario
         GLint anViewport[4];
         glGetIntegerv(GL_VIEWPORT, anViewport);
@@ -318,20 +439,248 @@ void ERenderer::render() {
         // Clear previous frame values
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(options->fogr, options->fogg, options->fogb, 1.0);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glPopAttrib();
     }
 
-    renderScene(false);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glPopAttrib();
+    if (!useSSAO) {
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        renderScene(false);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glPopAttrib();
+    } else {
+        // Render the scene into the FBO
+        this->start();
+        glPushAttrib(GL_ALL_ATTRIB_BITS);
+        glEnableClientState(GL_VERTEX_ARRAY);
+        renderScene(false);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glPopAttrib();
+        this->stop();
+        
+
+        
+        
+        // Render the quad
+        // Projection setup
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        glOrtho(0,m_width,0,m_height,0.1f,2);
+        
+        // Model setup
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        
+        
+        
+        
+        
+        
+        
+        // Render the SSAO into a texture
+        shader *ssao = shaders->get_shader(shader_SSAO);
+        ssao->start(options);
+        
+        glActiveTexture(GL_TEXTURE0);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
+        
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mPositionTexture);
+        
+        glActiveTexture(GL_TEXTURE2);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mNormalsTexture);
+        
+        glActiveTexture(GL_TEXTURE3);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mDepthTexture);
+
+        // Render the quad
+        glLoadIdentity();
+        glColor3f(1,0,0);
+        glTranslatef(0,0,-1.0);
+        
+        glBegin(GL_QUADS);
+        glTexCoord2f( 0, 0 );
+        glVertex3f(    0.0f, 0.0f, 0.0f);
+        glTexCoord2f( 1, 0 );
+        glVertex3f(   (float) m_width, 0.0f, 0.0f);
+        glTexCoord2f( 1, 1 );
+        glVertex3f(   (float) m_width, (float) m_height, 0.0f);
+        glTexCoord2f( 0, 1 );
+        glVertex3f(    0.0f,  (float) m_height, 0.0f);
+        glEnd();
+        
+        glActiveTexture(GL_TEXTURE0);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE1);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE2);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE3);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        ssao->stop();
+        
+        glBindTexture(GL_TEXTURE_2D, mSSAOTexture);
+        glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0,0, m_width, m_height, 0);
+        
+
+        // Blur (Y)
+        shader *blur = shaders->get_shader(shader_BLUR);
+        blur->start(options);
+        
+        glActiveTexture(GL_TEXTURE0);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
+        
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mPositionTexture);
+        
+        glActiveTexture(GL_TEXTURE2);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mNormalsTexture);
+        
+        glActiveTexture(GL_TEXTURE3);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mSSAOTexture);
+        
+        // Render the quad
+        glLoadIdentity();
+        glColor3f(1,0,0);
+        glTranslatef(0,0,-1.0);
+        
+        glBegin(GL_QUADS);
+        glTexCoord2f( 0, 0 );
+        glVertex3f(    0.0f, 0.0f, 0.0f);
+        glTexCoord2f( 1, 0 );
+        glVertex3f(   (float) m_width, 0.0f, 0.0f);
+        glTexCoord2f( 1, 1 );
+        glVertex3f(   (float) m_width, (float) m_height, 0.0f);
+        glTexCoord2f( 0, 1 );
+        glVertex3f(    0.0f,  (float) m_height, 0.0f);
+        glEnd();
+        
+        glActiveTexture(GL_TEXTURE0);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE1);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE2);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE3);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        blur->stop();
+        
+        glBindTexture(GL_TEXTURE_2D, mSSAOTexture);
+        glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0,0, m_width, m_height, 0);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Render the final scene
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClearColor(options->fogr, options->fogg, options->fogb, 1.0);
+        
+        shader *deferred = shaders->get_shader(shader_DEFF);
+        deferred->start(options);
+        
+        glActiveTexture(GL_TEXTURE0);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
+
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mPositionTexture);
+
+        glActiveTexture(GL_TEXTURE2);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mNormalsTexture);
+
+        glActiveTexture(GL_TEXTURE3);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mSSAOTexture);
+
+        // Render the quad
+        glLoadIdentity();
+        glColor3f(1,0,0);
+        glTranslatef(0,0,-1.0);
+        
+        glBegin(GL_QUADS);
+        glTexCoord2f( 0, 0 );
+        glVertex3f(    0.0f, 0.0f, 0.0f);
+        glTexCoord2f( 1, 0 );
+        glVertex3f(   (float) m_width, 0.0f, 0.0f);
+        glTexCoord2f( 1, 1 );
+        glVertex3f(   (float) m_width, (float) m_height, 0.0f);
+        glTexCoord2f( 0, 1 );
+        glVertex3f(    0.0f,  (float) m_height, 0.0f);
+        glEnd();
+        
+        // Reset OpenGL state
+        glActiveTexture(GL_TEXTURE0);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE1);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE2);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE3);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        deferred->stop();
+        
+        
+        //Reset to the matrices	
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+    }
     #endif
-    
+
     
     // Render the shadow map
     /*
      GLuint ShadowMap;
-     glBindFramebuffer(GL_FRAMEBUFFER_EXT, FBO);
+     glBindFramebuffer(GL_FRAMEBUFFER, FBO);
      glDrawBuffers(0, NULL); glReadBuffer(GL_NONE);
-     glFramebufferTexture2D(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, ShadowMap, 0);
+     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, ShadowMap, 0);
      
      glClear(GL_DEPTH_BUFFER_BIT);
      glEnable(GL_DEPTH_TEST);
