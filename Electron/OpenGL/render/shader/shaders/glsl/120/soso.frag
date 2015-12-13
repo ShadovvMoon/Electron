@@ -29,7 +29,7 @@ void main(void) {
     vec4 texel2  = texture2D(multipurposeMap, coords);
     vec4 white   = vec4(1.0,1.0,1.0,1.0);
     vec4 detail  = mix(white, texel1*2, maps[1]);
-    gl_FragColor = texel0 * detail;
+    gl_FragColor = texel0 * detail * gl_FrontMaterial.diffuse.rgba;
     
     // CUBEMAPPING
     if ( maps[0] > 0 && maps[2] > 0 ) {

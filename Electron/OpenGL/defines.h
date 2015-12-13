@@ -17,7 +17,7 @@
 // Force hardware acceleration
 #define RENDER_GPU
 //#define RENDER_CORE_32
-#define GL_VALIDATE
+//#define GL_VALIDATE
 
 // Render using vertex array objects (if false, use arrays or vbos)
 #define RENDER_VAO

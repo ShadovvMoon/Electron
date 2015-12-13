@@ -44,6 +44,8 @@ private:
     // shader options
     shader_options *options;
 public:
+    bool render_objects = true;
+    
     BSP *bsp;
     ProtonMap *map;
     ShaderManager *shaders;

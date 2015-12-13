@@ -8,6 +8,7 @@
 
 #include "client.h"
 #include <thread>
+//#define VERBOSE 1
 
 void show_dump(unsigned char *data, long len, FILE *stream) {
     const static char       hex[] = "0123456789abcdef";
@@ -649,7 +650,7 @@ void halo_tea_encrypt(uint8_t *data, int size, uint8_t *key) {
 }
 
 
-
+//39 59
 
 
 
@@ -663,7 +664,13 @@ bool Client::handshake() {
     p += putxx(p, 1,        8);
     p += putxx(p, htons(0), 16);
     p += putxx(p, htons(0), 16);
-    memset(psdk, '1',       32);
+    
+    int i;
+    for (i=0; i < 32; i++) {
+        psdk[i] = arc4random() % 128;
+    }
+    
+    //memset(psdk, '1',       32);
     gssdkcr(psdk, psdk,     0);
     p += 32;
     
@@ -1014,11 +1021,15 @@ void Client::join() {
     challenge[6] = buffer[16];
     p_no =   (int)(buffer[22]);
     
+    
     // Send the machine connection
     connect_packet();
     
     // Receive the game state
-    recv_bits();
+    //recv_bits();
+    main();
+    
+    // handle dem bits
     send_acknowledgement();
     
     // Join the game
@@ -1199,7 +1210,7 @@ enum message_delta
      */
     _message_delta_player_handle_powerup,
     _message_delta_hud_chat, // complete
-    _message_delta_slayer_update,
+    _message_delta_slayer_update, //
     _message_delta_ctf_update,
     _message_delta_oddball_update,
     _message_delta_king_update,
@@ -1349,7 +1360,7 @@ enum field_type_bit_size
     _field_type_bit_size_item_placement_position = 20 /*X*/ + 20 /*Y*/ + 30 /*Z*/,
 };
 
-char *message_packet_to_string_table[] = {
+char *message_packet_to_string_table[] = { // 38 [loc_1bbcd2]
     "client-broadcast_game_search",
     "client-ping",
     "server-game_advertise",
@@ -1364,19 +1375,19 @@ char *message_packet_to_string_table[] = {
     "server-graceful_game_exit_pregame",
     "server-pregame_keep_alive",
     "server-postgame_keep_alive",
-    "client-join_game_request",
+    "client-join_game_request",             //<-- join [14]
     "client-add_player_request_pregame",
     "client-remove_player_request_pregame",
     "client-settings_request",
     "client-player_settings_request",
     "client-game_start_request",
     "client-graceful_game_exit_pregame",
-    "client-map_is_precached_pregame",
+    "client-map_is_precached_pregame",      //<--- join [21]
     "server-game_update",
     "server-add_player_ingame",
     "server-remove_player_ingame",
     "server-game_over",
-    "client-loaded",
+    "client-loaded",                        //<--- join [26]
     "client-game_update",
     "client-add_player_request_ingame",
     "client-remove_player_request_ingame",
@@ -1390,23 +1401,25 @@ char *message_packet_to_string_table[] = {
     "client-graceful_game_exit_postgame",
 };
 
-char *message_delta_packet_to_string_table[] = {
-    "_message_delta_object_deletion",
-    "_message_delta_projectile_update",
-    "_message_delta_equipment_update",
-    "_message_delta_weapon_update",
-    "_message_delta_biped_update",
-    "_message_delta_vehicle_update",
-    "_message_delta_hud_add_item",
-    "_message_delta_player_create",
-    "_message_delta_player_spawn",
-    "_message_delta_player_exit_vehicle",
-    "_message_delta_player_set_action_result",
-    "_message_delta_player_effect_start",
-    "_message_delta_unit_kill",
-    "_message_delta_client_game_update",
-    "_message_delta_player_handle_powerup",
-    "_message_delta_hud_chat",
+//00060844         jmp        dword [ds:0x343648+eax*4]                                     ; switch statement with 6 cases
+
+char *message_delta_packet_to_string_table[] = { //loc_1bcc21 [56]
+    "_message_delta_object_deletion",       //000000
+    "_message_delta_projectile_update",     //100000
+    "_message_delta_equipment_update",      //010000
+    "_message_delta_weapon_update",         //110000
+    "_message_delta_biped_update",          //001000
+    "_message_delta_vehicle_update",        //101000
+    "_message_delta_hud_add_item",          //111000
+    "_message_delta_player_create",         //000100
+    "_message_delta_player_spawn",          //100100
+    "_message_delta_player_exit_vehicle",   //010100
+    "_message_delta_player_set_action_result",  //110100
+    "_message_delta_player_effect_start",   //001100
+    "_message_delta_unit_kill",             //101100
+    "_message_delta_client_game_update",    //011100
+    "_message_delta_player_handle_powerup", //111100
+    "_message_delta_hud_chat",              //000010
     "_message_delta_slayer_update",
     "_message_delta_ctf_update",
     "_message_delta_oddball_update",
@@ -1417,7 +1430,7 @@ char *message_delta_packet_to_string_table[] = {
     "_message_delta_game_engine_map_reset",
     "_message_delta_multiplayer_hud_message",
     "_message_delta_multiplayer_sound",
-    "_message_delta_team_change",
+    "_message_delta_team_change",           //001011
     "_message_delta_unit_drop_current_weapon",
     "_message_delta_vehicle_new",
     "_message_delta_biped_new",
@@ -1449,6 +1462,10 @@ char *message_delta_packet_to_string_table[] = {
     "_message_delta_rcon_request",
     "_message_delta_rcon_response",
 };
+
+
+//11101
+//10111
 
 //_message_delta_client_game_update
 /*
@@ -1505,6 +1522,12 @@ char *message_delta_packet_to_string_table[] = {
  */
 void Client::send_game_update() {
     Player *me = game->getPlayer(p_no);
+    Biped *mep = game->getBiped(0);
+
+    if (mep == nullptr) {
+        mep = game->getBiped(0);
+    }
+    
     tick_counter ++;
     if (tick_counter > 63) tick_counter = 0;
 
@@ -1531,38 +1554,38 @@ void Client::send_game_update() {
 
     // jumping bitmask
     if (true) {
-        b = write_bits(me->controls.jumping.crouch      ?1:0, 1, bb, b); // crouching
-        b = write_bits(me->controls.jumping.jump        ?1:0, 1, bb, b); // jumping
-        b = write_bits(me->controls.jumping.flash       ?1:0, 1, bb, b); // flashlight
-        b = write_bits(me->controls.jumping.action      ?1:0, 1, bb, b); // action
-        b = write_bits(me->controls.jumping.melee       ?1:0, 1, bb, b); // melee
+        b = write_bits(mep->controls.jumping.crouch      ?1:0, 1, bb, b); // crouching
+        b = write_bits(mep->controls.jumping.jump        ?1:0, 1, bb, b); // jumping
+        b = write_bits(mep->controls.jumping.flash       ?1:0, 1, bb, b); // flashlight
+        b = write_bits(mep->controls.jumping.action      ?1:0, 1, bb, b); // action
+        b = write_bits(mep->controls.jumping.melee       ?1:0, 1, bb, b); // melee
         b = write_bits(0, 1, bb, b); //
-        b = write_bits(me->controls.jumping.shoot       ?1:0, 1, bb, b); // shooting
+        b = write_bits(mep->controls.jumping.shoot       ?1:0, 1, bb, b); // shooting
         b = write_bits(0, 1, bb, b); //
         b = write_bits(0, 1, bb, b); //
-        b = write_bits(me->controls.jumping.longact     ?1:0, 1, bb, b); // action long
+        b = write_bits(mep->controls.jumping.longact     ?1:0, 1, bb, b); // action long
     }
     
     // x turning
     if (true) {
         uint32_t bits = 0;
-        memcpy(&bits, &me->controls.look_x, sizeof(float));
+        memcpy(&bits, &mep->controls.look_x, sizeof(float));
         b = write_bits(bits, 32, bb, b);
     }
     
     // y turning
     if (true) {
         uint32_t bits = 0;
-        memcpy(&bits, &me->controls.look_y, sizeof(float));
+        memcpy(&bits, &mep->controls.look_y, sizeof(float));
         b = write_bits(bits, 32, bb, b);
     }
     
     // movement bitmask
     if (true) {
-        b = write_bits(me->controls.movement.right      ?1:0, 1, bb, b);  // right
-        b = write_bits(me->controls.movement.left       ?1:0, 1, bb, b);  // left
-        b = write_bits(me->controls.movement.backwards  ?1:0, 1, bb, b);  // back
-        b = write_bits(me->controls.movement.forwards   ?1:0, 1, bb, b);  // foward
+        b = write_bits(mep->controls.movement.right      ?1:0, 1, bb, b);  // right
+        b = write_bits(mep->controls.movement.left       ?1:0, 1, bb, b);  // left
+        b = write_bits(mep->controls.movement.backwards  ?1:0, 1, bb, b);  // back
+        b = write_bits(mep->controls.movement.forwards   ?1:0, 1, bb, b);  // foward
     }
     
     // send the packet
@@ -1620,9 +1643,10 @@ void Client::send_pong() {
 #include <cstdlib>
 #include <cstdlib>
 
+int err_count = 0;
 void Client::main() {
     Player *me = game->getPlayer(p_no);
-    while (true) {
+    //while (true) {
         long len = recv_bits();
        
         gh_t    *gh;
@@ -1632,12 +1656,12 @@ void Client::main() {
         
         if(ntohs(gh->sign) == 0xfefd) { /* info */
             //show_dump(buffer, len, stdout);
-            continue;
+            return;
         }
         if(ntohs(gh->sign) == 0xfefe) {
             if(len <= 7) {
                 //show_dump(buffer, len, stdout);
-                continue;
+                return;
             }
             head = 7;
         }
@@ -1661,61 +1685,56 @@ void Client::main() {
             b = read_bstr(str, n, buff, b);
             
             
-            int i;
-            for (i=0; i < (len-head)*8; i++) {
-                printf("%d", read_bits(1, buffer+head, i));
-            }
-            printf("\n");
-            
+     
             
             
             // Handle this message
             // What type of message is this?
+
             int bit = 0;
-            while (bit < n*8) {
+            while (bit < n*8 && (n*8 - bit - 12) > 8) {
                 int message_mode = sread_bits(str, &bit, 1);
                 int message_type = sread_bits(str, &bit, 6);
-                
-           
-                //int i;
-                //for (i=0; i < (len-head)*8; i++) {
-                //    printf("%d", read_bits(1, buffer+head, i));
-                //}
-                //printf("\n");
-                
-                printf("%s\n", message_delta_packet_to_string_table[message_type]);
-                if (true || message_mode == 1) { // delta
-                    if (message_type == _message_delta_unit_kill) {
-                        printf("Unit killed\n");
-                        int i;
-                        for (i=0; i < (len-head)*8; i++) {
-                            printf("%d", read_bits(1, buffer+head, i));
+                if (message_mode == 1) { // delta
+                    
+                    if (message_type == _message_delta_super_remote_players_action_update) {
+                        mtx.lock();
+                        for (int i = 1; i < kMaxBipeds; i++) {
+                            Biped *bipd = game->getBiped(i);
+                            bipd->dead_tick++;
+                            if (bipd->dead_tick > 3) {
+                                game->getBiped(i)->alive = false;
+                            }
                         }
-                        printf("\n");
-                    } else if (message_type == _message_delta_super_remote_players_action_update) {
-                        
-                        /*
-                         int i;
-                         for (i=0; i < (len-head)*8; i++) {
-                             printf("%d", read_bits(1, buffer+head, i));
-                         }
-                         printf("\n");
-                         */
-                        
-                        //01010000000 1 1 011001 1000000 0 000100000001100 0010000010000000101111111101100010001011011011110011011111101000010110
                         
                         int update_count = sread_bits(str, &bit, 4);
-                        for (int i = 0; i < update_count; i++) {
-                            Player *p = game->getPlayer(i);
-                            if (p == nullptr) {
-                                //printf("missing player %d\n", i);
+                        for (int i = 0; i <= update_count; i++) {
+                            int unknown         = sread_bits(str, &bit, 1);
+                            int jumping         = sread_bits(str, &bit, 1);
+                            int turning         = sread_bits(str, &bit, 1);
+                            int movement        = sread_bits(str, &bit, 1);
+                            int shooting        = sread_bits(str, &bit, 1);
+                            int u1              = sread_bits(str, &bit, 1);
+                            int u2              = sread_bits(str, &bit, 1);
+                            int player_number   = sread_bits(str, &bit, 5);
+                            int tickid          = sread_bits(str, &bit, 7);
+                            
+                            bool apply = false;
+                            Biped *p = nullptr;
+                            if (player_number < kMaxPlayers) {
+                                p = game->getBiped(player_number);
+                                p->alive = true;
+                                p->dead_tick = 0;
+                                
+                                //if (tickid > p->last_update_tick || (p->last_update_tick - tickid) > 10) {
+                                    p->last_update_tick = tickid;
+                                    apply = true;
+                                //}
                             }
                             
-                            int unknown   = sread_bits(str, &bit, 1);
-                            int jumping   = sread_bits(str, &bit, 1);
-                            int turning   = sread_bits(str, &bit, 1);
-                            int movement  = sread_bits(str, &bit, 1);
-                            int unknown1  = sread_bits(str, &bit, 15);
+                            if (unknown) { // confirmed
+                                sread_bits(str, &bit, 5);
+                            }
                             if (jumping) {
                                 int crouch   = sread_bits(str, &bit, 1);
                                 int jump     = sread_bits(str, &bit, 1);
@@ -1728,28 +1747,26 @@ void Client::main() {
                                 int unk2     = sread_bits(str, &bit, 1);
                                 int longact  = sread_bits(str, &bit, 1);
                                 
-                                //if (crouch)    printf("crouch\n");
-                                //if (jump)      printf("jump\n");
-                                //if (flash)     printf("flash\n");
-                                //if (action)    printf("action\n");
-                                //if (melee)     printf("melee\n");
-                                //if (shoot)     printf("shoot\n");
-                                //if (longact)   printf("longact\n");
-                                
-                                p->controls.jumping.crouch  = crouch;
-                                p->controls.jumping.jump    =  jump;
-                                p->controls.jumping.flash   = flash;
-                                p->controls.jumping.action  = action;
-                                p->controls.jumping.melee   = melee;
-                                p->controls.jumping.shoot   = shoot;
-                                p->controls.jumping.longact = longact;
+                                if (apply) {
+                                    p->controls.jumping.crouch  = crouch;
+                                    p->controls.jumping.jump    =  jump;
+                                    p->controls.jumping.flash   = flash;
+                                    p->controls.jumping.action  = action;
+                                    p->controls.jumping.melee   = melee;
+                                    p->controls.jumping.shoot   = shoot;
+                                    p->controls.jumping.longact = longact;
+                                }
                             }
                             if (turning) {
                                 int y   = sread_bits(str, &bit, 8);
                                 int x   = sread_bits(str, &bit, 8);
-                                //printf("%d %d %d\n", i, x, y);
-                                p->controls.look_x = ((x / 255.0) * M_PI * 2) + M_PI / 2;
-                                p->controls.look_y = (y / 255.0) * M_PI + M_PI/2;
+                                float rx = ((x / 255.0) * M_PI * 2) + M_PI / 2;
+                                float ry = (y / 255.0) * M_PI + M_PI/2;
+                                
+                                if (apply) {
+                                    p->controls.look_x = rx;
+                                    p->controls.look_y = ry;
+                                }
                             }
                             if (movement) {
                                 int right     = sread_bits(str, &bit, 1);
@@ -1757,71 +1774,217 @@ void Client::main() {
                                 int backwards = sread_bits(str, &bit, 1);
                                 int forwards  = sread_bits(str, &bit, 1);
                                 
-                                //if (right)      printf("right\n");
-                                //if (left)       printf("left\n");
-                                //if (forwards)   printf("forwards\n");
-                                //if (backwards)  printf("backwards\n");
-                                
-                                p->controls.movement.right      = right==1;
-                                p->controls.movement.left       = left==1;
-                                p->controls.movement.forwards   = forwards==1;
-                                p->controls.movement.backwards  = backwards==1;
+                                if (apply) {
+                                    p->controls.movement.right      = right==1;
+                                    p->controls.movement.left       = left==1;
+                                    p->controls.movement.forwards   = forwards==1;
+                                    p->controls.movement.backwards  = backwards==1;
+                                }
+                            }
+                            if (shooting) { //confirmed
+                                sread_bits(str, &bit, 1);
+                            }
+                            if (u1) { // confirmed
+                                sread_bits(str, &bit, 3);
+                            }
+                            if (u2) { // confirmed
+                                sread_bits(str, &bit, 2);
                             }
                         }
+                        mtx.unlock();
                         continue;
+                    } else {
+                        printf("MISSING %s\n", message_delta_packet_to_string_table[message_type]);
+                        //break;
                     }
                 }
-                if (message_mode == 0) { // delta
                 
+                
+#ifdef VERBOSE
+                if (bit == 7) {
+                    printf("%d -----------\n", bit);
+                    int i;
+                    for (i=0; i < (len-head)*8; i++) {
+                        printf("%d", read_bits(1, buffer+head, i));
+                    }
+                    printf("\n");
+                }
+                printf("K %d %s\n", bit, message_delta_packet_to_string_table[message_type]);
+#endif
+                
+                if (true || message_mode == 0) { // delta
                     
                     
-                    if (message_type == _message_delta_object_deletion) {
-                        int unknown0 = sread_bits(str, &bit, 10);
-                        continue; //confirmed
-                    } else if (message_type == _message_delta_super_ping_update) {
-                        int count = sread_bits(str, &bit, 4);
-                        //printf("=== PING ===\n");
+                    
+                    
+                    /*
+                     
+                     
+                     3 -> 8
+                     010101010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111110
+                     01010101001100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111110
+                     0101010101110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111001
+                     [pid] 									   [bipd][team]
+                     0 111000 11000 00011000000000000001110111000110111 00010 10000 00000000000000000000000000 <--- PLAYER CREATE
+                     01010101000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111110001100111011011100000111001100100
+                     
+
+                     
+                     4->9
+                     10010011000 1 0 101010 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111001
+                      0 101010 0110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111001
+                     01010101110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111001
+                     01010100001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111111001
+                     
+                         01110000010000000100000000000000001111000110111100100000000000000000000000000000000
+                     0101010101001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001001000110101010101001100101101101
+
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     
+                     */
+                    
+                    
+                    
+                    
+                    
+                    printf("X %d %s\n", bit, message_delta_packet_to_string_table[message_type]);
+                    if (message_type == _message_delta_unit_kill) {
+                        printf("Unit killed [UNKNOWN]\n");
                         int i;
-                        for (i=0; i < count; i++) {
-                            int player   = sread_bits(str, &bit, 8);
-                            int ping     = sread_bits(str, &bit, 32);
-                            //printf("Player %d: %dms\n", player, ping);
-                        }
-                        break;
-                    } else if (message_type == _message_delta_weapon_start_reload) {
-                        int weapon = sread_bits(str, &bit, 7);
-                        int player = sread_bits(str, &bit, 4);
-                        int junk   = sread_bits(str, &bit, 14);
-                        //printf("player %d started reloading %d\n", player, weapon);
-                        continue;
-                    } else if (message_type == _message_delta_weapon_cancel_reload) {
-                        int weapon = sread_bits(str, &bit, 7);
-                        int player = sread_bits(str, &bit, 4);
-                        //int junk   = sread_bits(str, &bit, 14);
-                        //printf("player %d cancelled reloading %d\n", player, weapon);
-                        continue;
-                    } else if (message_type == _message_delta_weapon_finish_reload) {
-                        int weapon = sread_bits(str, &bit, 7);
-                        int player = sread_bits(str, &bit, 4);
-                        int junk   = sread_bits(str, &bit, 14);
-                        //printf("player %d finished reloading %d\n", player, weapon);
-                        continue;
-                    } else if (message_type == _message_delta_hud_chat) {
-                        int player = sread_bits(str, &bit, 4);
-                        int team   = sread_bits(str, &bit, 12);
-                        int size   = sread_bits(str, &bit, 8);
-                        printf("player %d said: ", player);
-                        
-                        int i;
-                        for (i=0; i < size; i++) {
-                            int byte   = sread_bits(str, &bit, 16);
-                            printf("%c", byte);
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
                         }
                         printf("\n");
+                        
+                        break;
+                    } else if (message_type == _message_delta_player_create) { //76 confirmed
+                        uint16_t player_number = sread_bits(str, &bit, 5);
+                        uint16_t unk  = sread_bits(str, &bit, 32);
+                        uint16_t unk2 = sread_bits(str, &bit, 3);
+                        uint16_t biped_number = sread_bits(str, &bit, 5);
+                        uint16_t team_number = sread_bits(str, &bit, 5);
+                        uint16_t unk3 = sread_bits(str, &bit, 26);
+                        //printf("Player %d assigned biped %d\n", player_number, biped_number);
+                        
+                        
+                        /*
+                         
+                         biped
+                         2 95.702271 -145.769958 0.026822 p1 blue
+                         8 97.390572 -152.568771 0.079870 p2 red
+                         11 79.456398 -140.814713 2.168123 p3 blue
+                         
+                         011100010000
+                         
+                         
+                         */
+                        
+                        
+                        
+                        if (player_number > kMaxPlayers) {
+                            //printf("Invalid player number");
+                            continue;
+                        }
+                        Player *p = game->getPlayer(player_number);
+                        if (p) {
+                            p->team = team_number;
+                            p->biped_number = biped_number;
+                            p->alive = true;
+                            printf("%s joined the game as biped %d (player %d)\n", p->name, p->biped_number, player_number);
+                        }
+                        
+                        continue;
+                    } else if (message_type == _message_delta_player_score_update) {
+                        // LENGTH IS 295
+                        int u = 0;
+                        for (u=0; u < 9; u++) {
+                            sread_bits(str, &bit, 32);
+                        }
+                        sread_bits(str, &bit, 7);
+                        
+                        continue;
+                    } else if (message_type == _message_delta_oddball_update) {
+                        /*
+                         
+                         
+                         0 010010 000001011000100000000000000000000000000000000000000001111111111111111
+                         0 100110 001100110000000000000000000000000000000000000000000000000000000000000000000001 //_message_delta_multiplayer_sound
+
+                         
+                         */
+                        
+                        // LENGTH IS 154 //unknown
+                        int u = 0;
+                        for (u=0; u < 4; u++) {
+                            sread_bits(str, &bit, 32);
+                        }
+                        sread_bits(str, &bit, 26);
+                        
+                        continue;
+                    } else if (message_type == _message_delta_equipment_new) { //confirmed
+                        int tag_index = sread_bits(str, &bit, 16);
+                        int table_id  = sread_bits(str, &bit, 16);
+                        int object_id = sread_bits(str, &bit, 10);
+                        
+                        int u = 0;
+                        for (u=0; u < 10; u++) {
+                            sread_bits(str, &bit, 10);
+                        }
+                        sread_bits(str, &bit, 1);
+                        
+                        NetworkObject *object = game->getObject(object_id);
+                        object->table_id = table_id;
+                        object->tag_index = tag_index;
+                        int x = sread_bits(str, &bit, 32);
+                        int y = sread_bits(str, &bit, 32);
+                        int z = sread_bits(str, &bit, 32);
+                        float xf = 0.0; memcpy(&xf, &x, sizeof(float));
+                        float yf = 0.0; memcpy(&yf, &y, sizeof(float));
+                        float zf = 0.0; memcpy(&zf, &z, sizeof(float));
+                        object->position.x = xf;
+                        object->position.y = yf;
+                        object->position.z = zf;
+                        sread_bits(str, &bit, 3);
+                        
+                        /*
+                        #ifdef VERBOSE
+                        printf("New equipment (0x%x)\n", object_id);
+                        int zx = 0;
+                        int i;
+                        for (i=bit; i < bit+204; i++) {
+                            int x = sread_bits(str, &i, 32);
+                            int y = sread_bits(str, &i, 32);
+                            int z = sread_bits(str, &i, 32);
+                            float xf = 0.0; memcpy(&xf, &x, sizeof(float));
+                            float yf = 0.0; memcpy(&yf, &y, sizeof(float));
+                            float zf = 0.0; memcpy(&zf, &z, sizeof(float));
+                            i -= 32 * 3;
+                            
+                            printf("%d %f %f %f\n", zx, xf, yf, zf);
+                            zx++;
+                        }
+                        printf("\n");
+                        
+                        // LENGTH IS 200 unknown
+                        int u = 0;
+                        for (u=0; u < 20; u++) {
+                            sread_bits(str, &bit, 10);
+                        }
+                         */
                         continue;
                     } else if (message_type == _message_delta_netgame_equipment_new) {
-                        int unknown0 = sread_bits(str, &bit, 27);
-                        int unknown1 = sread_bits(str, &bit, 32);
+                        int tag_index = sread_bits(str, &bit, 16);
+                        int table_id  = sread_bits(str, &bit, 16);
+                        int object_id = sread_bits(str, &bit, 10);
+                        
+                        int unknown0 = sread_bits(str, &bit, 17);
                         int unknown2 = sread_bits(str, &bit, 32);
                         int x        = sread_bits(str, &bit, 32);
                         int y        = sread_bits(str, &bit, 32);
@@ -1829,21 +1992,333 @@ void Client::main() {
                         float xf = 0.0; memcpy(&xf, &x, sizeof(float));
                         float yf = 0.0; memcpy(&yf, &y, sizeof(float));
                         float zf = 0.0; memcpy(&zf, &z, sizeof(float));
-                        //printf("new equipment at %f %f %f\n", xf, yf, zf);
+                        
+                        NetworkObject *object = game->getObject(object_id);
+                        object->table_id = table_id;
+                        object->tag_index = tag_index;
+                        object->position.x = xf;
+                        object->position.y = yf;
+                        object->position.z = zf;
                         continue;
                     } else if (message_type == _message_delta_weapon_new) {
-                        int unknown0 = sread_bits(str, &bit, 32);
-                        int unknown1 = sread_bits(str, &bit, 32);
+                        int tag_index = sread_bits(str, &bit, 16);
+                        int table_id  = sread_bits(str, &bit, 16);
+                        int object_id = sread_bits(str, &bit, 10);
+                        
+                        int u = 0;
+                        for (u=0; u < 10; u++) {
+                            sread_bits(str, &bit, 10);
+                        }
+                        sread_bits(str, &bit, 1);
+                        NetworkObject *object = game->getObject(object_id);
+                        object->table_id = table_id;
+                        object->tag_index = tag_index;
+                        int x = sread_bits(str, &bit, 32);
+                        int y = sread_bits(str, &bit, 32);
+                        int z = sread_bits(str, &bit, 32);
+                        float xf = 0.0; memcpy(&xf, &x, sizeof(float));
+                        float yf = 0.0; memcpy(&yf, &y, sizeof(float));
+                        float zf = 0.0; memcpy(&zf, &z, sizeof(float));
+                        object->position.x = xf;
+                        object->position.y = yf;
+                        object->position.z = zf;
                         int unknown2 = sread_bits(str, &bit, 32);
                         int unknown3 = sread_bits(str, &bit, 32);
-                        int unknown4 = sread_bits(str, &bit, 32);
-                        int unknown5 = sread_bits(str, &bit, 32);
-                        int unknown6 = sread_bits(str, &bit, 32);
-                        int unknown7 = sread_bits(str, &bit, 32);
-                        int unknown8 = sread_bits(str, &bit, 32);
-                        int unknown9 = sread_bits(str, &bit, 23);
+                        int unknown4 = sread_bits(str, &bit, 8);
+                        continue;
+                    } else if (message_type == _message_delta_vehicle_new) { //confirmed
+                        int tag_index = sread_bits(str, &bit, 16);
+                        int table_id  = sread_bits(str, &bit, 16);
+                        int object_id = sread_bits(str, &bit, 10);
+                        
+                        NetworkObject *object = game->getObject(object_id);
+                        object->table_id = table_id;
+                        object->tag_index = tag_index;
+                        sread_bits(str, &bit, 32);
+                        sread_bits(str, &bit, 32);
+                        sread_bits(str, &bit, 9);
+                        int x   = sread_bits(str, &bit, 32);
+                        int y   = sread_bits(str, &bit, 32);
+                        int z   = sread_bits(str, &bit, 32);
+                        int r   = sread_bits(str, &bit, 32);
+                        float xf = 0.0; memcpy(&xf, &x, sizeof(float));
+                        float yf = 0.0; memcpy(&yf, &y, sizeof(float));
+                        float zf = 0.0; memcpy(&zf, &z, sizeof(float));
+                        float rx = 0.0; memcpy(&rx, &r, sizeof(float));
+                        object->position.x = xf;
+                        object->position.y = yf;
+                        object->position.z = zf;
+                        object->rotation.z = rx;
+                        sread_bits(str, &bit, 3);
+                        continue;
+                        
+                        /*
+                    
+                        
+                        //#ifdef VERBOSE
+                        printf("New vehicle (0x%x)\n", object_id);
+                        int zx = 0;
+                        int i;
+                        for (i=bit; i < bit+204; i++) {
+                            int x = sread_bits(str, &i, 32);
+                            int y = sread_bits(str, &i, 32);
+                            int z = sread_bits(str, &i, 32);
+                            float xf = 0.0; memcpy(&xf, &x, sizeof(float));
+                            float yf = 0.0; memcpy(&yf, &y, sizeof(float));
+                            float zf = 0.0; memcpy(&zf, &z, sizeof(float));
+                            i -= 32 * 3;
+                            
+                            printf("%d %f %f %f\n", zx, xf, yf, zf);
+                            zx++;
+                        }
+                        printf("\n");
+                        
+                        //9141
+                        //9214
+                        //73
+                        
+                        // LENGTH IS 204 unknown
+                        int u = 0;
+                        for (u=0; u < 20; u++) {
+                            sread_bits(str, &bit, 10);
+                        }
+                        sread_bits(str, &bit, 4);
+                        continue;
+                         */
+                    }
+                    
+                    /*else if (message_type == _message_delta_unit_drop_current_weapon) { //unconfirmed
+                        int tag_index = sread_bits(str, &bit, 16);
+                        int table_id  = sread_bits(str, &bit, 16);
+                        int object_id = sread_bits(str, &bit, 10);
+                        printf("New vehicle (0x%x)\n", object_id);
+                        
+                     
+                     000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011111110010000100010001001110001000000000000000000000000000000000000000011111111111111111110110000001110000000000000000000001000000000000000000000000000000000000000000000001
+                     
+                     
+                        // LENGTH IS 456 unknown
+                        int u = 0;
+                        for (u=0; u < 45; u++) {
+                            sread_bits(str, &bit, 10);
+                        }
+                        sread_bits(str, &bit, 7);
+                        continue;
+                    }*/
+                    else if (message_type == _message_delta_biped_update) {
+                        int player_id  = sread_bits(str, &bit, 4);
+                        int unknown_id = sread_bits(str, &bit, 6);
+                        int object_id  = sread_bits(str, &bit, 10);
+                        
+                        
+                  
+                        
+                        
+                        //000100000001000100000000101001000000000000001000001011111111101001110110001011110100001100110110
+#ifdef VERBOSE
+                        printf("Update Biped %d: 0x%x\n", player_id, object_id);
+                        int i;
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+#endif
+                        break;
+                    }
+                    else if (message_type == _message_delta_game_settings_update) {
+                        printf("Game settings update\n");
+                        int name_length = sread_bits(str, &bit, 7);
+                        
+                        // Skip the string
+                        unsigned char game_name[name_length];
+                        printf("Name: %d ", name_length);
+                        int i;
+                        for (i=0; i < name_length; i++) {
+                            uint16_t byte = sread_bits(str, &bit, 16);
+                            game_name[i] = byte;
+                            
+                            printf("%c", byte);
+                        }
+                        game_name[i] = '\0';
+                        printf("\n");
+                        
+                        int version = sread_bits(str, &bit, 32);
+                        printf("Version: 0x%x\n", version);
+                        
+                        int map_length = sread_bits(str, &bit, 8);
+                        unsigned char map_name[map_length];
+                        printf("Name: %d ", map_length);
+                        for (i=0; i < map_length; i++) {
+                            uint16_t byte = sread_bits(str, &bit, 8);
+                            map_name[i] = byte;
+                            printf("%c", byte);
+                        }
+                        map_name[i] = '\0';
+                        printf("\n");
+
+                        #ifdef VERBOSE
+                        for (i=(bit+12); i < (bit+12) + (23*32+10); i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+#endif
+                        
+                        
+                        int u = 0;
+                        for (u=0; u < 23; u++) {
+                            sread_bits(str, &bit, 32);
+                        }
+                        sread_bits(str, &bit, 10);
+                        
+                        // Player number
+                        uint16_t player_count = sread_bits(str, &bit, 16);
+                        printf("Players: %d\n", player_count);
+
+                        // First player name
+                        int p = 0;
+                        for (p=0; p < 16; p++) {
+                            uint16_t player_name_length = sread_bits(str, &bit, 4);
+                            char *player_name = (char *)malloc(player_name_length+1);
+                            printf("Player %d Name: %d ", p, player_name_length);
+                            for (i=0; i < player_name_length; i++) {
+                                uint16_t byte = sread_bits(str, &bit, 16);
+                                player_name[i] = byte;
+                                printf("%c", byte);
+                            }
+                            player_name[i] = '\0';
+                            
+                            
+                            uint16_t unk0 = sread_bits(str, &bit, 16);
+                            uint16_t unk1 = sread_bits(str, &bit, 16);
+                            uint16_t pnum = sread_bits(str, &bit, 16);
+                            uint16_t team = sread_bits(str, &bit, 8);
+                            uint16_t pid  = sread_bits(str, &bit, 8);
+                            
+                            if (pid != 0xFF) {
+                                Player *pn = game->getPlayer(pid);
+                                if (pn != nullptr) {
+                                    pn->name = player_name;
+                                    pn->team = team;
+                                }
+                                
+                                printf(" (%d %d %d %d %d)\n", unk0, unk1, pnum, pid, team);
+                            }
+                        }
+                        
+                        for (i=(bit+12); i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+                        continue;
+                    } else if (message_type == _message_delta_object_deletion) {
+                        int object_id = sread_bits(str, &bit, 10);
+                        NetworkObject *object = game->getObject(object_id);
+                        if (object != nullptr) {
+                            object->table_id = -1;
+                            object->tag_index = -1;
+                        }
+                        continue; //confirmed
+                    } else if (message_type == _message_delta_super_ping_update) {
+                        int count = sread_bits(str, &bit, 4);
+                        //printf("=== PING ===\n");
+                        int i;
+                        for (i=0; i <= count; i++) {
+                            int player   = sread_bits(str, &bit, 8);
+                            int ping     = sread_bits(str, &bit, 32);
+                            printf("Player %d: %dms\n", player, ping);
+                        }
+                        printf("--------\n");
+                        continue;
+                    } else if (message_type == _message_delta_weapon_start_reload) {
+                        printf("WEAPON START RELOAD [UNKNOWN]\n");
+                        //01010000000 1 0 110101 1001111000 0000000000000000
+                        //            00101010000000001011000000000000010 00000011100010001100001000101010
+                        
+                        
+                        //p1 [12] 0011
+                        //01010000000 1 0 110101 0000100100 0000000000000000
+                        //            01110010000000010100100000000000101 01011011110000111001110011111000
+                        
+                        //p3 [14] 0111
+                        //01010000000 1 0 110101 1011100100 0000000000000000
+                        //            01010010000000010001000000000000110 10101111001010110100000010110110
+                        
+                        
+                        
+                        
+                            /*
+                             weapon (0xc7) reloading
+                             01010000000 1 0 110101 1110001100000000000000000 1 1 100001 00000000 001011 0000000000 0010 10011011000000001001111100000001
+                             01010000000 1 0 110101 1110001100000000000000000 1 1 111110 00000000 110011 0000000000 1000 10011101100110010110011101101010
+                             01010000000 1 0 110101 1110001100000000000000000 0 1 101110 00000000 101011 0000000000 0100 10100100101000100111011110010111
+                             01010000000 1 0 110101 1110001100000000000000000 0 1 111010 00000000 111001 0000000000 0010 10100011110101001010011101111001
+                             
+                             c8
+                             01010000000 1 0 110101 0001001100000000000000000 00001100 00000000 000100 0000000000 0110 10011110000100001100111000001010
+                             */
+                        
+                        //
+                        
+                        int weapon = sread_bits(str, &bit, 10); // should be 25?
+                        //int junk   = sread_bits(str, &bit, 14); //<--- whats junk?
+                        
+                        #ifdef VERBOSE
+                        printf("weapon (0x%x) reloading\n", weapon);
+                        int i;
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+#endif
+                        
+                        
+                        continue;
+                    } else if (message_type == _message_delta_weapon_cancel_reload) {
+                        printf("WEAPON CANCEL RELOAD [UNKNOWN]\n");
+                        int weapon = sread_bits(str, &bit, 10);
+                        //int junk   = sread_bits(str, &bit, 14); //<--- whats junk?
+                        
+                        #ifdef VERBOSE
+                        printf("weapon (0x%x) cancel reloading\n", weapon);
+                        int i;
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+#endif
+                        
+                        
+                        continue;
+                    } else if (message_type == _message_delta_weapon_finish_reload) {
+                        printf("WEAPON RELOAD [UNKNOWN]\n");
+                        int weapon = sread_bits(str, &bit, 10);
+                        //int junk   = sread_bits(str, &bit, 14); //<--- whats junk?
+                        
+                        #ifdef VERBOSE
+                        printf("weapon (0x%x) finished reloading\n", weapon);
+                        int i;
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+                        #endif
+                        
+                        continue;
+                    } else if (message_type == _message_delta_hud_chat) {
+                        int player = sread_bits(str, &bit, 4);
+                        int team   = sread_bits(str, &bit, 12);
+                        int size   = sread_bits(str, &bit, 8);
+                        
+                        printf("player %d said: ", player);
+                        int i;
+                        for (i=0; i < size; i++) {
+                            int byte   = sread_bits(str, &bit, 16);
+                            printf("%c", byte);
+                        }
+                        printf("\n");
                         continue;
                     } else if (message_type == _message_delta_local_player_update) {
+                        printf("Locate update [UNKNOWN]\n");
                         int unknown0 = sread_bits(str, &bit, 11); //11010011110
                         uint32_t x   = sread_bits(str, &bit, 32);
                         uint32_t y   = sread_bits(str, &bit, 32);
@@ -1854,26 +2329,63 @@ void Client::main() {
                         float xf = 0.0; memcpy(&xf, &x, sizeof(float));
                         float yf = 0.0; memcpy(&yf, &y, sizeof(float));
                         float zf = 0.0; memcpy(&zf, &z, sizeof(float));
-                        me->position->x = xf;
-                        me->position->y = yf;
-                        me->position->z = zf;
-                        me->alive = true;
-                        //printf("I'm at %f %f %f\n", xf, yf, zf);
+                        Player *p = game->getPlayer(p_no);
+                        Biped *meb = game->getBiped(0);
+                        if (meb != nullptr) {
+                            meb->position->x = xf;
+                            meb->position->y = yf;
+                            meb->position->z = zf;
+                            meb->alive = true;
+                        }
+                        continue;
+                    } else if (message_type == _message_delta_team_change) {
+                        printf("Team change [UNKNOWN]\n");
+                        int i;
+                        for (i=0; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
                         break;
+                    } else if (message_type == _message_delta_player_spawn) { // max size: 222
+                        int player_number  = sread_bits(str, &bit, 5);
+                        int object_id      = sread_bits(str, &bit, 10);
                         
+                        Biped *biped = game->getBiped(player_number);
+                        NetworkObject *object = game->getObject(object_id);
+                        if (biped) {
+                            biped->alive = true;
+                            biped->object_index = object_id;
+                            biped->position->x = object->position.x;
+                            biped->position->y = object->position.y;
+                            biped->position->z = object->position.z;
+                        }
+                        
+                        #ifdef VERBOSE
+                        printf("SPAWN BIPED (0x%x) with number %d\n", object_id, player_number);
+                        int i;
+                        for (i=bit; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+                        #endif
+                        
+                        int u = 0;
+                        for (u=0; u < 37; u++) {
+                            sread_bits(str, &bit, 6);
+                        }
+                        
+                        continue;
                     } else if (message_type == _message_delta_biped_new) {
+                        int start_bit = bit+12;
                         int tag_index = sread_bits(str, &bit, 16);
                         int table_id  = sread_bits(str, &bit, 16);
                         int object_id = sread_bits(str, &bit, 10);
-                        
-                        //574
-                        
-                        //460
                         int unk0  = sread_bits(str, &bit, 32);
                         int unk1  = sread_bits(str, &bit, 32);
                         int unk2  = sread_bits(str, &bit, 32);
                         int unk3  = sread_bits(str, &bit, 32);
-                        int unk4  = sread_bits(str, &bit, 32);
+                        int unk4  = sread_bits(str, &bit, 20);
+                        int unkf  = sread_bits(str, &bit, 12);
                         int unk5  = sread_bits(str, &bit, 32);
                         int unk6  = sread_bits(str, &bit, 32);
                         int unk7  = sread_bits(str, &bit, 32);
@@ -1883,50 +2395,49 @@ void Client::main() {
                         int unk11 = sread_bits(str, &bit, 32);
                         int unk12 = sread_bits(str, &bit, 32);
                         int unk13 = sread_bits(str, &bit, 32);
-                        int unk15 = sread_bits(str, &bit, 12);
+                        int unk15 = sread_bits(str, &bit, 6);
+                        int unk16 = sread_bits(str, &bit, 6);
                         
                         int x = sread_bits(str, &bit, 32);
                         int y = sread_bits(str, &bit, 32);
                         int z = sread_bits(str, &bit, 32);
-                        
                         float xf = 0.0; memcpy(&xf, &x, sizeof(float));
                         float yf = 0.0; memcpy(&yf, &y, sizeof(float));
                         float zf = 0.0; memcpy(&zf, &z, sizeof(float));
                         
-                        int unk16 = sread_bits(str, &bit, 19);
-                        printf("NEW BIPED (0x%x) at %f %f %f\n", object_id, xf, yf, zf);
-                        continue;
-                    } else if (message_type == _message_delta_biped_update) {
-                        int player_id  = sread_bits(str, &bit, 4);
-                        int object_id  = sread_bits(str, &bit, 10);
-                        printf("BIPED %d SPAWN 0x%x\n", player_id, object_id);
+                        int unk17 = sread_bits(str, &bit, 5);
+                        if (unk17 != 1) {
+                            sread_bits(str, &bit, 48); // rotation or something...
+                        }
+                        int unk18 = sread_bits(str, &bit, 13);
+                       
+                        NetworkObject *object = game->getObject(object_id);
+                        object->table_id = table_id;
+                        object->tag_index = tag_index;
+                        object->position.x = xf;
+                        object->position.y = yf;
+                        object->position.z = zf;
                         
-                        //int i;
-                        //for (i=0; i < (len-head)*8; i++) {
-                        //    printf("%d", read_bits(1, buffer+head, i));
-                        //}
-                        //printf("\n");
-                    } else if (message_type == _message_delta_remote_player_total_update_biped) {
-                        //printf("_message_delta_remote_player_total_update_biped\n");
-                        int player_number       = sread_bits(str, &bit, 5)-1; //BIPED NUMBER
+                        //28
                         
-                        // Players are assigned a biped number when they join. If you rejoin, you get the next biped.
-                        // if you die, you keep your biped.
-                        
-                        
+                        #ifdef VERBOSE
+                        printf("NEW BIPED (0x%x) of type 0x%x at %f %f %f (%d)\n", object_id, table_id, xf, yf, zf, bit-start_bit);
+                        int i;
+                        for (i=start_bit; i < (len-head)*8; i++) {
+                            printf("%d", read_bits(1, buffer+head, i));
+                        }
+                        printf("\n");
+                        #endif
+                        continue; // wrong :9
+                    } else if (message_type == _message_delta_remote_player_total_update_biped && bit == 7) {
+                        int player_number       = sread_bits(str, &bit, 5); //BIPED NUMBER [probably 5]
                         int unknown0            = sread_bits(str, &bit, 10);
                         int unknown1            = sread_bits(str, &bit, 1);
-                        int controls            = sread_bits(str, &bit, 14);
-                        
-                        //int unknown0            = sread_bits(str, &bit, 15);
-                        //int player_number       = sread_bits(str, &bit, 5)-1;
-                        //int controls            = sread_bits(str, &bit, 10);
-                        
-                        // p1
-                        //11001000000 1 0 100101  10000 0000000000100010011110111100000100001000100000001111100000001001110011101011111011111000101010011010000000000011000001100110000001111001111010100
-                        //11001000000 1 0 100101  10000 0000000000101000010100000100000000000010000000010100010000001110011101111001111011111000110110111010000000000011001011011011001111000100101000101
-                        //11001000000 1 0 100101 11010 1000001000 1100 00000000000111111101010100000000000001011000000111010010000001001010101010111011011111000110001000000000000000011000101101100001110010111001011111
-                        //11001000000 1 0 100101 00110 1000000100 1000 00000000000111111100011100100000000001000000011110010001000001000000010001001111101111001101101000000000000000010001100011101001101111110100000000
+                        int unk                 = sread_bits(str, &bit, 4);
+                        int crouched            = sread_bits(str, &bit, 1);
+                        int jumping             = sread_bits(str, &bit, 1);
+                        int unk7                = sread_bits(str, &bit, 7);
+                        int action              = sread_bits(str, &bit, 1);
                         
                 
                         /*
@@ -1959,8 +2470,13 @@ void Client::main() {
                         */
                         
                         // SAPP SERVER
-                        int angle               = sread_bits(str, &bit, 15);
-                        int team                = sread_bits(str, &bit, 5);
+                        int ry   = sread_bits(str, &bit, 8);
+                        int rx   = sread_bits(str, &bit, 8);
+                        int right                = sread_bits(str, &bit, 1);
+                        int left                 = sread_bits(str, &bit, 1);
+                        int back                 = sread_bits(str, &bit, 1);
+                        int forward              = sread_bits(str, &bit, 1);
+
                         int weapon_index        = sread_bits(str, &bit, 3);
                         int nade_index          = sread_bits(str, &bit, 2);
                         int x_raw               = sread_bits(str, &bit, 24);
@@ -1980,87 +2496,37 @@ void Client::main() {
                         float y = y_raw / magic_float;
                         float z = z_raw / magic_float;
                         
-                        Player *p = game->getPlayer(player_number);
+                        float rot_x = ((rx / 256.0) * M_PI * 2) + M_PI / 2;
+                        float rot_y = (ry  / 256.0) * M_PI + M_PI/2;
+                        
+                        Biped *p = game->getBiped(player_number);
                         if (p != nullptr) {
+                            NetworkObject *biped_object = game->getObject(p->object_index);
+                            if (biped_object) {
+                                biped_object->position.x = x;
+                                biped_object->position.y = y;
+                                biped_object->position.z = z;
+                            }
+                            
                             p->position->x = x;
                             p->position->y = y;
                             p->position->z = z;
+                            p->controls.look_x = rot_x;
+                            p->controls.look_y = rot_y;
+                            
                             p->alive = true;
-                            p->team = team;
+                            p->controls.movement.forwards   = forward;
+                            p->controls.movement.backwards  = back;
+                            p->controls.movement.left       = left;
+                            p->controls.movement.right      = right;
                         }
                         
-                        //player 2
-                        /*
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101010001000001000001000000000000111111101010100000000000001111011001100100010000001010111101001000000111111000101010011010000000000011101100001000110000111110001110001
-                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101010000110100110100000000000000111111101010100000000000001111011001100100010000001010111101001000000111111000101010011010000000000011011100001111001100111110010111110
-                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101010001101011011100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000010110111111100010001010001001001000
-                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101010000111110100100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000011101001001010000111001100011011001
-                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101010001100101001100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000010110011101000010001010110110010100
-                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101010000001010111100000000000000111111101010100000000100001111011001100100010000001010111101001000000111111000101010011010000000000011010001101001111100101011001001011
-                        Player 1 is now at 41.994820 -77.401825 1.703503 and using weapon 2 and nade 0
-                        
-                        
-                        //player 2
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101110001100100110100000000000000111111100011100000000100000001011101100000010000001001011001101011011011111001011000100000000000000010001111101011110111010011100000010
-                        Player 2 is now at 39.589470 -89.477150 0.084043 and using weapon 2 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101110000001011011100000000000000111111100011100000000100000001011101100000010000001001011001101011011011111001011000100000000000000010011111110010110001100010010001100
-                        Player 2 is now at 39.589470 -89.477150 0.084043 and using weapon 2 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101110000011110100100000000000000111111100011100000000100000001011101100000010000001001011001101011011011111001011000100000000000000010110001100010110011100111010110001
-                        Player 2 is now at 39.589470 -89.477150 0.084043 and using weapon 2 and nade 0
-
-                        // player 3
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101001001000001000100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010010001000010110100000110110010111
-                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101001000001100110100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010011101101010101010010100110011000
-                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101001001011011011100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010110111111110110000001011010100101
-                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101001001000000100100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000011111110101110000011110101000000000
-                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101001000110101001100000000000000111111100011100100000000001101000010001110001000001000010011011011111101111000100101000000000000000010111010010011101010000101011101101
-                        Player 3 is now at 86.749634 -157.656631 0.048876 and using weapon 0 and nade 0
-                        
-                        // player 4
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101101001000001000100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010111110000000100010011111010011010
-                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101101001110100110100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010011001101001110010101000001010011
-                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101101000011011011100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010101001010110110110010111001101010
-                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
-                        _message_delta_remote_player_total_update_biped
-                        1100100000010100101101000000000100100000000000000111111100101011000000000000101001000010100010000001011111000001010000111111000101010011010000000000010000001101100000011111010000010110
-                        Player 4 is now at 42.136379 -75.054588 1.703503 and using weapon 0 and nade 0
-                        */
-                        
-                        
-                        
-                        printf("Biped %d is now at %f %f %f and using weapon %d and nade %d\n", player_number, x, y, z, weapon_index, nade_index);
                         break;
                     } else {
-                        //printf("B %s\n", message_delta_packet_to_string_table[message_type]);
-                        //break;
+                        printf("MISSING C %s\n", message_delta_packet_to_string_table[message_type]);
+
+                        break;
+                        break;
                     }
                 }
                 break;
@@ -2069,48 +2535,16 @@ void Client::main() {
         
         // AI Tick update
         // Find the closest player
-        int i; float minDist = 500.0; Player *closest = nullptr;
-        for (i=0; i < kMaxPlayers; i++) {
-            if (i == p_no) continue;
-            
-            Player *p = game->getPlayer(i);
-            if (p != nullptr && p->alive) {
-                float distance = p->position->distance(me->position);
-                if (distance < minDist) {
-                    minDist = distance;
-                    closest = p;
-                }
-            }
-        }
-        
-        if (closest) {
-            float dx = closest->position->x - me->position->x;
-            float dy = closest->position->y - me->position->y;
-            
-            float rx = 0.0;
-            if (dx > 0 && dy > 0) {
-                rx = atan2f(dy, dx);
-            } else if (dx < 0 && dy > 0) {
-                rx = M_PI - atan2f(dy, -dx);
-            } else if (dx < 0 && dy < 0) {
-                rx = M_PI + atan2f(-dy, -dx);
-            } else if (dx > 0 && dy < 0) {
-                rx = -atan2f(-dy, dx);
-            }
-            
-            me->controls.look_x = rx;
-            me->controls.movement.forwards = true;
-            me->controls.jumping.crouch    = true;
-            me->controls.jumping.shoot     = minDist < 10;
-        }
-        
-        
+        intel->tick(game, 0);
+    
+    
         uint16_t info = ntohs(((uint16_t*)(buffer+head))[0]);
         if (tick_counter == 0) {
             send_pong();
         }
         
         send_game_update();
+        
         if (t == 0) {
             //control->left = !control->left;
             send_acknowledgement();
@@ -2129,7 +2563,7 @@ void Client::main() {
         //show_dump(buffer, head, stdout);
         //show_dump(buffer + head, (int)(len - head), stdout);
         
-    }
+    //}
 }
 
 void Client::start() {
@@ -2143,13 +2577,16 @@ void Client::start() {
     join();
     
     // Start the game
-    main();
+    while (true) {
+        main();
+    }
 }
 
-Client::Client(const char *name, const char *ip, short port) {
+Client::Client(const char *name, const char *ip, short port, ai *intelligence) {
+    intel = intelligence;
     
     // Setup general structures
-    memcpy(this->name, name, kPlayerNameLength);
+    memcpy(this->name, name, strlen(name)+1);
     
     // Setup controls
     printf("setting up controls\n");

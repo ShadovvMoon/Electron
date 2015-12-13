@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "md5.h"
+#include "ai.hpp"
 
 // Definitions
 #define BUFFER_SIZE 4096
@@ -33,6 +34,9 @@
 
 class Client {
 private:
+    
+    // Intelligence
+    ai *intel;
     
     // TEA encryption
     uint8_t enckey1[16];
@@ -79,9 +83,11 @@ private:
     // Threading
     void start();
 public:
+    std::mutex mtx;           // mutex for critical section
+
     Game *game;
     ~Client();
-    Client(const char *name, const char *ip, short port);
+    Client(const char *name, const char *ip, short port, ai *intelligence);
 };
 Client *start_client(const char *ip, short port);
 #endif /* defined(____render__) */

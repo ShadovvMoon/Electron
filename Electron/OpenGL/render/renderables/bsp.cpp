@@ -13,67 +13,9 @@ uint8_t* map2mem(ProtonTag *scenario, uint32_t address) {
     return (uint8_t*)(scenario->Data() + scenario->PointerToOffset(address));
 }
 
-typedef struct {
-    uint32_t plane;
-    uint32_t back;
-    uint32_t front;
-} BSP3DNode; //size = 12
-typedef struct {
-    float a;
-    float b;
-    float c;
-    float d;
-} Plane; //size = 16
-typedef struct {
-    uint16_t flags;
-    uint16_t bsp2dCount;
-    uint32_t firstRef;
-} Leaf; // size = 8
-typedef struct {
-    uint32_t plane;
-    uint32_t bsp2DNode;
-} BSP2DRef; //size = 8
-typedef struct {
-    float a;
-    float b;
-    float c;
-    uint32_t left;
-    uint32_t right;
-} BSP2DNode; //size = 20
-typedef struct {
-    uint32_t plane;
-    uint32_t edge;
-    uint16_t flags;
-    uint16_t material;
-} Surface;
-typedef struct {
-    uint32_t startVert;
-    uint32_t endVert;
-    uint32_t forwardEdge;
-    uint32_t prevEdge;
-    uint32_t leftSurface;
-    uint32_t rightSurface;
-} Edge;
-typedef struct {
-    float x;
-    float y;
-    float z;
-    uint32_t firstEdge;
-} CollVert;
-typedef struct {
-    HaloTagReflexive BSP3DNodes; //0x00
-    HaloTagReflexive Planes;     //0x0C
-    HaloTagReflexive Leaves;     //0x18
-    HaloTagReflexive BSP2DRef;   //0x24
-    HaloTagReflexive BSP2DNodes; //0x30
-    HaloTagReflexive Surfaces;   //0x3C
-    HaloTagReflexive Edges;      //0x48
-    HaloTagReflexive Vertices;   //0x54
-} CollisionBSP;
 
 
 // Experiment intersection function
-
 BSP3DNode *node3d(ProtonTag *bspTag, CollisionBSP *collison, int i) {
     return (BSP3DNode*)(map2mem(bspTag, collison->BSP3DNodes.address) + i * sizeof(BSP3DNode));
 }
@@ -189,18 +131,31 @@ bool surfaceTest(ProtonTag *b, CollisionBSP *c, vector3d *T, uint32_t s) {
     }
     return false;
 }
-bool bsp2dTest(ProtonTag *b, CollisionBSP *c, uint32_t node, vector3d *T, vector3d *Tp) {
+bool bsp2dTest(ProtonTag *b, CollisionBSP *c, uint32_t node, vector3d *T, vector3d *Tp, intersection *output) {
     if(node & 0x80000000) {
-        return surfaceTest(b,c,T,node & 0x7FFFFFFF);
+        bool success = surfaceTest(b,c,T,node & 0x7FFFFFFF);
+        if (output != NULL) {
+            intersection *current = output;
+            while (current->next != NULL) {
+                current = current->next;
+            }
+            intersection *report = new intersection;
+            report->position = NULL;
+            report->surface = node & 0x7FFFFFFF;
+            report->next = NULL;
+            report->accurate = !success;
+            current->next = report;
+        }
+        return success;
     }
     BSP2DNode *n = node2d(b,c,node);
     float s = dot2no(n, Tp) - n->c;
     if( s >= 0)
-        return bsp2dTest(b, c, n->right, T, Tp);
-    return bsp2dTest(b, c, n->left, T, Tp);
+        return bsp2dTest(b, c, n->right, T, Tp, output);
+    return bsp2dTest(b, c, n->left, T, Tp, output);
 }
 
-vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint16_t l) {
+vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint16_t l, intersection *output) {
     Leaf *lea = leaf(b,c,l);
     uint32_t reference = lea->firstRef;
     
@@ -240,7 +195,7 @@ vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint
         vector3d *Tp = project(nN, T);
         float distanceS = sqrtf(powf(S->x-p->x, 2) + powf(S->y-p->y, 2) + powf(S->z-p->z, 2));
         float distanceT = sqrtf(powf(T->x-p->x, 2) + powf(T->y-p->y, 2) + powf(T->z-p->z, 2));
-        if (bsp2dTest(b,c,ref->bsp2DNode,T,Tp)) {
+        if (bsp2dTest(b,c,ref->bsp2DNode,T,Tp, output)) {
             S->set(T);
         }
         delete nN;
@@ -248,12 +203,12 @@ vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint
     return S;
 }
 
-vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, int32_t node) {
+vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, int32_t node, intersection *output) {
     if(node == 0xFFFFFFFF) {
         return nullptr; // outside of the bsp tree
     }
     if (node & 0x80000000) { // we've hit a leaf, perform hit test
-        return leafTest(b, c, p, q, (node & 0x7FFFFFFF));
+        return leafTest(b, c, p, q, (node & 0x7FFFFFFF), output);
     }
     
     BSP3DNode *node3 = node3d(b,c,node);
@@ -269,9 +224,9 @@ vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, 
     float t = Na*q->x + Nb*q->y + Nc*q->z - N->d; // same as above, but for Q
     if(s > 0 && t > 0) { // both segments are infront of the plane
         if (node3->front == node) return nullptr;
-        return traverseTree(p, q, b, c, node3->front);
+        return traverseTree(p, q, b, c, node3->front, output);
     } else if(s < 0 && t < 0) { // both segments are behind the plane
-        return traverseTree(p, q, b, c, node3->back);
+        return traverseTree(p, q, b, c, node3->back, output);
     } // else the vector intersects the plane
 
     // Split the line segment
@@ -290,22 +245,22 @@ vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, 
         temp->x = p->x + (ins+EPSILON)* V->x;
         temp->y = p->y + (ins+EPSILON)* V->y;
         temp->z = p->z + (ins+EPSILON)* V->z;
-        S = traverseTree(p, temp, b, c, node3->front);
+        S = traverseTree(p, temp, b, c, node3->front, output);
         
         temp->x = p->x + (ins-EPSILON)* V->x;
         temp->y = p->y + (ins-EPSILON)* V->y;
         temp->z = p->z + (ins-EPSILON)* V->z;
-        T = traverseTree(temp, q, b, c, node3->back);
+        T = traverseTree(temp, q, b, c, node3->back, output);
     }
     else {
         temp->x = p->x + (ins+EPSILON)* V->x;
         temp->y = p->y + (ins+EPSILON)* V->y;
         temp->z = p->z + (ins+EPSILON)* V->z;
-        S = traverseTree(p, temp, b, c, node3->back);
+        S = traverseTree(p, temp, b, c, node3->back, output);
         temp->x = p->x + (ins-EPSILON)* V->x;
         temp->y = p->y + (ins-EPSILON)* V->y;
         temp->z = p->z + (ins-EPSILON)* V->z;
-        T = traverseTree(temp, q, b, c, node3->front);
+        T = traverseTree(temp, q, b, c, node3->front, output);
     }
     delete temp;
     if (!T && !S) {
@@ -327,6 +282,10 @@ vector3d *traverseTree(vector3d *p, vector3d *q, ProtonTag *b, CollisionBSP *c, 
 }
 
 vector3d *BSP::intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *scenario) {
+    return intersect_report(p, q, map, scenario, NULL);
+}
+
+vector3d *BSP::intersect_report(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *scenario, intersection *output) {
     HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
     int i, m;
     for (i=0; i < bsp.count; i++) {
@@ -337,7 +296,7 @@ vector3d *BSP::intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *sc
         HaloTagReflexive collisionBSP = mesh->collBSP;
         for (m=0; m < bsp.count; m++) {
             CollisionBSP *collison = (CollisionBSP *)(map2mem(bspTag, collisionBSP.address) + 96 * m);
-            vector3d *traversal = traverseTree(p, q, bspTag, collison, 0);
+            vector3d *traversal = traverseTree(p, q, bspTag, collison, 0, output);
             if (traversal != nullptr) {
                 if (traversal->x == kBigFloat || traversal->y == kBigFloat || traversal->z == kBigFloat) return nullptr;
             }
@@ -347,22 +306,97 @@ vector3d *BSP::intersect(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *sc
     return nullptr;
 }
 
+bool e_float(float f1, float f2) {
+    return (f1 > f2 - 0.001 && f1 < f2 + 0.001);
+}
 
+void BSP::render_experimental(ShaderType pass) {
+    if (pass != shader_NULL) return;
+    
+    // Draw our sun
+    vector3d *sun = new vector3d(0, 0, 50);
+    glPushMatrix();
+    glTranslatef(sun->x, sun->y, sun->z);
+    glColor3f(1.0, 1.0, 0.0);
+    GLUquadric *sphere=gluNewQuadric();
+    gluQuadricDrawStyle( sphere, GLU_FILL);
+    gluQuadricNormals( sphere, GLU_SMOOTH);
+    gluQuadricOrientation( sphere, GLU_OUTSIDE);
+    gluQuadricTexture( sphere, GL_TRUE);
+    gluSphere(sphere, 10.0,10,10);
+    gluDeleteQuadric ( sphere );
+    glPopMatrix();
+    glColor4f(1.0, 1.0, 1.0, 1.0);
+    
+    // Draw our lights
+    glPointSize(5.0);
+    glBegin(GL_POINTS);
+    for (int s = 0; s < light_experiment.size(); s++) {
+        vector3d *position = light_experiment[s];
+        glVertex3f(position->x, position->y, position->z);
+        /*
+        glPushMatrix();
+        glTranslatef(position->x, position->y, position->z);
+        glColor3f(1.0, 1.0, 0.0);
+        GLUquadric *sphere=gluNewQuadric();
+        gluQuadricDrawStyle( sphere, GLU_FILL);
+        //gluQuadricNormals( sphere, GLU_SMOOTH);
+        gluQuadricOrientation( sphere, GLU_OUTSIDE);
+        gluQuadricTexture( sphere, GL_TRUE);
+        gluSphere(sphere,0.05,3,3);
+        gluDeleteQuadric ( sphere );
+        glPopMatrix();
+        */
+    }
+    glEnd();
+}
 
+void BSP::generate_lightmap(vector3d *sun, ProtonMap *map, ProtonTag *scenario) {
+    vector3d *position = new vector3d(0,0,0);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    int cmax = 2000;
+    int tmax = 2000;
+    double cdelta = 360.0 / cmax;
+    double tdelta = 360.0 / tmax;
+    double distance = 1000.0;
+    for (int c = 0; c < cmax; c++) {
+        for (int t = 0; t < tmax; t++) {
+            double cangle = cdelta * c;
+            double tangle = tdelta * t;
+            position->x = distance * cos(cangle) * sin(tangle);
+            position->y = distance * sin(cangle) * sin(tangle);
+            position->z = distance * cos(tangle);
+            vector3d *intersection = intersect(sun, position, map, scenario);
+            if (intersection != nullptr) {
+                light_experiment.push_back(intersection);
+            }
+        }
+    }
+  
+    /* //smartish
+    int i, s, v;
+    for (i=0; i < renderables.size(); i++) {
+        BSPRenderMesh *mesh = renderables[i];
+        for (s=0; s < mesh->submeshes.size(); s++) {
+            BSPRenderSubmesh *submesh = mesh->submeshes[s];
+            for (v = 0; v < submesh->vertCount; v++) {
+                GLfloat *verts = &vao->vertex_array[submesh->vertexOffset + v];
+                position->x = sun->x + (verts[0] - sun->x) * 5;
+                position->y = sun->y + (verts[1] - sun->y) * 5;
+                position->z = sun->z + (verts[2] - sun->z) * 5;
+                vector3d *intersection = intersect(position, sun, map, scenario);
+                if (intersection != nullptr) {
+                    if ((e_float(verts[0], intersection->x) && e_float(verts[1], intersection->y) && e_float(verts[2], intersection->z))) {
+                        // direct sunlight
+                        printf("light at %f %f %f\n", verts[0], verts[1], verts[2]);
+                        light_experiment.push_back(intersection);
+                    }
+                }
+            }
+        }
+    }
+    */
+}
 
 
 
@@ -386,11 +420,11 @@ void BSPRenderBuffer::setup() {
 BSP::BSP(ShaderManager* manager) {
     printf("bsp setup\n");
     shaders = manager;
+    //light_experiment = std::vector<vector3d*>();
 }
 
 //TODO: Group elements into renderables
 void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
-    
     vao = new BSPRenderBuffer;
     
     // Count data size
@@ -581,7 +615,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario) {
     
     // Clean up
 #ifdef RENDER_VBO
-    free(vao->vertex_array);
+    //free(vao->vertex_array);
     free(vao->texture_uv);
     free(vao->light_uv);
     free(vao->normals);
@@ -695,4 +729,6 @@ void BSP::render(ShaderType pass) {
     glDisableVertexAttribArray(tangents_buffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 #endif
+    
+    render_experimental(pass);
 }

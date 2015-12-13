@@ -41,6 +41,9 @@
 		144B3DD31AFB473700536206 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 144B3DD11AFB473700536206 /* gui.cpp */; };
 		145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C41AE79A97001CCEBA /* itmc.cpp */; };
 		145A96C91AE79E55001CCEBA /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
+		146D80371B5DC9410075F708 /* ai.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80351B5DC9410075F708 /* ai.cpp */; };
+		146D803B1B5DC9AB0075F708 /* ai_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80391B5DC9AB0075F708 /* ai_test.cpp */; };
+		146D803C1B5DCBCE0075F708 /* ai_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80391B5DC9AB0075F708 /* ai_test.cpp */; };
 		1472F8581AEE1A3A00FE64DC /* sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1472F8561AEE1A3A00FE64DC /* sky.cpp */; };
 		1482BEEF1AFE20D600FA8140 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1482BEEE1AFE20D600FA8140 /* AppDelegate.mm */; };
 		1482BEF11AFE20D600FA8140 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1482BEF01AFE20D600FA8140 /* main.m */; };
@@ -190,6 +193,10 @@
 		145A96C51AE79A97001CCEBA /* itmc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = itmc.h; sourceTree = "<group>"; };
 		145A96C71AE79E55001CCEBA /* null.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = null.cpp; sourceTree = "<group>"; };
 		145A96C81AE79E55001CCEBA /* null.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = null.h; sourceTree = "<group>"; };
+		146D80351B5DC9410075F708 /* ai.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ai.cpp; sourceTree = "<group>"; };
+		146D80361B5DC9410075F708 /* ai.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ai.hpp; sourceTree = "<group>"; };
+		146D80391B5DC9AB0075F708 /* ai_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ai_test.cpp; sourceTree = "<group>"; };
+		146D803A1B5DC9AB0075F708 /* ai_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ai_test.hpp; sourceTree = "<group>"; };
 		1472F8561AEE1A3A00FE64DC /* sky.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sky.cpp; sourceTree = "<group>"; };
 		1472F8571AEE1A3A00FE64DC /* sky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sky.h; sourceTree = "<group>"; };
 		1482BEE91AFE20D600FA8140 /* Dragon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dragon.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -434,9 +441,28 @@
 			path = gui;
 			sourceTree = "<group>";
 		};
+		146D80381B5DC9940075F708 /* ai */ = {
+			isa = PBXGroup;
+			children = (
+				146D80351B5DC9410075F708 /* ai.cpp */,
+				146D80361B5DC9410075F708 /* ai.hpp */,
+				146D80391B5DC9AB0075F708 /* ai_test.cpp */,
+				146D803A1B5DC9AB0075F708 /* ai_test.hpp */,
+			);
+			name = ai;
+			sourceTree = "<group>";
+		};
+		1476B1B71B05E29400B68017 /* Scripting */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Scripting;
+			sourceTree = "<group>";
+		};
 		148065521AF62BF500FD5AFC /* game */ = {
 			isa = PBXGroup;
 			children = (
+				146D80381B5DC9940075F708 /* ai */,
 				142322C81AFA0719004A7E0D /* client.cpp */,
 				142322C91AFA0719004A7E0D /* client.h */,
 				142322CA1AFA0719004A7E0D /* game.cpp */,
@@ -523,6 +549,7 @@
 		14ADF3AC1AE32F9000818134 /* Electron */ = {
 			isa = PBXGroup;
 			children = (
+				1476B1B71B05E29400B68017 /* Scripting */,
 				142158171AE4FA170068557B /* squish */,
 				14ADF3EB1AE330E100818134 /* Render */,
 				14ADF3F91AE3371D00818134 /* OpenGL */,
@@ -781,6 +808,7 @@
 				1482BF281AFE2B5200FA8140 /* ERenderView.mm in Sources */,
 				1482BF0B1AFE213000FA8140 /* md5.c in Sources */,
 				1482BF091AFE212700FA8140 /* client.cpp in Sources */,
+				146D803C1B5DCBCE0075F708 /* ai_test.cpp in Sources */,
 				1482BF0D1AFE28D200FA8140 /* camera.cpp in Sources */,
 				1482BF0E1AFE28D700FA8140 /* render.cpp in Sources */,
 				1482BF0F1AFE28DE00FA8140 /* gui.cpp in Sources */,
@@ -855,11 +883,13 @@
 				14ADF3B11AE32F9000818134 /* AppDelegate.mm in Sources */,
 				142322D01AFA0719004A7E0D /* game.cpp in Sources */,
 				145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */,
+				146D803B1B5DC9AB0075F708 /* ai_test.cpp in Sources */,
 				14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */,
 				142322CF1AFA0719004A7E0D /* client.cpp in Sources */,
 				142158321AE4FA170068557B /* colourblock.cpp in Sources */,
 				14DA18C01AEBA9AD0064D9B6 /* sgla.cpp in Sources */,
 				14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */,
+				146D80371B5DC9410075F708 /* ai.cpp in Sources */,
 				14ADF3DF1AE32FC200818134 /* ProtonMap.cpp in Sources */,
 				140293F31AE634EE004BD9B9 /* vehi.cpp in Sources */,
 			);
@@ -1151,6 +1181,7 @@
 				1482BF041AFE20D600FA8140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1482BF081AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "DragonTests" */ = {
 			isa = XCConfigurationList;
@@ -1159,6 +1190,7 @@
 				1482BF061AFE20D600FA8140 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		14ADF3A51AE32F9000818134 /* Build configuration list for PBXProject "Electron" */ = {
 			isa = XCConfigurationList;

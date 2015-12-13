@@ -208,6 +208,14 @@ CGPoint prevDownLeft;
     [self updateMasks:theEvent];
 }
 
+-(IBAction)generateLightmaps:(id)sender {
+    uint16_t scenarioTag = renderer->map->principal_tag;
+    if (scenarioTag != NULLED_TAG_ID) {
+        ProtonTag *scenarioTag = renderer->map->tags.at(renderer->map->principal_tag).get();
+        renderer->bsp->generate_lightmap(renderer->camera->position, renderer->map, scenarioTag);
+    }
+}
+
 - (void)timerTick:(NSTimer *)timer
 {
     //[[self openGLContext] update];

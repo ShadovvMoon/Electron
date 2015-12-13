@@ -9,7 +9,10 @@
 #ifndef __game__
 #define __game__
 
-#define kMaxPlayers 16
+#define kMaxPlayers 17
+#define kMaxBipeds  17
+#define kMaxObjects 1024
+
 #include "defines.h"
 #include "vector3d.h"
 #include <array>
@@ -48,20 +51,45 @@ typedef struct {
     bool tab;
 } ControlMask;
 
-class Player {
+
+class NetworkObject {
 public:
+    int16_t tag_index;
+    int16_t table_id;
+    vector3d position = *new vector3d(0.0,0.0,0.0);
+    vector3d rotation = *new vector3d(0.0,0.0,0.0);
+};
+
+class Biped {
+public:
+    uint16_t object_index;
+    uint16_t dead_tick = 0;
+    
+    int last_update_tick = 0;
     int team = 0;
     bool alive = false;
     ControlMask controls;
     vector3d *position = nullptr;
 };
 
+class Player {
+public:
+    int team = 0;
+    bool alive = false;
+    char *name = NULL;
+    uint16_t biped_number;
+};
+
 
 class Game {
 private:
+    std::array<NetworkObject, kMaxObjects> objects;
     std::array<Player, kMaxPlayers> players;
+    std::array<Biped , kMaxBipeds>  bipeds;
 public:
     Player *getPlayer(int index);
+    Biped *getBiped(int index);
+    NetworkObject *getObject(int index);
     
     Game();
     ~Game();

@@ -287,6 +287,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
 }
 
 void Model::render(ShaderType pass) {
+    if (this == NULL) return;
     if (!ready) return;
     
     //glEnable(GL_TEXTURE_2D);

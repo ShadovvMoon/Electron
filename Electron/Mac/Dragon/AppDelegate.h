@@ -8,7 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import "client.h"
-#define kMaxClients 16
+#import "ai_test.hpp"
+#define kMaxClients 32
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {

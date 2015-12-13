@@ -91,7 +91,7 @@ void main(void) {
 
     vec3 color = RefractionColor;
     vec4 waterColour = vec4(30/255.0, 50/255.0, 48/255.0, 0.8)*2;
-    gl_FragColor = mix(waterColour, waterColour*vec4(color.x, color.y, color.z, 1.0), 0.5);
+    gl_FragColor = mix(waterColour, vec4(color.x, color.y, color.z, 1.0), 0.5);
     
     // FOGGING
     float z = (gl_FragCoord.z / gl_FragCoord.w);

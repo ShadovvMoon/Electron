@@ -247,8 +247,10 @@ void ERenderer::renderScene(bool fast) {
             shader *shader = shaders->get_shader(type);
             shader->start(options);
             bsp->render(type);
-            GLuint number = 0;
-            objects->render(&number, nullptr, type, options);
+            if (render_objects) {
+                GLuint number = 0;
+                objects->render(&number, nullptr, type, options);
+            }
             shader->stop();
         }
     }
@@ -277,6 +279,7 @@ void ERenderer::render() {
     // Setup the current viewport
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(options->fogr, options->fogg, options->fogb,1.0);
+    glColor4f(1.0,1.0,1.0,1.0);
     
     // Enable GL states
     glEnable(GL_DEPTH_TEST);
@@ -340,7 +343,6 @@ void ERenderer::render() {
      
      return;
      */
-    
     
     // Render the GUI
     //GLint anViewport[4];

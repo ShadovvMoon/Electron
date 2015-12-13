@@ -43,6 +43,7 @@ void renderRawBox(float x, float y, float w, float h) {
 void renderBox(float x, float y, float w, float h) {
     glColor4f(SIDE_BAR_COLOUR, SIDE_BAR_COLOUR, SIDE_BAR_COLOUR, SIDE_BAR_ALPHA);
     renderRawBox(x,y,w,h);
+    glColor4f(1.0, 1.0, 1.0, 1.0);
 }
 void renderStrokeBox(float x, float y, float w, float h, float width, float height) {
     glColor4f(0.5, 0.5, 0.5, 0.5);

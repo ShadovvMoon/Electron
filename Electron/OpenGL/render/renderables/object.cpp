@@ -15,7 +15,7 @@ ObjectRef::ObjectRef(ObjectManager *manager, ProtonMap *map, HaloTagDependency t
     printf("creating object ref\n");
     TagID = tag;
     
-    if (tag.tag_id.tag_index != NULLED_TAG_ID) {
+    if (tag.tag_id.tag_index != NULLED_TAG_ID && tag.tag_id.tag_index > 0 && tag.tag_id.tag_index < map->tags.size()) {
         ProtonTag *objectTag = map->tags.at(tag.tag_id.tag_index).get();
         HaloObjectTagData *objectData = (HaloObjectTagData *)objectTag->Data();
         
@@ -26,12 +26,13 @@ ObjectRef::ObjectRef(ObjectManager *manager, ProtonMap *map, HaloTagDependency t
         model = nullptr;
     }
 }
+
 void ObjectRef::render(ShaderType pass) {
     model->render(pass);
 }
 
 ObjectRef *ObjectManager::create_object(ProtonMap *map, HaloTagDependency tag) {
-    fprintf(stderr, "creating object %d %c%c%c%c\n", tag.tag_id.tag_index, tag.tag_class[3], tag.tag_class[2], tag.tag_class[1], tag.tag_class[0]);
+    //fprintf(stderr, "creating object %d %c%c%c%c\n", tag.tag_id.tag_index, tag.tag_class[3], tag.tag_class[2], tag.tag_class[1], tag.tag_class[0]);
     
     // Has this bitmap been loaded before? Check the cache
     std::map<uint16_t, ObjectRef*>::iterator iter = this->objects.find(tag.tag_id.tag_index);

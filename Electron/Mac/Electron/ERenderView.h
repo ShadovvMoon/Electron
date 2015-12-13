@@ -21,4 +21,5 @@
 -(void)setDelegate:(id)del;
 -(void)setData:(NSData*)data;
 -(NSData *)getData;
+-(IBAction)generateLightmaps:(id)sender;
 @end
