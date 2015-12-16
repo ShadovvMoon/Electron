@@ -135,7 +135,7 @@ bool schi_object::is(ShaderType type) {
     return (type == shader_SCHI);
 }
 
-bool schi_object::render() {
+bool schi_object::render(ShaderType type) {
     
     #ifndef RENDER_CORE_32
     // Blending

@@ -41,6 +41,6 @@ void null_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool null_object::is(ShaderType type) {
     return (type == shader_NULL);
 }
-bool null_object::render() {
+bool null_object::render(ShaderType type) {
     return true;
 }

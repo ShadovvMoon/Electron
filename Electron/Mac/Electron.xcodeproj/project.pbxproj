@@ -37,7 +37,12 @@
 		14272D141AE5B05B002A64A5 /* soso.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CFD1AE5B05B002A64A5 /* soso.cpp */; };
 		14272D151AE5B05B002A64A5 /* bitmaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D001AE5B05B002A64A5 /* bitmaps.cpp */; };
 		14272D161AE5B05B002A64A5 /* texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D021AE5B05B002A64A5 /* texture.cpp */; };
+		143059721C2114FE008F8EE0 /* senv_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 144506561C1D940700287700 /* senv_reflect.cpp */; };
+		143059731C211500008F8EE0 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1480D0751C1D68E000266496 /* blur.cpp */; };
+		143059741C211501008F8EE0 /* ssao.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146BB44F1C1D40FE00308B25 /* ssao.cpp */; };
+		143059751C211503008F8EE0 /* deff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146BB44C1C1D1D7600308B25 /* deff.cpp */; };
 		1436196F1AE3982200D82AC8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1436196E1AE3982200D82AC8 /* GLUT.framework */; };
+		144506581C1D940700287700 /* senv_reflect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 144506561C1D940700287700 /* senv_reflect.cpp */; };
 		144B3DD31AFB473700536206 /* gui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 144B3DD11AFB473700536206 /* gui.cpp */; };
 		145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C41AE79A97001CCEBA /* itmc.cpp */; };
 		145A96C91AE79E55001CCEBA /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
@@ -190,6 +195,8 @@
 		14272D191AE5BA30002A64A5 /* ZZTHaloScenarioTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZTHaloScenarioTag.h; sourceTree = "<group>"; };
 		1436196E1AE3982200D82AC8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		143619771AE39B3C00D82AC8 /* defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../../OpenGL/defines.h; sourceTree = "<group>"; };
+		144506561C1D940700287700 /* senv_reflect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = senv_reflect.cpp; sourceTree = "<group>"; };
+		144506571C1D940700287700 /* senv_reflect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = senv_reflect.h; sourceTree = "<group>"; };
 		144B3DD11AFB473700536206 /* gui.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gui.cpp; sourceTree = "<group>"; };
 		144B3DD21AFB473700536206 /* gui.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gui.h; sourceTree = "<group>"; };
 		145A96C41AE79A97001CCEBA /* itmc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = itmc.cpp; sourceTree = "<group>"; };
@@ -395,8 +402,6 @@
 				14272CF21AE5B05B002A64A5 /* glsl */,
 				14272CF91AE5B05B002A64A5 /* schi.cpp */,
 				14272CFA1AE5B05B002A64A5 /* schi.h */,
-				14272CFB1AE5B05B002A64A5 /* senv.cpp */,
-				14272CFC1AE5B05B002A64A5 /* senv.h */,
 				14272CFD1AE5B05B002A64A5 /* soso.cpp */,
 				14272CFE1AE5B05B002A64A5 /* soso.h */,
 				14DA18BB1AEBA9A60064D9B6 /* swat.cpp */,
@@ -413,6 +418,10 @@
 				146BB4501C1D40FE00308B25 /* ssao.hpp */,
 				1480D0751C1D68E000266496 /* blur.cpp */,
 				1480D0761C1D68E000266496 /* blur.hpp */,
+				14272CFB1AE5B05B002A64A5 /* senv.cpp */,
+				14272CFC1AE5B05B002A64A5 /* senv.h */,
+				144506561C1D940700287700 /* senv_reflect.cpp */,
+				144506571C1D940700287700 /* senv_reflect.h */,
 			);
 			path = shaders;
 			sourceTree = "<group>";
@@ -835,7 +844,6 @@
 				1482BF1A1AFE29C900FA8140 /* ProtonMap.cpp in Sources */,
 				1482BF201AFE2A9B00FA8140 /* schi.cpp in Sources */,
 				1482BF221AFE2A9D00FA8140 /* soso.cpp in Sources */,
-				1482BF211AFE2A9C00FA8140 /* senv.cpp in Sources */,
 				1482BF191AFE29C700FA8140 /* ProtonCacheFile.cpp in Sources */,
 				1482BF261AFE2AA900FA8140 /* null.cpp in Sources */,
 				1482BF231AFE2AA500FA8140 /* swat.cpp in Sources */,
@@ -843,6 +851,11 @@
 				1482BF241AFE2AA600FA8140 /* sgla.cpp in Sources */,
 				1482BF251AFE2AA800FA8140 /* scex.cpp in Sources */,
 				1482BF1F1AFE2A9100FA8140 /* bitmaps.cpp in Sources */,
+				1482BF211AFE2A9C00FA8140 /* senv.cpp in Sources */,
+				143059731C211500008F8EE0 /* blur.cpp in Sources */,
+				143059751C211503008F8EE0 /* deff.cpp in Sources */,
+				143059741C211501008F8EE0 /* ssao.cpp in Sources */,
+				143059721C2114FE008F8EE0 /* senv_reflect.cpp in Sources */,
 				1482BF1E1AFE2A9000FA8140 /* texture.cpp in Sources */,
 				1482BF141AFE28F800FA8140 /* scen.cpp in Sources */,
 				1482BF161AFE28FF00FA8140 /* itmc.cpp in Sources */,
@@ -870,7 +883,6 @@
 				14272D051AE5B05B002A64A5 /* vector3d.cpp in Sources */,
 				14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */,
 				142158331AE4FA170068557B /* colourfit.cpp in Sources */,
-				1480D0771C1D68E000266496 /* blur.cpp in Sources */,
 				14272D131AE5B05B002A64A5 /* senv.cpp in Sources */,
 				14272D061AE5B05B002A64A5 /* render.cpp in Sources */,
 				142158301AE4FA170068557B /* alpha.cpp in Sources */,
@@ -897,11 +909,13 @@
 				14272D141AE5B05B002A64A5 /* soso.cpp in Sources */,
 				14272D0B1AE5B05B002A64A5 /* shader.cpp in Sources */,
 				1472F8581AEE1A3A00FE64DC /* sky.cpp in Sources */,
-				146BB4511C1D40FE00308B25 /* ssao.cpp in Sources */,
 				14ADF3B11AE32F9000818134 /* AppDelegate.mm in Sources */,
 				142322D01AFA0719004A7E0D /* game.cpp in Sources */,
+				146BB4511C1D40FE00308B25 /* ssao.cpp in Sources */,
 				145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */,
+				1480D0771C1D68E000266496 /* blur.cpp in Sources */,
 				146D803B1B5DC9AB0075F708 /* ai_test.cpp in Sources */,
+				144506581C1D940700287700 /* senv_reflect.cpp in Sources */,
 				14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */,
 				142322CF1AFA0719004A7E0D /* client.cpp in Sources */,
 				142158321AE4FA170068557B /* colourblock.cpp in Sources */,

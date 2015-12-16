@@ -17,10 +17,13 @@ void deff::setup(std::string path) {
     program         = make_program(vertex_shader, fragment_shader);
     
     // Bind attributes
-    tDiffuse        = glGetUniformLocation(program, "tDiffuse");
-    tPosition       = glGetUniformLocation(program, "tPosition");
-    tNormals        = glGetUniformLocation(program, "tNormals");
-    tDepth          = glGetUniformLocation(program, "tDepth");
+    tDiffuse            = glGetUniformLocation(program, "tDiffuse");
+    tPosition           = glGetUniformLocation(program, "tPosition");
+    tNormals            = glGetUniformLocation(program, "tNormals");
+    tDepth              = glGetUniformLocation(program, "tDepth");
+    tSSAO               = glGetUniformLocation(program, "tSSAO");
+    ProjectionMatrix    = glGetUniformLocation(program, "ProjectionMatrix");
+    UBOCamera           = glGetUniformLocation(program, "UBOCamera");
 }
 
 void deff::start(shader_options *options) {
@@ -28,7 +31,10 @@ void deff::start(shader_options *options) {
     glUniform1i(tDiffuse,0);
     glUniform1i(tPosition,1);
     glUniform1i(tNormals,2);
-    glUniform1i(tDepth,3);
+    glUniform1i(tSSAO,3);
+    glUniform1i(tDepth,4);
+    glUniformMatrix4fv(ProjectionMatrix, 1, false, options->perspective);
+    glUniform3f(UBOCamera, options->camera[0], options->camera[1], options->camera[2]);
 }
 void deff::update(shader_options *options) {
 }
@@ -50,6 +56,6 @@ void deff_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool deff_object::is(ShaderType type) {
     return (type == shader_DEFF);
 }
-bool deff_object::render() {
+bool deff_object::render(ShaderType type) {
     return true;
 }

@@ -175,7 +175,7 @@ void ERenderer::resize(float width, float height) {
     double fovy = 45.0;
     double aspect = width / height;
     double znear = 0.1f;
-    double zfar = 4000000.0f;
+    double zfar = 500.0f;
     double f = cotan((fovy / 2.0)); //tan(M_PI_2 - (fovy / 2.0));
     float ymax = znear * tan(fovy * M_PI/360.0);
     float ymin = -ymax;
@@ -292,6 +292,8 @@ void ERenderer::applyControl(Control *control){
     float sspeed = speed * strafe_seconds;
     if (control->forward && !control->back) {
         camera->move(fspeed);
+    } else if (control->forwardSlow && !control->back) {
+        camera->move(0.05);
     } else if (control->back) {
         camera->move(-fspeed);
     } else {
@@ -309,11 +311,59 @@ void ERenderer::applyControl(Control *control){
     tick = now();
 }
 
-void ERenderer::renderScene(bool fast) {
+void ERenderer::renderScene(bool fast, bool reflect) {
     uint16_t scenarioTag = map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
         HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
+        
+        
+        if (reflect) {
+            
+            
+            
+            glActiveTexture(GL_TEXTURE4);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, mNormalsTexture);
+            
+            glActiveTexture(GL_TEXTURE5);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, mDiffuseTexture);
+            
+            glActiveTexture(GL_TEXTURE6);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, mPositionTexture);
+            
+            glActiveTexture(GL_TEXTURE7);
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, mDepthTexture);
+        
+            
+            // Render reflection shaders
+            shader *senv_reflect = shaders->get_shader(shader_SENV_REFLECT);
+            senv_reflect->start(options);
+            bsp->render(shader_SENV_REFLECT);
+            senv_reflect->stop();
+            
+            glActiveTexture(GL_TEXTURE4);
+            glDisable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+            glActiveTexture(GL_TEXTURE5);
+            glDisable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+            glActiveTexture(GL_TEXTURE6);
+            glDisable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+            glActiveTexture(GL_TEXTURE7);
+            glDisable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, 0);
+            
+            return;
+        }
+        
         
         // Render the sky
         float cut = options->fogcut;
@@ -407,13 +457,12 @@ void ERenderer::render() {
 
     #ifdef RENDER_CORE_32
     camera->look(options);
-    renderScene(false);
+    renderScene(false, false);
     #else
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     camera->look(options);
-    
-    
+
     if (false) {//shaders->needs_reflection()) {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -428,7 +477,7 @@ void ERenderer::render() {
         double plane[4] = {0.0, 0.0, 1.0, reflectionHeight}; //water at y=0
         glEnable(GL_CLIP_PLANE0);
         glClipPlane(GL_CLIP_PLANE0, plane);
-        renderScene(true);
+        renderScene(true, false);
         glPopMatrix();
         glDisable(GL_CLIP_PLANE0);
         
@@ -446,7 +495,7 @@ void ERenderer::render() {
     if (!useSSAO) {
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glEnableClientState(GL_VERTEX_ARRAY);
-        renderScene(false);
+        renderScene(false, false);
         glDisableClientState(GL_VERTEX_ARRAY);
         glPopAttrib();
     } else {
@@ -454,12 +503,22 @@ void ERenderer::render() {
         this->start();
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glEnableClientState(GL_VERTEX_ARRAY);
-        renderScene(false);
+        renderScene(false, false);
         glDisableClientState(GL_VERTEX_ARRAY);
         glPopAttrib();
         this->stop();
         
 
+        
+        // Render reflections
+        //glPushAttrib(GL_ALL_ATTRIB_BITS);
+        //glEnableClientState(GL_VERTEX_ARRAY);
+        //renderScene(false, true);
+        //glDisableClientState(GL_VERTEX_ARRAY);
+        //glPopAttrib();
+        
+        
+        
         
         
         // Render the quad
@@ -468,6 +527,32 @@ void ERenderer::render() {
         glPushMatrix();
         glLoadIdentity();
         glOrtho(0,m_width,0,m_height,0.1f,2);
+        
+        double left = 0;
+        double right = m_width;
+        double bottom = 0;
+        double top = m_height;
+        double nearVal = 0.1;
+        double farVal = 2;
+        
+        /*
+        options->perspective[0] = 2 / (right - left);
+        options->perspective[1] = 0.0;
+        options->perspective[2] = 0.0;
+        options->perspective[3] = (right + left) / (right - left);
+        options->perspective[4] = 0.0;
+        options->perspective[5] = 2 / (top - bottom);
+        options->perspective[6] = 0.0;
+        options->perspective[7] = (top + bottom) / (top - bottom);
+        options->perspective[8] = 0.0;
+        options->perspective[9] = 0.0;
+        options->perspective[10] = -2 / (farVal - nearVal);
+        options->perspective[11] = (farVal + nearVal) / (farVal - nearVal);
+        options->perspective[12] = 0;
+        options->perspective[13] = 0;
+        options->perspective[14] = 0;
+        options->perspective[15] = 1;
+        */
         
         // Model setup
         glMatrixMode(GL_MODELVIEW);
@@ -629,6 +714,10 @@ void ERenderer::render() {
         glActiveTexture(GL_TEXTURE3);
         glEnable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, mSSAOTexture);
+        
+        glActiveTexture(GL_TEXTURE4);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mDepthBuffer);
 
         // Render the quad
         glLoadIdentity();
@@ -663,6 +752,10 @@ void ERenderer::render() {
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
         
+        glActiveTexture(GL_TEXTURE4);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
         deferred->stop();
         
         
@@ -671,6 +764,7 @@ void ERenderer::render() {
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
         glPopMatrix();
+        
     }
     #endif
 

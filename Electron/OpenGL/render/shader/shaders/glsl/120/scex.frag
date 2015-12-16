@@ -72,12 +72,15 @@ void main(void) {
         cF = colorFunction[i];
         aF = alphaFunction[i];
     }
-    gl_FragColor = colour;
+    vec4 outColor = colour;
     //gl_FragColor.a = 1.0;
     
     // FOGGING
     float z = (gl_FragCoord.z / gl_FragCoord.w);
     float fogFactor = (z/fogSettings[0]);
     fogFactor = clamp(fogFactor, 0.0, fogSettings[1]);
-    gl_FragColor = mix(gl_FragColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
+    outColor = mix(outColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
+    
+    gl_FragData[0] = outColor;
+    gl_FragData[2] = vec4(normals.xyz, 0.0);
 }

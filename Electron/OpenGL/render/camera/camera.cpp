@@ -142,4 +142,8 @@ void Camera::look(shader_options *options) {
               view->x,	   view->y,     view->z,
               up->x,       up->y,       up->z);
     #endif
+    
+    options->camera[0] = position->x;
+    options->camera[1] = position->y;
+    options->camera[2] = position->z;
 }

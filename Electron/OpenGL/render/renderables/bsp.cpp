@@ -678,7 +678,7 @@ void BSP::render(ShaderType pass) {
                 (submesh->shader != nullptr && submesh->shader->is(pass))) {
                 if (submesh->shader != nullptr && submesh->shader != previous_shader) {
                     submesh->shader->setBaseUV(1.0, 1.0);
-                    if (!submesh->shader->render()) {
+                    if (!submesh->shader->render(pass)) {
                         continue;
                     }
                     previous_shader = submesh->shader;

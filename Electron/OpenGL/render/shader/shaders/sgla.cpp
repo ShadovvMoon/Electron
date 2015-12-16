@@ -82,7 +82,7 @@ void sgla_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool sgla_object::is(ShaderType type) {
     return (type == shader_SGLA);
 }
-bool sgla_object::render() {
+bool sgla_object::render(ShaderType type) {
     glActiveTexture(GL_TEXTURE0);
     if (useMulti) {
         multipurposeMap->bind();

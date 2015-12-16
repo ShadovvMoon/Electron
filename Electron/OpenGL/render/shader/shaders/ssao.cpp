@@ -50,6 +50,6 @@ void ssao_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool ssao_object::is(ShaderType type) {
     return (type == shader_DEFF);
 }
-bool ssao_object::render() {
+bool ssao_object::render(ShaderType type) {
     return true;
 }

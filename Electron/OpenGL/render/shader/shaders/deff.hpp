@@ -17,6 +17,9 @@ private:
     GLuint tPosition;
     GLuint tNormals;
     GLuint tDepth;
+    GLuint tSSAO;
+    GLint ProjectionMatrix;
+    GLint UBOCamera;
 public:
     void setup(std::string path);
     void start(shader_options *options);
@@ -28,7 +31,7 @@ class deff_object : public shader_object {
 private:
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    bool render();
+    bool render(ShaderType type);
     void setBaseUV(float u, float v);
     void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);

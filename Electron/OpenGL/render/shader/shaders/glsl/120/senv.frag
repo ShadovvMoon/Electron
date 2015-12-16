@@ -50,6 +50,8 @@ void main(void) {
     outColor.a = 1.0;
     
     // CUBEMAPPING
+    float draw = 1.0;
+    vec3 norm = normalize(normals);
     if ( maps2[3] > 0 || maps2[2] > 0 ) {
         vec4 reflex = vec4(0.0, 0.0, 0.0, 1.0);
         vec3 eye = normalize(eyeVec);
@@ -63,10 +65,15 @@ void main(void) {
         
         // Query the Maps
         vec3 color = vec3(0.0,0.0,0.0);
-        vec3 norm = normalize(normals);
         if ( maps2[3] > 0 ) {
-            norm = texture2D(bumpMap, coords*maps3).rgb - 0.5;
-            norm = vec3(norm.x * normalweight, norm.y * normalweight, norm.z);
+            if (norm.x <= 0.0 && norm.y <= 0.0 && norm.z >= 1.0) {
+                draw = 1.0;
+            }
+            
+            //norm = normalize((texture2D(bumpMap, coords*maps3).rgb - 0.5) * TBNMatrix); //mix(norm,  - 0.5, 0.9);
+            
+            //norm = texture2D(bumpMap, coords*maps3).rgb - 0.5;
+            //norm = vec3(norm.x * normalweight, norm.y * normalweight, norm.z);
         }
         
         vec3 refl = reflect(norm, eye);  // in tangent space !
@@ -87,9 +94,5 @@ void main(void) {
 
     gl_FragData[0] = outColor;
     gl_FragData[1] = vec4(position.xyz, 1.0); //vec4(position.xyz,0);
-    
-    vec3 norm = normalize(normals);
-    norm = mix(norm, texture2D(bumpMap, coords*maps3).rgb - 0.5, 0.9);
-    
-    gl_FragData[2] = vec4(norm.xyz, 1.0);
+    gl_FragData[2] = vec4(norm.xyz, draw);
 }

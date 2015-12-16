@@ -445,7 +445,7 @@ surfaceExtra *visited = NULL;
                 }
             };
 
-            fprintf(stderr, "pathfinding...\n");
+            //fprintf(stderr, "pathfinding...\n");
             std::priority_queue<uint32_t, std::vector<uint32_t>, Comp> heap = std::priority_queue<uint32_t, std::vector<uint32_t>, Comp>();
             heap.push(start_surface);
 
@@ -683,7 +683,7 @@ surfaceExtra *visited = NULL;
             }
             glEnd();
             
-            std::cout << "Points: " << ptCount << " with Portals: " << nportals << std::endl;
+            //std::cout << "Points: " << ptCount << " with Portals: " << nportals << std::endl;
             
             free(points);
             free(portals);
@@ -786,7 +786,7 @@ surfaceExtra *visited = NULL;
             */
             
             free(visited);
-            std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+            //std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
                 
         }
     }
@@ -1005,7 +1005,7 @@ surfaceExtra *visited = NULL;
         if (scenarioTag != NULLED_TAG_ID) {
             ProtonTag *scenarioTag = render->map->tags.at(render->map->principal_tag).get();
             ai_test *ai = new ai_test(render->bsp, render->map, scenarioTag);
-            clients[i]  = new Client(names[i], "198.58.124.27", 4000, ai);
+            clients[i]  = new Client(names[i], "104.236.157.223", 5000, ai);
             //clients[i]  = new Client(names[i], "198.58.124.27", 2302, ai);
         }
     

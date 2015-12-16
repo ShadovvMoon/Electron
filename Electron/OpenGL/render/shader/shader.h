@@ -22,6 +22,8 @@ typedef struct {
     GLfloat modelview[16];
     GLfloat position[3];
     GLfloat rotation[3];
+    
+    GLfloat camera[3];
 } shader_options;
 
 class shader {
@@ -39,13 +41,14 @@ public:
     virtual void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) = 0;
     virtual void setBaseUV(float u, float v) = 0;
     virtual void setFogSettings(float r, float g, float b, float distance, float cutoff) = 0;
-    virtual bool render() = 0;
+    virtual bool render(ShaderType type) = 0;
     virtual bool is(ShaderType type) = 0;
 };
 
 class ShaderManager {
 private:
     std::map<uint16_t, shader_object*> shader_objects;
+    std::map<uint16_t, shader_object*> reflect_objects;
     std::vector<GLuint> reflections;
     shader *shaders[ShaderCount];
     TextureManager *textures = nullptr;

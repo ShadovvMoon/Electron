@@ -79,7 +79,7 @@ void swat_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool swat_object::is(ShaderType type) {
     return (type == shader_SWAT);
 }
-bool swat_object::render() {
+bool swat_object::render(ShaderType type) {
     // Update the tick
     std::chrono::milliseconds now = timems();
     double seconds = (now.count() - prev.count()) / 1000.0;

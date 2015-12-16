@@ -174,6 +174,9 @@ CGPoint prevDownLeft;
         case 'w':
             controls->forward = true;
             break;
+        case 'e':
+            controls->forwardSlow = true;
+            break;
         case 's':
             controls->back = true;
             break;
@@ -194,6 +197,9 @@ CGPoint prevDownLeft;
     {
         case 'w':
             controls->forward = false;
+            break;
+        case 'e':
+            controls->forwardSlow = false;
             break;
         case 's':
             controls->back = false;

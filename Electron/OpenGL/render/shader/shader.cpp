@@ -17,6 +17,7 @@
 #include "shaders/deff.hpp"
 #include "shaders/ssao.hpp"
 #include "shaders/blur.hpp"
+#include "shaders/senv_reflect.h"
 
 float b2f(bool b) {
     return b?1.0:0.0;
@@ -184,6 +185,10 @@ ShaderManager::ShaderManager(const char *resources) {
     blur *blur_shader = new blur;
     blur_shader->setup(path);
     shaders[shader_BLUR] = (shader*)blur_shader;
+    
+    senv_reflect *senv_reflect_shader = new senv_reflect;
+    senv_reflect_shader->setup(path);
+    shaders[shader_SENV_REFLECT] = (shader*)senv_reflect_shader;
 }
 
 shader_object * ShaderManager::create_shader(ProtonMap *map, HaloTagDependency shader) {

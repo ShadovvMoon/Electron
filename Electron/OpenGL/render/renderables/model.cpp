@@ -341,7 +341,7 @@ void Model::render(ShaderType pass) {
 #endif
                 if (mesh->shader != nullptr) {
                     if (mesh->shader != previous_shader) {
-                        if (!mesh->shader->render()) {
+                        if (!mesh->shader->render(pass)) {
                             continue;
                         }
                         previous_shader = mesh->shader;

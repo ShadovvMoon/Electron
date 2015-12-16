@@ -748,7 +748,7 @@ void Client::connect_packet() {
     
     // Generate a key
     char *name = (char*)this->name;
-    char *pass = (char*)"lel";
+    char *pass = (char*)"lelwut";
     
     // Generate a random cd key
     char str[128];
@@ -1153,11 +1153,11 @@ enum network_messsage_type
 
 enum message_delta
 {
-    _message_delta_object_deletion,
-    _message_delta_projectile_update,
-    _message_delta_equipment_update,
-    _message_delta_weapon_update,
-    _message_delta_biped_update,
+    _message_delta_object_deletion, //0
+    _message_delta_projectile_update, //1
+    _message_delta_equipment_update, //2
+    _message_delta_weapon_update, //3
+    _message_delta_biped_update, //4 => 4?
     _message_delta_vehicle_update,
     _message_delta_hud_add_item,
     _message_delta_player_create, //111000 =
@@ -1716,6 +1716,7 @@ void Client::main() {
                             int shooting        = sread_bits(str, &bit, 1);
                             int u1              = sread_bits(str, &bit, 1);
                             int u2              = sread_bits(str, &bit, 1);
+                            
                             int player_number   = sread_bits(str, &bit, 5);
                             int tickid          = sread_bits(str, &bit, 7);
                             
@@ -1866,11 +1867,13 @@ void Client::main() {
                         break;
                     } else if (message_type == _message_delta_player_create) { //76 confirmed
                         uint16_t player_number = sread_bits(str, &bit, 5);
-                        uint16_t unk  = sread_bits(str, &bit, 32);
                         uint16_t unk2 = sread_bits(str, &bit, 3);
+                        uint16_t unk  = sread_bits(str, &bit, 32);
                         uint16_t biped_number = sread_bits(str, &bit, 5);
                         uint16_t team_number = sread_bits(str, &bit, 5);
                         uint16_t unk3 = sread_bits(str, &bit, 26);
+                        
+                        
                         //printf("Player %d assigned biped %d\n", player_number, biped_number);
                         
                         
@@ -2111,6 +2114,8 @@ void Client::main() {
                         int object_id  = sread_bits(str, &bit, 10);
                         
                         
+                       
+                        
                   
                         
                         
@@ -2211,7 +2216,7 @@ void Client::main() {
                         printf("\n");
                         continue;
                     } else if (message_type == _message_delta_object_deletion) {
-                        int object_id = sread_bits(str, &bit, 10);
+                        int object_id = sread_bits(str, &bit, 10);  // 1 + object_index (9)
                         NetworkObject *object = game->getObject(object_id);
                         if (object != nullptr) {
                             object->table_id = -1;
@@ -2377,8 +2382,8 @@ void Client::main() {
                         continue;
                     } else if (message_type == _message_delta_biped_new) {
                         int start_bit = bit+12;
-                        int tag_index = sread_bits(str, &bit, 16);
-                        int table_id  = sread_bits(str, &bit, 16);
+                        int tag_index = sread_bits(str, &bit, 16); // definition_index
+                        int table_id  = sread_bits(str, &bit, 16); //
                         int object_id = sread_bits(str, &bit, 10);
                         int unk0  = sread_bits(str, &bit, 32);
                         int unk1  = sread_bits(str, &bit, 32);

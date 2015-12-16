@@ -126,10 +126,10 @@ void senv_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 };
 
 bool senv_object::is(ShaderType type) {
-    return (type == shader_SENV);
+    return (type == shader_SENV || type == shader_SENV_REFLECT);
 }
 
-bool senv_object::render() {
+bool senv_object::render(ShaderType type) {
 
     // Texturing
     //glEnable(GL_TEXTURE_2D);
@@ -146,25 +146,30 @@ bool senv_object::render() {
         secondaryDetailMap->bind();
     }
     
-    glActiveTexture(GL_TEXTURE4);
-    if (useCube) {
-        cubeMap->bind();
-    }
-    
-    glActiveTexture(GL_TEXTURE5);
-    if (useBump) {
-        bumpMap->bind();
-    }
-    
+  
+    if (type == shader_SENV) {
+        glActiveTexture(GL_TEXTURE4);
+        if (useCube) {
+            cubeMap->bind();
+        }
+        
+        
+        glActiveTexture(GL_TEXTURE5);
+        if (useBump) {
+            bumpMap->bind();
+        }
+        
     // Blending
     //glEnable(GL_BLEND);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Scales
-    glUniform2f(scaleId, uscale, vscale);
-    glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
-    glUniform4f(maps2Id, b2f(useLight), b2f(useBlend), b2f(useCube), b2f(useBump));
-    glUniform1f(maps3Id, bumpScale);
-    glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
+    
+        glUniform2f(scaleId, uscale, vscale);
+        glUniform4f(mapsId, b2f(usePrimary), primaryScale, b2f(useSecondary), secondaryScale);
+        glUniform4f(maps2Id, b2f(useLight), b2f(useBlend), b2f(useCube), b2f(useBump));
+        glUniform1f(maps3Id, bumpScale);
+        glUniform2f(reflectionScaleId, reflectionPerpendicular, reflectionParallel);
+    }
     return true;
 }

@@ -23,6 +23,7 @@ using namespace std::chrono;
 
 typedef struct {
     bool forward;
+    bool forwardSlow;
     bool left;
     bool right;
     bool back;
@@ -77,7 +78,7 @@ public:
     void setup(const char *resources);
     void resize(float width, float height);
     void render();
-    void renderScene(bool fast);
+    void renderScene(bool fast, bool reflect);
     
     void read(ProtonMap *map);
     void write();

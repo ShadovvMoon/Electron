@@ -71,7 +71,7 @@ public:
     bool useLight = false;
     
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    bool render();
+    bool render(ShaderType type);
     void setBaseUV(float u, float v);
     void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);

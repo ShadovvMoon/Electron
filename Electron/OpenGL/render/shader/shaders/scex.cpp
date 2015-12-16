@@ -146,7 +146,7 @@ void scex_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool scex_object::is(ShaderType type) {
     return (type == shader_SCEX);
 }
-bool scex_object::render() {
+bool scex_object::render(ShaderType type) {
     if (skip) {
         return false;
     }

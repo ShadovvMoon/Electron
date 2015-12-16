@@ -121,7 +121,7 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool soso_object::is(ShaderType type) {
     return (type == shader_SOSO);
 }
-bool soso_object::render() {
+bool soso_object::render(ShaderType type) {
     
     // Texturing
     //glEnable(GL_TEXTURE_2D);
