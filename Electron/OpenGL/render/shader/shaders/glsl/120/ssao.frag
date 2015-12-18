@@ -33,7 +33,7 @@ void main( void )
     vec4 normal = texture2D( tNormals, gl_TexCoord[0].xy );
 
     // SSAO
-    const float total_strength = 1.0;
+    const float total_strength = 1.1;
     const float base = 0.5;
     const float area = 0.2;
     const float falloff = 0.000001;

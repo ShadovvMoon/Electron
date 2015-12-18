@@ -16,7 +16,7 @@
 
 typedef struct {
     GLfloat fogr, fogg, fogb;
-    GLfloat fogdist, fogcut;
+    GLfloat fogdist, fogcut, foglegacy;
     
     GLfloat perspective[16];
     GLfloat modelview[16];

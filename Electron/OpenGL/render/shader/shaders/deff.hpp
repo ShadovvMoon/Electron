@@ -18,8 +18,12 @@ private:
     GLuint tNormals;
     GLuint tDepth;
     GLuint tSSAO;
+    GLuint tReflection;
     GLint ProjectionMatrix;
     GLint UBOCamera;
+    
+    GLint fog;
+    GLint fogSettings;
 public:
     void setup(std::string path);
     void start(shader_options *options);

@@ -49,6 +49,8 @@ private:
     unsigned int	mPositionTexture; // The OpenGL texture for the position render target
     GLuint			mNormals; // The normals render target
     unsigned int	mNormalsTexture; // The OpenGL texture for the normals render target
+    GLuint			mReflections; // The normals render target
+    unsigned int	mReflectionsTexture; // The OpenGL texture for the normals render target
     GLuint			mDepthBuffer; // Depth buffer handle
     unsigned int	mDepthTexture; // The OpenGL texture for the normals render target
     unsigned int	m_width; // FBO width

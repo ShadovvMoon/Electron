@@ -42,6 +42,7 @@ void ERenderer::setup(const char *resources) {
     glGenRenderbuffers(1, &mDiffuse);
     glGenRenderbuffers(1, &mPosition);
     glGenRenderbuffers(1, &mNormals);
+    glGenRenderbuffers(1, &mReflections);
     glGenRenderbuffers(1, &mDepthBuffer);
     
     m_width  = 4096;
@@ -64,6 +65,11 @@ void ERenderer::setup(const char *resources) {
     glBindRenderbuffer(GL_RENDERBUFFER, mNormals);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA16F_ARB, m_width, m_height);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_RENDERBUFFER, mNormals);
+    
+    // Bind the reflection render target
+    glBindRenderbuffer(GL_RENDERBUFFER, mReflections);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA16F_ARB, m_width, m_height);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_RENDERBUFFER, mReflections);
     
     // Bind the depth buffer
     glBindRenderbuffer(GL_RENDERBUFFER, mDepthBuffer);
@@ -102,6 +108,17 @@ void ERenderer::setup(const char *resources) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     // Attach the texture to the FBO
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mNormalsTexture, 0);
+    
+    // Generate and bind the OGL texture for normals
+    glGenTextures(1, &mReflectionsTexture);
+    glBindTexture(GL_TEXTURE_2D, mReflectionsTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F_ARB, m_width, m_height, 0, GL_RGBA, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // Attach the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mReflectionsTexture, 0);
     
     // Generate and bind the OGL texture for depth
     glGenTextures(1, &mDepthTexture);
@@ -428,8 +445,8 @@ void ERenderer::start() {
     
     // Specify what to render an start acquiring
     GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1,
-        GL_COLOR_ATTACHMENT2 };
-    glDrawBuffers(3, buffers);
+        GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+    glDrawBuffers(4, buffers);
 }
 
 void ERenderer::stop(){
@@ -499,7 +516,10 @@ void ERenderer::render() {
         glDisableClientState(GL_VERTEX_ARRAY);
         glPopAttrib();
     } else {
-        // Render the scene into the FBO
+        
+        // Render the scene into the FBO [no fog]
+        float cut = options->fogcut;
+        options->fogcut = 0.0;
         this->start();
         glPushAttrib(GL_ALL_ATTRIB_BITS);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -507,7 +527,7 @@ void ERenderer::render() {
         glDisableClientState(GL_VERTEX_ARRAY);
         glPopAttrib();
         this->stop();
-        
+        options->fogcut = cut;
 
         
         // Render reflections
@@ -717,7 +737,11 @@ void ERenderer::render() {
         
         glActiveTexture(GL_TEXTURE4);
         glEnable(GL_TEXTURE_2D);
-        glBindTexture(GL_TEXTURE_2D, mDepthBuffer);
+        glBindTexture(GL_TEXTURE_2D, mDepthTexture);
+        
+        glActiveTexture(GL_TEXTURE5);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, mReflectionsTexture);
 
         // Render the quad
         glLoadIdentity();
@@ -753,6 +777,10 @@ void ERenderer::render() {
         glBindTexture(GL_TEXTURE_2D, 0);
         
         glActiveTexture(GL_TEXTURE4);
+        glDisable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        glActiveTexture(GL_TEXTURE5);
         glDisable(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
         

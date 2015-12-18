@@ -15,6 +15,7 @@
 
 class ai {
 public:
+    ProtonMap *map;
     virtual void tick(Game *game, uint16_t bno) = 0;
 };
 #endif /* ai_cpp */

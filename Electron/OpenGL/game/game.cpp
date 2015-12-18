@@ -23,7 +23,9 @@ NetworkObject *Game::getObject(int index) {
     return &objects[index];
 }
 
-Game::Game() {
+Game::Game(ProtonMap *map) {
+    this->map = map;
+    
     int i;
     for (i=0; i < kMaxPlayers; i++) {
         players[i].alive = false;

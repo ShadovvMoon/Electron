@@ -35,6 +35,7 @@ void main(void) {
     vec4 outColor = texel0 * detail * gl_FrontMaterial.diffuse.rgba;
     
     // CUBEMAPPING
+    float draw = 0.0;
     if ( maps[0] > 0 && maps[2] > 0 ) {
         vec4 reflex = vec4(0.0, 0.0, 0.0, 1.0);
         vec3 eye = normalize(eyeVec);
@@ -50,6 +51,7 @@ void main(void) {
         vec3 color = vec3(0.0,0.0,0.0);
         vec3 norm = normalize(normals);
         if ( maps[0] > 0 ) {
+            draw = 0.0;
             norm = texture2D(multipurposeMap, coords).rgb - 0.5;
             norm = vec3(norm.x * normalweight, norm.y * normalweight, norm.z);
         }
@@ -63,13 +65,14 @@ void main(void) {
         outColor = outColor * mix(white, reflex*2, min(texel0.a, scale));
     }
     
-    // FOGGING
+    // FOGGING [for legacy pipeline]
     float z = (gl_FragCoord.z / gl_FragCoord.w);
     float fogFactor = (z/fogSettings[0]);
     fogFactor = clamp(fogFactor, 0.0, fogSettings[1]);
     outColor = mix(outColor, vec4(fog[0],fog[1],fog[2],1.0), fogFactor);
     
     gl_FragData[0] = outColor;
-    gl_FragData[1] = vec4(position.xyz,1.0);
-    gl_FragData[2] = vec4(normals.xyz,1.0);
+    gl_FragData[1] = vec4(position.xyz, 1.0);
+    gl_FragData[2] = vec4(normals.xyz, 1.0);
+    gl_FragData[3] = vec4(draw, 0.0, 0.0, 1.0);
 }

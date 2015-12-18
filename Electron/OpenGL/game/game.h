@@ -87,11 +87,12 @@ private:
     std::array<Player, kMaxPlayers> players;
     std::array<Biped , kMaxBipeds>  bipeds;
 public:
+    ProtonMap *map = nullptr;
     Player *getPlayer(int index);
     Biped *getBiped(int index);
     NetworkObject *getObject(int index);
     
-    Game();
+    Game(ProtonMap *map);
     ~Game();
 
 };

@@ -12,7 +12,6 @@
 #include <stdio.h>
 class ai_test : public ai {
     BSP *bsp;
-    ProtonMap *map;
     ProtonTag *scenario;
     bool canSee(vector3d *me, vector3d *location);
 public:

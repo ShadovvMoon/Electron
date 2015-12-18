@@ -36,6 +36,7 @@ class Client {
 private:
     
     // Intelligence
+    ProtonMap *map;
     ai *intel;
     
     // TEA encryption

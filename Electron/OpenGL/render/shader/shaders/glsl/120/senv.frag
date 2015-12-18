@@ -50,7 +50,7 @@ void main(void) {
     outColor.a = 1.0;
     
     // CUBEMAPPING
-    float draw = 1.0;
+    float draw = 0.0;
     vec3 norm = normalize(normals);
     if ( maps2[3] > 0 || maps2[2] > 0 ) {
         vec4 reflex = vec4(0.0, 0.0, 0.0, 1.0);
@@ -66,11 +66,11 @@ void main(void) {
         // Query the Maps
         vec3 color = vec3(0.0,0.0,0.0);
         if ( maps2[3] > 0 ) {
-            if (norm.x <= 0.0 && norm.y <= 0.0 && norm.z >= 1.0) {
+            if (norm.z >= 0.8) {
                 draw = 1.0;
             }
             
-            //norm = normalize((texture2D(bumpMap, coords*maps3).rgb - 0.5) * TBNMatrix); //mix(norm,  - 0.5, 0.9);
+            norm = normalize((texture2D(bumpMap, coords*maps3).rgb - 0.5) * TBNMatrix); //mix(norm,  - 0.5, 0.9);
             
             //norm = texture2D(bumpMap, coords*maps3).rgb - 0.5;
             //norm = vec3(norm.x * normalweight, norm.y * normalweight, norm.z);
@@ -86,7 +86,7 @@ void main(void) {
         outColor = outColor * mix(white, reflex*2, min(texel0.a, scale));
     }
     
-    // FOGGING
+    // FOGGING [for legacy pipeline]
     float z = (gl_FragCoord.z / gl_FragCoord.w);
     float fogFactor = (z/fogSettings[0]);
     fogFactor = clamp(fogFactor, 0.0, fogSettings[1]);
@@ -94,5 +94,6 @@ void main(void) {
 
     gl_FragData[0] = outColor;
     gl_FragData[1] = vec4(position.xyz, 1.0); //vec4(position.xyz,0);
-    gl_FragData[2] = vec4(norm.xyz, draw);
+    gl_FragData[2] = vec4(norm.xyz, 1.0);
+    gl_FragData[3] = vec4(draw, 0.0, 0.0, 1.0);
 }
