@@ -110,6 +110,11 @@
 		14DA18BD1AEBA9A60064D9B6 /* swat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BB1AEBA9A60064D9B6 /* swat.cpp */; };
 		14DA18C01AEBA9AD0064D9B6 /* sgla.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BE1AEBA9AD0064D9B6 /* sgla.cpp */; };
 		14DA18D11AEBB25E0064D9B6 /* scex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18D01AEBB25E0064D9B6 /* scex.cpp */; };
+		14F4716A1C2A52F90004285C /* ai_wyvern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14F471681C2A52F90004285C /* ai_wyvern.cpp */; };
+		14F4716B1C2A52F90004285C /* ai_wyvern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14F471681C2A52F90004285C /* ai_wyvern.cpp */; };
+		14F471741C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */ = {isa = PBXBuildFile; fileRef = 14F471721C2A534A0004285C /* ZZTHaloDataTypes.c */; };
+		14F471751C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */ = {isa = PBXBuildFile; fileRef = 14F471721C2A534A0004285C /* ZZTHaloDataTypes.c */; };
+		14F471761C2A53F20004285C /* ai.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80351B5DC9410075F708 /* ai.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -262,6 +267,15 @@
 		14DA18BF1AEBA9AD0064D9B6 /* sgla.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sgla.h; sourceTree = "<group>"; };
 		14DA18C91AEBB1F70064D9B6 /* scex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scex.h; sourceTree = "<group>"; };
 		14DA18D01AEBB25E0064D9B6 /* scex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scex.cpp; sourceTree = "<group>"; };
+		14F471681C2A52F90004285C /* ai_wyvern.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ai_wyvern.cpp; sourceTree = "<group>"; };
+		14F471691C2A52F90004285C /* ai_wyvern.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ai_wyvern.hpp; sourceTree = "<group>"; };
+		14F4716D1C2A53280004285C /* ZZTHaloDamageTag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZTHaloDamageTag.h; sourceTree = "<group>"; };
+		14F4716E1C2A53280004285C /* ZZTHaloObjectTag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZTHaloObjectTag.h; sourceTree = "<group>"; };
+		14F4716F1C2A53280004285C /* ZZTHaloParticleTag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZTHaloParticleTag.h; sourceTree = "<group>"; };
+		14F471701C2A53280004285C /* ZZTHaloProjectileTag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZTHaloProjectileTag.h; sourceTree = "<group>"; };
+		14F471711C2A53280004285C /* ZZTHaloWeaponTag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZTHaloWeaponTag.h; sourceTree = "<group>"; };
+		14F471721C2A534A0004285C /* ZZTHaloDataTypes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ZZTHaloDataTypes.c; sourceTree = "<group>"; };
+		14F471731C2A534A0004285C /* ZZTHaloDataTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZTHaloDataTypes.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -468,10 +482,13 @@
 		146D80381B5DC9940075F708 /* ai */ = {
 			isa = PBXGroup;
 			children = (
+				14F4716C1C2A53220004285C /* tags */,
 				146D80351B5DC9410075F708 /* ai.cpp */,
 				146D80361B5DC9410075F708 /* ai.hpp */,
 				146D80391B5DC9AB0075F708 /* ai_test.cpp */,
 				146D803A1B5DC9AB0075F708 /* ai_test.hpp */,
+				14F471681C2A52F90004285C /* ai_wyvern.cpp */,
+				14F471691C2A52F90004285C /* ai_wyvern.hpp */,
 			);
 			name = ai;
 			sourceTree = "<group>";
@@ -656,6 +673,20 @@
 			name = OpenGL;
 			sourceTree = "<group>";
 		};
+		14F4716C1C2A53220004285C /* tags */ = {
+			isa = PBXGroup;
+			children = (
+				14F471721C2A534A0004285C /* ZZTHaloDataTypes.c */,
+				14F471731C2A534A0004285C /* ZZTHaloDataTypes.h */,
+				14F4716D1C2A53280004285C /* ZZTHaloDamageTag.h */,
+				14F4716E1C2A53280004285C /* ZZTHaloObjectTag.h */,
+				14F4716F1C2A53280004285C /* ZZTHaloParticleTag.h */,
+				14F471701C2A53280004285C /* ZZTHaloProjectileTag.h */,
+				14F471711C2A53280004285C /* ZZTHaloWeaponTag.h */,
+			);
+			name = tags;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -828,6 +859,8 @@
 				1482BEF11AFE20D600FA8140 /* main.m in Sources */,
 				1482BEEF1AFE20D600FA8140 /* AppDelegate.mm in Sources */,
 				1482BF0C1AFE213E00FA8140 /* vector3d.cpp in Sources */,
+				14F471751C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */,
+				14F4716B1C2A52F90004285C /* ai_wyvern.cpp in Sources */,
 				1482BF1B1AFE29CA00FA8140 /* ProtonTag.cpp in Sources */,
 				1482BF281AFE2B5200FA8140 /* ERenderView.mm in Sources */,
 				1482BF0B1AFE213000FA8140 /* md5.c in Sources */,
@@ -848,6 +881,7 @@
 				1482BF261AFE2AA900FA8140 /* null.cpp in Sources */,
 				1482BF231AFE2AA500FA8140 /* swat.cpp in Sources */,
 				1482BF131AFE28EB00FA8140 /* sky.cpp in Sources */,
+				14F471761C2A53F20004285C /* ai.cpp in Sources */,
 				1482BF241AFE2AA600FA8140 /* sgla.cpp in Sources */,
 				1482BF251AFE2AA800FA8140 /* scex.cpp in Sources */,
 				1482BF1F1AFE2A9100FA8140 /* bitmaps.cpp in Sources */,
@@ -891,8 +925,10 @@
 				14272D041AE5B05B002A64A5 /* camera.cpp in Sources */,
 				14DA18D11AEBB25E0064D9B6 /* scex.cpp in Sources */,
 				14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */,
+				14F471741C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */,
 				14ADF3B61AE32F9000818134 /* Document.m in Sources */,
 				14272D151AE5B05B002A64A5 /* bitmaps.cpp in Sources */,
+				14F4716A1C2A52F90004285C /* ai_wyvern.cpp in Sources */,
 				14272D161AE5B05B002A64A5 /* texture.cpp in Sources */,
 				14272D091AE5B05B002A64A5 /* object.cpp in Sources */,
 				142158391AE4FA170068557B /* squish.cpp in Sources */,

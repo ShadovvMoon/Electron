@@ -35,8 +35,8 @@ float linearDepth(float depthSample)
  */
 const float rayStep = 0.50;
 const float minRayStep = 1.0;
-const float maxSteps = 30;
-const float searchDist = 50;
+const float maxSteps = 20;
+const float searchDist = 30;
 const float searchDistInv = 0.2;
 const int numBinarySearchSteps = 20;
 const float maxDDepth = 1.0;
@@ -149,6 +149,23 @@ vec4 rainbow(float x) {
     return vec4(r, g, b, 1);
 }
 
+const int NUM_SAMPLES = 38;
+const float SAMPLE_SPACING = 3.0f;
+const float SAMPLE_TOLLERANCE = SAMPLE_SPACING*5.0f;
+const float SAMPLE_RANDOMISE = 0.2f;
+
+// Method to generate a falloff coefficient for the edge of the screen
+// So reflections get faded out as they come close to the edge
+float edgeFalloff(vec2 uv)
+{
+    vec2 s = pow(abs(uv*2-1), vec2(8,6));
+    return 1-max(0, min(1, s.x+s.y));
+}
+
+float random(vec2 co){
+    return fract(sin(dot(co.xy ,vec2(1233.9898,78.233))) * 43758.5453);
+}
+
 
 void main( void )
 {
@@ -161,6 +178,8 @@ void main( void )
     
     vec4 outColor;
     if (refl.r == 1.0) {
+        
+       
         vec2 gTexCoord = gl_TexCoord[0].xy;
         vec4 viewNormal = texture2D(tNormals, gTexCoord);
         vec4 viewPos = texture2D(tPosition, gTexCoord);
@@ -171,16 +190,81 @@ void main( void )
         vec4 projected = ProjectionMatrix * normalize(vec4(norm.x, norm.y*0.5 + 0.5, norm.z, 0.0));
         vec3 reflected = normalize(reflect(projected.xyz, normalize(viewNormal.xyz)));
 
+        float fresnel = clamp(0.0 + 2.8 * pow(1+dot(vec3(0,0,1), viewNormal.xyz), 2), 0.0, 1.0);
         float dDepth;
         vec3 hitPos = viewPos.xyz;
         vec4 coords = RayCast(reflected.xyz, hitPos, dDepth);
         vec2 dCoords = abs(vec2(0.5, 0.5) - coords.xy);
         float screenEdgefactor = clamp(1.0 - (dCoords.x + dCoords.y), 0.0, 1.0);
+    
+        if (coords.x >= 1 || coords.x <= -1 || coords.y >= 1 || coords.y <= -1)
+            outColor = image; // Black used for outside of screen
+        else if (coords.z > 1 && coords.z < -1)
+            outColor = vec4(0,1,0,1); // White outside of frustum
+        else {
+            vec3 reflectedColor = texture2D(tDiffuse, coords.xy).xyz;
+            outColor = mix(image, vec4(reflectedColor.xyz, 1.0), min(0.2, edgeFalloff(coords.xy)));
+            
+            
+            
+            //min(0.3, clamp(-reflected.z, 0.0, 1.0) * coords.w)); //clamp(screenEdgefactor * clamp(-reflected.z, 0.0, 1.0) *
+            //clamp((searchDist - length(viewPos.xyz - hitPos)) * searchDistInv, 0.0, 1.0) * coords.w - 0.3, 0.0, 1.0));
+            
+            //outColor = vec4(coords.xy, 0.0, 1.0);
+        }
         
         
-        vec3 reflectedColor = texture2D(tDiffuse, coords.xy).xyz;
-        outColor = mix(image, vec4(reflectedColor.xyz, 1.0), min(0.3, clamp(-reflected.z, 0.0, 1.0) * coords.w)); //clamp(screenEdgefactor * clamp(-reflected.z, 0.0, 1.0) *
-                           //clamp((searchDist - length(viewPos.xyz - hitPos)) * searchDistInv, 0.0, 1.0) * coords.w - 0.3, 0.0, 1.0));
+        
+        /*
+        // World space normal
+        vec2 vTexCoord = gl_TexCoord[0].xy;
+        vec3 normal = texture2D(tNormals, vTexCoord).xyz*2-1;
+        
+        // World space position
+        vec3 world = texture2D(tPosition, vTexCoord).xyz;
+        
+        // Normalised vector from camera position to world position
+        vec3 epos = UBOCamera - world;
+        vec3 eye = normalize(epos);
+        
+        // Generate reflected ray
+        vec3 ray = reflected; //reflect(-eye, normal);
+        
+        // Calculate Fresnel
+        float fresnel = pow(1-max(0, dot(eye, normal)), 2);
+        
+        // Random sample (this texture was using in my SSAO, but I
+        // have bound it here to add some variance to help battle artefacts)
+        float ran = random(vTexCoord);
+        vec3 rand = vec3(ran, ran, ran); // texture(uTexNoise, vTexCoord*vec2(1.6,1)*4).xyz*2-1;
+        float n = rand.x*0.5+1;
+        
+        vec3 col = vec3(0);
+        for (int i=0; i<NUM_SAMPLES; i++)
+        {
+            // Pick a point on the ray
+            vec3 raysamp = world + rand*SAMPLE_RANDOMISE + ray*(i+n)*SAMPLE_SPACING;
+            
+            // Put ray into screenspace
+            vec4 vssamp = ProjectionMatrix * vec4(raysamp, 1);
+            vssamp /= vssamp.w; // Now its between -1 and 1
+            vssamp = vssamp*0.5+0.5; // Now its between 0 and 1
+            
+            // World space sample position
+            vec3 p = texture2D(tPosition, vssamp.xy).xyz;
+            
+            // Colour of world space sample position
+            vec3 c = texture2D(tDiffuse, vssamp.xy).xyz * edgeFalloff(vssamp.xy);
+            
+            // Calculate the blend amount for the sample 
+            float b = max(0, 0.5-length(raysamp-p)/SAMPLE_TOLLERANCE);
+            
+            // Add the colour to the output
+            col += c * b;
+        }
+        outColor = image + vec4(col, 1.0);
+        */
+        
     } else {
         vec3 light = vec3(0,0,50);
         vec3 lightDir = light - position.xyz ;
@@ -204,7 +288,7 @@ void main( void )
         sum += texture2D(tSSAO, vec2(vTexCoord.x + 2.0*blursize, vTexCoord.y)) * 0.12;
         sum += texture2D(tSSAO, vec2(vTexCoord.x + 3.0*blursize, vTexCoord.y)) * 0.09;
         sum += texture2D(tSSAO, vec2(vTexCoord.x + 4.0*blursize, vTexCoord.y)) * 0.05;
-        outColor = sum.x*image; //vec4(mix(image / 2, image, sum.x).xyz, image.a);
+        outColor = vec4(mix(image / 2, image, sum.x).xyz, image.a); //vec4(sum.x, sum.x, sum.x, 1.0); //*image; //vec4(mix(image / 2, image, sum.x).xyz, image.a);
     }
     
     //Fog

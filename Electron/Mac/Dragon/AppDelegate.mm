@@ -36,7 +36,7 @@ struct NavigationNode {
     std::vector<NavigationLink*> links;
 };
 */
-
+/*
 -(void)generateNavigationMesh {
     
 }
@@ -142,7 +142,7 @@ uint32_t surfaceId(ProtonTag *bspTag, CollisionBSP *collision, intersection *int
             my /= total;
             mz /= total;
             
-            float distance = sqrtf(powf(mx - pos->x, 2) + powf(my - pos->y, 2)/* + powf(mz - pos->z, 2)*/);
+            float distance = sqrtf(powf(mx - pos->x, 2) + powf(my - pos->y, 2));
             if (distance < closest) {
                 closest = distance;
                 outsurface = s;
@@ -298,8 +298,9 @@ int stringPull(const float* portals, int nportals,
     
     return npts;
 }
+*/
 
-surfaceExtra *visited = NULL;
+//surfaceExtra *visited = NULL;
 -(void)render {
     
     NSTimeInterval timeInterval = -[start timeIntervalSinceNow];
@@ -361,6 +362,7 @@ surfaceExtra *visited = NULL;
     glPopMatrix();
     glColor4f(1.0, 1.0, 1.0, 1.0);
 
+    /*
     Edge *edgeCache[20];
     uint16_t scenarioTag = render->map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
@@ -688,102 +690,7 @@ surfaceExtra *visited = NULL;
             free(points);
             free(portals);
             
-            /*
-            CollVert *previous_left   = nullptr;
-            CollVert *previous_right  = nullptr;
-            Edge     *previous_portal = nullptr;
-            next = end_surface;
-            while (visited[next].closest != -1) {
-                Surface *surf1 = surface(bspTag, collision, next);
-                Surface *surf2 = surface(bspTag, collision, visited[next].closest);
-                
-                uint32_t startEdge = surf1->edge;
-                Edge *start = edge(bspTag, collision, startEdge);
-                Edge *current = start;
-                do {
-                    if (current->leftSurface == next) {
-                        if (current->rightSurface == visited[next].closest) break;
-                        current = edge(bspTag, collision, current->forwardEdge);
-                    } else {
-                        if (current->leftSurface == visited[next].closest) break;
-                        current = edge(bspTag, collision, current->prevEdge);
-                    }
-                } while (current != start);
-                Edge *portal = current;
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                CollVert *v1 = vert(bspTag, collision, current->startVert);
-                CollVert *v2 = vert(bspTag, collision, current->endVert);
-                CollVert *leftv;
-                CollVert *rightv;
-                if (previous_left == nullptr) {
-                    leftv  = v2;
-                    rightv = v1;
-                } else {
     
-                    // if there exists an edge between v1 and previous_left that ISNT a portal, then v1 is left
-                    current = start;
-                    bool exists = false;
-                    do {
-                        if (current != portal && current && previous_portal) {
-                            CollVert *vp1 = vert(bspTag, collision, current->startVert);
-                            CollVert *vp2 = vert(bspTag, collision, current->endVert);
-                            
-                            if ((collequal(vp1, previous_left) && collequal(vp2, v1)) ||
-                                (collequal(vp2, previous_left) && collequal(vp1, v1))) {
-                                leftv  = v1;
-                                rightv = v2;
-                                break;
-                            }
-                        
-                            if ((collequal(vp1, previous_left) && collequal(vp2, v2)) ||
-                                (collequal(vp2, previous_left) && collequal(vp1, v2))) {
-                                leftv  = v2;
-                                rightv = v1;
-                                break;
-                            }
-                        }
-
-                        if (current->leftSurface == next) {
-                            current = edge(bspTag, collision, current->forwardEdge);
-                        } else {
-                            current = edge(bspTag, collision, current->prevEdge);
-                        }
-                    } while (current != start);
-                }
-                previous_left   = leftv;
-                previous_right  = rightv;
-                previous_portal = portal;
-                
-                glPushMatrix();
-                glTranslatef(leftv->x, leftv->y, leftv->z);
-                GLUquadric *sphere=gluNewQuadric();
-                gluQuadricDrawStyle( sphere, GLU_FILL);
-                gluQuadricNormals( sphere, GLU_SMOOTH);
-                gluQuadricOrientation( sphere, GLU_OUTSIDE);
-                gluQuadricTexture( sphere, GL_TRUE);
-                gluSphere(sphere,0.2,10,10);
-                gluDeleteQuadric ( sphere );
-                glPopMatrix();
-
-                
-                
-                glBegin(GL_LINES);
-                glVertex3f(leftv->x, leftv->y, leftv->z);
-                glVertex3f(rightv->x, rightv->y, rightv->z);
-                glEnd();
-
-                next = visited[next].closest;
-            }
-            */
             
             free(visited);
             //std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
@@ -791,6 +698,7 @@ surfaceExtra *visited = NULL;
         }
     }
 
+    */
     
     if (game != nullptr) {
         
@@ -964,7 +872,7 @@ surfaceExtra *visited = NULL;
     
     // Insert code here to initialize your application
     load_bitmaps([[NSString stringWithFormat:@"%@/Library/Application Support/HaloMD/GameData/Maps/bitmaps.map", NSHomeDirectory()] cStringUsingEncoding:NSUTF8StringEncoding]);
-    NSString *bloodgulch = [NSString stringWithFormat:@"%@/Library/Application Support/HaloMD/GameData/Maps/bloodgulch.map", NSHomeDirectory()];
+    NSString *bloodgulch = [NSString stringWithFormat:@"%@/Library/Application Support/HaloMD/GameData/Maps/frostbite1_1.map", NSHomeDirectory()];
     
     // Create a rendering view
     renderView = [[ERenderView alloc] initWithFrame:NSZeroRect];
@@ -989,30 +897,44 @@ surfaceExtra *visited = NULL;
         [activity retain];
     }
     
+    /*
     char *names[] = {
         "Stormcutter", "Deadly Nadder", "Gronckle", "Rumblehorn", "Hotburple", "Typhoomerang", "Thunderdrum" "Scauldron", "Skrill", "Timberjack",
         "Stormfly", "Fanghook", "Nightfury", "Meatlug", "Razorwhip", "Raincutter", "Windstriker", "Dragon1", "Dragon2", "Dragon3", "Dragon4", "Dragon5"
     };
+    */
+    
+    char *names[] = {
+        "Whitemagic", "{WAR} SMEARL", "{WAR} QUEEN", "{WAR} CHIRL", "{WAR} SHMERL", "{WAR} DERL", "GIRLSLAMER" "GIRLPLAMER", "GIRLNAMER", "GIRLFAMER",
+        "GIRLKAMER", "GIRLDAMER", "GIRLZAMER", "GIRLEAMER", "GIRLQAMER", "GIRLPAMER", "Windstriker", "Dragon1", "Dragon2", "Dragon3", "Dragon4", "Dragon5"
+    };
+
     
     char pname[255];
     sprintf(pname, "Dragon");
+    
+    
     //int m;
     //for (m=0; m < 1; m++) {
     int i;
     for (i=0; i < 1; i++) {
+        sprintf(pname, "Wyvern %d", i);
+        
+        
+        
         
         uint16_t scenarioTag = render->map->principal_tag;
         if (scenarioTag != NULLED_TAG_ID) {
             ProtonTag *scenarioTag = render->map->tags.at(render->map->principal_tag).get();
             ai_test *ai = new ai_test(render->bsp, render->map, scenarioTag);
-            clients[i]  = new Client(names[i], "104.236.157.223", 5000, ai);
-            //clients[i]  = new Client(names[i], "198.58.124.27", 2302, ai);
+            //clients[i]  = new Client(names[i], "104.236.157.223", 5000, ai);
+            clients[i]  = new Client(names[i], "146.135.40.157", 2302, ai);
         }
     
         
         //clients[i]  = new Client(names[i], "198.58.124.27", 4000);
         //clients[i]  = new Client(names[i], "23.92.54.3", 2309);
-        usleep(250000);
+        usleep(2500000);
     }
     //    sleep(1);
     //}

@@ -186,12 +186,32 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass, s
         }
     }
     
-    #ifdef RENDER_CORE_32
+    //#ifdef RENDER_CORE_32
     options->position[0] = 0;
     options->position[1] = 0;
     options->position[2] = 0;
 
     // Store the current modelview
+    /*
+    fprintf(stderr, "\n\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n",
+            options->modelview[0],
+            options->modelview[1],
+            options->modelview[2],
+            options->modelview[3],
+            options->modelview[4],
+            options->modelview[5],
+            options->modelview[6],
+            options->modelview[7],
+            options->modelview[8],
+            options->modelview[9],
+            options->modelview[10],
+            options->modelview[11],
+            options->modelview[12],
+            options->modelview[13],
+            options->modelview[14],
+            options->modelview[15]);
+    */
+    
     GLfloat modelview[16];
     memcpy(modelview, options->modelview, sizeof(GLfloat) * 16);
     GLfloat output[16];
@@ -235,10 +255,30 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass, s
     shader->update(options);
     instance->reference->render(pass);
     
+    /*
+    fprintf(stderr, "\n\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n",
+            options->modelview[0],
+            options->modelview[1],
+            options->modelview[2],
+            options->modelview[3],
+            options->modelview[4],
+            options->modelview[5],
+            options->modelview[6],
+            options->modelview[7],
+            options->modelview[8],
+            options->modelview[9],
+            options->modelview[10],
+            options->modelview[11],
+            options->modelview[12],
+            options->modelview[13],
+            options->modelview[14],
+            options->modelview[15]);
+    */
+    
     // Restore the modelview
     memcpy(options->modelview, &modelview, sizeof(GLfloat) * 16);
     
-    #else
+    //#else
     glPushMatrix();
     glTranslatef(instance->x, instance->y, instance->z);
     glRotatef(instance->roll , 1.0, 0.0, 0.0); //1.5%
@@ -249,7 +289,7 @@ void ObjectManager::render_instance(ObjectInstance *instance, ShaderType pass, s
     if (instance->selected) {
         glColor4f(1.0, 1.0, 1.0, 1.0);
     }
-    #endif
+    //#endif
 }
 
 void ObjectManager::render_subclass(ObjectClass* objClass, SelectionType selection, GLuint *name, GLuint *lookup, ShaderType pass, shader_options *options) {

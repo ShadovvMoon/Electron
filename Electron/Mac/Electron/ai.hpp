@@ -17,5 +17,10 @@ class ai {
 public:
     ProtonMap *map;
     virtual void tick(Game *game, uint16_t bno) = 0;
+    
+    int stringPull(const float* portals, int nportals,
+                   float* pts, const int maxPts);
+    float *findPath(BSP *bsp, ProtonMap *map, vector3d *start, vector3d *end);
+    void debug( const char* format, ... );
 };
 #endif /* ai_cpp */

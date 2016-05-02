@@ -90,6 +90,39 @@ GLuint make_shader(GLenum type, const char *filename)
 
 GLuint make_program(GLuint vertex_shader, GLuint fragment_shader)
 {
+    
+    //GL_RENDERBUFFER
+    //GL_DEPTH_COMPONENT24
+    //800
+    //600
+    
+    
+    //0x2B42EA
+    //GL_FRAMEBUFFER_EXT
+    //0x1
+    
+    
+    //glFramebufferTexture2D
+    //0x1F27C2	call 0x2d0e76	E8 AF E6 0D 00
+        //0x2D0E98	call 0x2b45f2	E8 55 37 FE FF
+            //0x2B4929	call 0x2b395a	E8 2C F0 FF FF
+                //0x2B4315	call dword [eax]	FF 10
+    
+    
+    
+    //0x2B452C	call dword [eax]	FF 10
+    //0x2B4929	call 0x2b395a	E8 2C F0 FF FF
+    
+    
+    
+    
+    //0x96179563
+    //GL_FRAMEBUFFER_EXT
+    //GL_COLOR_ATTACHMENT0_EXT
+    //GL_TEXTURE_RECTANGLE
+    //TEXTURE == 1
+    
+    
     GLint program_ok;
     
     GLuint program = glCreateProgram();

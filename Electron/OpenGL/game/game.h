@@ -49,6 +49,7 @@ typedef struct {
     MoveMask movement;
     bool shooting;
     bool tab;
+    bool zooming;
 } ControlMask;
 
 
@@ -64,6 +65,8 @@ class Biped {
 public:
     uint16_t object_index;
     uint16_t dead_tick = 0;
+    uint16_t weapon_object_id = -1;
+    uint16_t weapon_slots[4];
     
     int last_update_tick = 0;
     int team = 0;
