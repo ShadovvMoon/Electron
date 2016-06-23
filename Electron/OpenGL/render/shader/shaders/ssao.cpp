@@ -43,8 +43,8 @@ void ssao_object::setFogSettings(float r, float g, float b, float distance, floa
 
 // Senv object
 void ssao_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
-    printf("shader setup\n");
-    ssao *shader = (ssao *)(manager->get_shader(shader_SSAO));
+    //printf("shader setup\n");
+    //ssao *shader = (ssao *)(manager->get_shader(shader_SSAO));
 };
 
 bool ssao_object::is(ShaderType type) {

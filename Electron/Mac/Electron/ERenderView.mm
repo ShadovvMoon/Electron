@@ -6,22 +6,22 @@
 //  Copyright (c) 2015 Samuco. All rights reserved.
 //
 
-#import "ERenderView.h"
+#import "ERenderView.hpp"
 #import "../../OpenGL/render/render.h"
 
 #include <mutex>          // std::mutex
 std::mutex mtx;           // mutex for critical section
 
 @implementation ERenderView
-ERenderer *renderer;
-Control *controls = (Control *)malloc(sizeof(Control));
+
+//E((ERenderer*)renderer) *((ERenderer*)renderer);
 
 -(void)setDelegate:(id)del {
     delegate = del;
 }
 
 -(void*)renderer {
-    return renderer;
+    return ((ERenderer*)renderer);
 }
 
 - (void)prepareOpenGL
@@ -33,10 +33,10 @@ Control *controls = (Control *)malloc(sizeof(Control));
     // Create a display link capable of being used with all active displays
     CVDisplayLinkCreateWithActiveCGDisplays(&displayLink);
     
-    // Set the renderer output callback function
+    // Set the ((ERenderer*)renderer) output callback function
     CVDisplayLinkSetOutputCallback(displayLink, &MyDisplayLinkCallback, self);
     
-    // Set the display link for the current renderer
+    // Set the display link for the current ((ERenderer*)renderer)
     CGLContextObj cglContext = [[self openGLContext] CGLContextObj];
     CGLPixelFormatObj cglPixelFormat = [[self pixelFormat] CGLPixelFormatObj];
     CVDisplayLinkSetCurrentCGDisplayFromOpenGLContext(displayLink, cglContext, cglPixelFormat);
@@ -45,7 +45,7 @@ Control *controls = (Control *)malloc(sizeof(Control));
     CVDisplayLinkStart(displayLink);
 }
 
-// This is the renderer output callback function
+// This is the ((ERenderer*)renderer) output callback function
 static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTimeStamp* now, const CVTimeStamp* outputTime, CVOptionFlags flagsIn, CVOptionFlags* flagsOut, void* displayLinkContext)
 {
     CVReturn result = [(ERenderView*)displayLinkContext getFrameForTime:outputTime];
@@ -55,14 +55,14 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 - (CVReturn)getFrameForTime:(const CVTimeStamp*)outputTime
 {
     // Add your drawing codes here
-    renderer->applyControl(controls);
-    //if ([[self window] isMainWindow]) {
+    ((ERenderer*)renderer)->applyControl(((Control*)controls));
+    if ([[self window] isMainWindow]) {
         mtx.lock();
         //NSDate *start = [NSDate date];
         [[self openGLContext] makeCurrentContext];
         NSSize sceneBounds = [self bounds].size;
-        renderer->resize(sceneBounds.width, sceneBounds.height);
-        renderer->render();
+        ((ERenderer*)renderer)->resize(sceneBounds.width, sceneBounds.height);
+        ((ERenderer*)renderer)->render();
         if (delegate != NULL) {
             [delegate render];
         }
@@ -72,7 +72,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
         //totalTime += timeInterval;
         //printf("%f %f (%f %f)\n", totalTime, frames/totalTime, timeInterval, 1.0/timeInterval);
         mtx.unlock();
-    //}
+    }
     return kCVReturnSuccess;
 }
 
@@ -88,7 +88,7 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 #ifdef RENDER_GPU
         NSOpenGLPFAAccelerated,
 #else
-        NSOpenGLPFARendererID, kCGLRendererGenericID,
+        NSOpenGLPFA((ERenderer*)renderer)ID, kCGL((ERenderer*)renderer)GenericID,
 #endif
 #ifdef RENDER_CORE_32
         NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion4_1Core,
@@ -122,7 +122,9 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
         NSString *resourcesPath = [[NSBundle mainBundle] resourcePath];
         delegate = NULL;
         renderer = new ERenderer;
-        renderer->setup([resourcesPath cStringUsingEncoding:NSUTF8StringEncoding]);
+        controls = new Control; //(Control *)malloc(sizeof(Control));
+        
+        ((ERenderer*)renderer)->setup([resourcesPath cStringUsingEncoding:NSUTF8StringEncoding]);
     }
     return self;
 }
@@ -132,8 +134,8 @@ static CVReturn MyDisplayLinkCallback(CVDisplayLinkRef displayLink, const CVTime
 }
 
 -(void)updateMasks:(NSEvent *)theEvent {
-    controls->shift = (([theEvent modifierFlags] & NSShiftKeyMask) != 0);
-    controls->control = (([theEvent modifierFlags] & NSControlKeyMask) != 0);
+    ((Control*)controls)->shift = (([theEvent modifierFlags] & NSShiftKeyMask) != 0);
+    ((Control*)controls)->control = (([theEvent modifierFlags] & NSControlKeyMask) != 0);
 }
 
 CGPoint prevDown;
@@ -142,13 +144,13 @@ CGPoint prevDownLeft;
     [self updateMasks:theEvent];
     prevDownLeft = [NSEvent mouseLocation];
     mtx.lock();
-    renderer->mouseDown([theEvent locationInWindow].x, [theEvent locationInWindow].y);
+    ((ERenderer*)renderer)->mouseDown([theEvent locationInWindow].x, [theEvent locationInWindow].y);
     mtx.unlock();
 }
 - (void)mouseDragged:(NSEvent *)theEvent {
     [self updateMasks:theEvent];
     NSPoint dragPoint = [NSEvent mouseLocation];
-    renderer->mouseDrag((dragPoint.x - prevDownLeft.x), (dragPoint.y - prevDownLeft.y));
+    ((ERenderer*)renderer)->mouseDrag((dragPoint.x - prevDownLeft.x), (dragPoint.y - prevDownLeft.y));
     prevDownLeft = dragPoint;
 }
 
@@ -162,7 +164,7 @@ CGPoint prevDownLeft;
     NSPoint dragPoint = [NSEvent mouseLocation];
     
     if ((([theEvent modifierFlags] & NSControlKeyMask) == 0))
-        renderer->rightMouseDrag((dragPoint.x - prevDown.x), (dragPoint.y - prevDown.y));
+        ((ERenderer*)renderer)->rightMouseDrag((dragPoint.x - prevDown.x), (dragPoint.y - prevDown.y));
     
     prevDown = dragPoint;
 }
@@ -172,19 +174,19 @@ CGPoint prevDownLeft;
     switch (character)
     {
         case 'w':
-            controls->forward = true;
+            ((Control*)controls)->forward = true;
             break;
         case 'e':
-            controls->forwardSlow = true;
+            ((Control*)controls)->forwardSlow = true;
             break;
         case 's':
-            controls->back = true;
+            ((Control*)controls)->back = true;
             break;
         case 'a':
-            controls->left = true;
+            ((Control*)controls)->left = true;
             break;
         case 'd':
-            controls->right = true;
+            ((Control*)controls)->right = true;
             break;
     }
     [self updateMasks:theEvent];
@@ -196,32 +198,32 @@ CGPoint prevDownLeft;
     switch (character)
     {
         case 'w':
-            controls->forward = false;
+            ((Control*)controls)->forward = false;
             break;
         case 'e':
-            controls->forwardSlow = false;
+            ((Control*)controls)->forwardSlow = false;
             break;
         case 's':
-            controls->back = false;
+            ((Control*)controls)->back = false;
             break;
         case 'a':
-            controls->left = false;
+            ((Control*)controls)->left = false;
             break;
         case 'd':
-            controls->right = false;
+            ((Control*)controls)->right = false;
             break;
         case 'q':
-            renderer->useSSAO = !renderer->useSSAO;
+            ((ERenderer*)renderer)->useSSAO = !((ERenderer*)renderer)->useSSAO;
             break;
     }
     [self updateMasks:theEvent];
 }
 
 -(IBAction)generateLightmaps:(id)sender {
-    uint16_t scenarioTag = renderer->map->principal_tag;
+    uint16_t scenarioTag = ((ERenderer*)renderer)->map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
-        ProtonTag *scenarioTag = renderer->map->tags.at(renderer->map->principal_tag).get();
-        renderer->bsp->generate_lightmap(renderer->camera->position, renderer->map, scenarioTag);
+        ProtonTag *scenarioTag = ((ERenderer*)renderer)->map->tags.at(((ERenderer*)renderer)->map->principal_tag).get();
+        ((ERenderer*)renderer)->bsp->generate_lightmap(((ERenderer*)renderer)->camera->position, ((ERenderer*)renderer)->map, scenarioTag);
     }
 }
 
@@ -229,7 +231,7 @@ CGPoint prevDownLeft;
 {
     //[[self openGLContext] update];
     
-    //renderer->applyControl(controls);
+    //((ERenderer*)renderer)->applyControl(controls);
     //[self setNeedsDisplay:YES];
 }
 
@@ -240,18 +242,18 @@ CGPoint prevDownLeft;
 ProtonMap *map;
 -(void)setData:(NSData*)data {
     map = new ProtonMap([data bytes]);
-    renderer->read(map);
+    ((ERenderer*)renderer)->read(map);
 }
 
 -(NSData *)getData {
-    renderer->write();
+    ((ERenderer*)renderer)->write();
     ProtonCacheFile cache = map->ToCacheFile();
     return [[NSData alloc] initWithBytes:cache.Data() length:cache.Length()];
 }
 
 -(void)dealloc {
     delete map;
-    delete renderer;
+    delete ((ERenderer*)renderer);
     [super dealloc];
 }
 

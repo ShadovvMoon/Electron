@@ -55,8 +55,8 @@ void deff_object::setFogSettings(float r, float g, float b, float distance, floa
 
 // Senv object
 void deff_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag) {
-    printf("shader setup\n");
-    deff *shader = (deff *)(manager->get_shader(shader_DEFF));
+    //printf("shader setup\n");
+    //deff *shader = (deff *)(manager->get_shader(shader_DEFF));
 };
 
 bool deff_object::is(ShaderType type) {

@@ -1362,106 +1362,106 @@ enum field_type_bit_size
 };
 
 char *message_packet_to_string_table[] = { // 38 [loc_1bbcd2]
-    "client-broadcast_game_search",
-    "client-ping",
-    "server-game_advertise",
-    "server-pong",
-    "server-new_client_challenge",
-    "server-machine_accepted",
-    "server-machine_rejected",
-    "server-game_is_ending_holdup",
-    "server-game_settings_update",
-    "server-pregame_countdown",
-    "server-begin_game",
-    "server-graceful_game_exit_pregame",
-    "server-pregame_keep_alive",
-    "server-postgame_keep_alive",
-    "client-join_game_request",             //<-- join [14]
-    "client-add_player_request_pregame",
-    "client-remove_player_request_pregame",
-    "client-settings_request",
-    "client-player_settings_request",
-    "client-game_start_request",
-    "client-graceful_game_exit_pregame",
-    "client-map_is_precached_pregame",      //<--- join [21]
-    "server-game_update",
-    "server-add_player_ingame",
-    "server-remove_player_ingame",
-    "server-game_over",
-    "client-loaded",                        //<--- join [26]
-    "client-game_update",
-    "client-add_player_request_ingame",
-    "client-remove_player_request_ingame",
-    "client-graceful_game_exit_ingame",
-    "client-host_crashed_cry_for_help",
-    "client-join_new_host",
-    "server-reconnect",
-    "server-graceful_game_exit",
-    "client-remove_player_request_postgame",
-    "client-switch_to_pregame",
-    "client-graceful_game_exit_postgame",
+    (char *)"client-broadcast_game_search",
+    (char *)"client-ping",
+    (char *)"server-game_advertise",
+    (char *)"server-pong",
+    (char *)"server-new_client_challenge",
+    (char *)"server-machine_accepted",
+    (char *)"server-machine_rejected",
+    (char *)"server-game_is_ending_holdup",
+    (char *)"server-game_settings_update",
+    (char *)"server-pregame_countdown",
+    (char *)"server-begin_game",
+    (char *)"server-graceful_game_exit_pregame",
+    (char *)"server-pregame_keep_alive",
+    (char *)"server-postgame_keep_alive",
+    (char *)"client-join_game_request",             //<-- join [14]
+    (char *)"client-add_player_request_pregame",
+    (char *)"client-remove_player_request_pregame",
+    (char *)"client-settings_request",
+    (char *)"client-player_settings_request",
+    (char *)"client-game_start_request",
+    (char *)"client-graceful_game_exit_pregame",
+    (char *)"client-map_is_precached_pregame",      //<--- join [21]
+    (char *)"server-game_update",
+    (char *)"server-add_player_ingame",
+    (char *)"server-remove_player_ingame",
+    (char *)"server-game_over",
+    (char *)"client-loaded",                        //<--- join [26]
+    (char *)"client-game_update",
+    (char *)"client-add_player_request_ingame",
+    (char *)"client-remove_player_request_ingame",
+    (char *)"client-graceful_game_exit_ingame",
+    (char *)"client-host_crashed_cry_for_help",
+    (char *)"client-join_new_host",
+    (char *)"server-reconnect",
+    (char *)"server-graceful_game_exit",
+    (char *)"client-remove_player_request_postgame",
+    (char *)"client-switch_to_pregame",
+    (char *)"client-graceful_game_exit_postgame",
 };
 
 //00060844         jmp        dword [ds:0x343648+eax*4]                                     ; switch statement with 6 cases
 
 char *message_delta_packet_to_string_table[] = { //loc_1bcc21 [56]
-    "_message_delta_object_deletion",       //000000
-    "_message_delta_projectile_update",     //100000
-    "_message_delta_equipment_update",      //010000
-    "_message_delta_weapon_update",         //110000
-    "_message_delta_biped_update",          //001000
-    "_message_delta_vehicle_update",        //101000
-    "_message_delta_hud_add_item",          //111000
-    "_message_delta_player_create",         //000100
-    "_message_delta_player_spawn",          //100100
-    "_message_delta_player_exit_vehicle",   //010100
-    "_message_delta_player_set_action_result",  //110100
-    "_message_delta_player_effect_start",   //001100
-    "_message_delta_unit_kill",             //101100
-    "_message_delta_client_game_update",    //011100
-    "_message_delta_player_handle_powerup", //111100
-    "_message_delta_hud_chat",              //000010
-    "_message_delta_slayer_update",
-    "_message_delta_ctf_update",
-    "_message_delta_oddball_update",
-    "_message_delta_king_update",
-    "_message_delta_race_update",
-    "_message_delta_player_score_update",
-    "_message_delta_game_engine_change_mode",
-    "_message_delta_game_engine_map_reset",
-    "_message_delta_multiplayer_hud_message",
-    "_message_delta_multiplayer_sound",
-    "_message_delta_team_change",           //001011
-    "_message_delta_unit_drop_current_weapon",
-    "_message_delta_vehicle_new",
-    "_message_delta_biped_new",
-    "_message_delta_projectile_new",
-    "_message_delta_equipment_new",
-    "_message_delta_weapon_new",
-    "_message_delta_game_settings_update",
-    "_message_delta_parameters_protocol",
-    "_message_delta_local_player_update",
-    "_message_delta_local_player_vehicle_update",
-    "_message_delta_remote_player_action_update",
-    "_message_delta_super_remote_players_action_update",
-    "_message_delta_remote_player_position_update",
-    "_message_delta_remote_player_vehicle_update",
-    "_message_delta_remote_player_total_update_biped",
-    "_message_delta_remote_player_total_update_vehicle",
-    "_message_delta_weapon_start_reload",
-    "_message_delta_weapon_ammo_pickup_mid_reload",
-    "_message_delta_weapon_finish_reload",
-    "_message_delta_weapon_cancel_reload",
-    "_message_delta_netgame_equipment_new",
-    "_message_delta_projectile_detonate",
-    "_message_delta_item_accelerate",
-    "_message_delta_damage_dealt",
-    "_message_delta_projectile_attach",
-    "_message_delta_client_to_server_pong",
-    "_message_delta_super_ping_update",
-    "_message_delta_sv_motd",
-    "_message_delta_rcon_request",
-    "_message_delta_rcon_response",
+    (char *)"_message_delta_object_deletion",       //000000
+    (char *)"_message_delta_projectile_update",     //100000
+    (char *)"_message_delta_equipment_update",      //010000
+    (char *)"_message_delta_weapon_update",         //110000
+    (char *)"_message_delta_biped_update",          //001000
+    (char *)"_message_delta_vehicle_update",        //101000
+    (char *)"_message_delta_hud_add_item",          //111000
+    (char *)"_message_delta_player_create",         //000100
+    (char *)"_message_delta_player_spawn",          //100100
+    (char *)"_message_delta_player_exit_vehicle",   //010100
+    (char *)"_message_delta_player_set_action_result",  //110100
+    (char *)"_message_delta_player_effect_start",   //001100
+    (char *)"_message_delta_unit_kill",             //101100
+    (char *)"_message_delta_client_game_update",    //011100
+    (char *)"_message_delta_player_handle_powerup", //111100
+    (char *)"_message_delta_hud_chat",              //000010
+    (char *)"_message_delta_slayer_update",
+    (char *)"_message_delta_ctf_update",
+    (char *)"_message_delta_oddball_update",
+    (char *)"_message_delta_king_update",
+    (char *)"_message_delta_race_update",
+    (char *)"_message_delta_player_score_update",
+    (char *)"_message_delta_game_engine_change_mode",
+    (char *)"_message_delta_game_engine_map_reset",
+    (char *)"_message_delta_multiplayer_hud_message",
+    (char *)"_message_delta_multiplayer_sound",
+    (char *)"_message_delta_team_change",           //001011
+    (char *)"_message_delta_unit_drop_current_weapon",
+    (char *)"_message_delta_vehicle_new",
+    (char *)"_message_delta_biped_new",
+    (char *)"_message_delta_projectile_new",
+    (char *)"_message_delta_equipment_new",
+    (char *)"_message_delta_weapon_new",
+    (char *)"_message_delta_game_settings_update",
+    (char *)"_message_delta_parameters_protocol",
+    (char *)"_message_delta_local_player_update",
+    (char *)"_message_delta_local_player_vehicle_update",
+    (char *)"_message_delta_remote_player_action_update",
+    (char *)"_message_delta_super_remote_players_action_update",
+    (char *)"_message_delta_remote_player_position_update",
+    (char *)"_message_delta_remote_player_vehicle_update",
+    (char *)"_message_delta_remote_player_total_update_biped",
+    (char *)"_message_delta_remote_player_total_update_vehicle",
+    (char *)"_message_delta_weapon_start_reload",
+    (char *)"_message_delta_weapon_ammo_pickup_mid_reload",
+    (char *)"_message_delta_weapon_finish_reload",
+    (char *)"_message_delta_weapon_cancel_reload",
+    (char *)"_message_delta_netgame_equipment_new",
+    (char *)"_message_delta_projectile_detonate",
+    (char *)"_message_delta_item_accelerate",
+    (char *)"_message_delta_damage_dealt",
+    (char *)"_message_delta_projectile_attach",
+    (char *)"_message_delta_client_to_server_pong",
+    (char *)"_message_delta_super_ping_update",
+    (char *)"_message_delta_sv_motd",
+    (char *)"_message_delta_rcon_request",
+    (char *)"_message_delta_rcon_response",
 };
 
 

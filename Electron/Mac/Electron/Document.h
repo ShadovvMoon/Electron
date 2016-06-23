@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "ERenderView.h"
+#import "ERenderView.hpp"
 
 @interface Document : NSDocument
 {

@@ -83,7 +83,7 @@ void DecodeLinearR5G6B5 (int width, int height, const char *texdata, unsigned in
     int x,y;
     for (y = 0; y < height; y++)
         for (x = 0; x < width; x++){
-            cdata = ((unsigned short *)texdata)[(y * width) + x];
+            cdata = ((unsigned short *)texdata)[(y * width) + x]; //crash if no bitmaps
             outdata[(y * width) + x]  = 0xFF000000 |
             ((cdata & 0xF800) >> 8)|
             ((cdata & 0x07e0) << 5)|
@@ -197,7 +197,7 @@ texture::texture(ProtonMap *map, HaloTagDependency bitm) {
                 input = (char*)bitmap_data() + image->offset;
             };
             
-            printf("loading %s %d %d %d %d 0x%x -> %d\n", bitmapTag->Name(), image->width, image->height, image->format, image->internalized, bitmapTag->ResourcesData(), textures[i]);
+            printf("loading %s %d %d %d %d 0x%x -> %d\n", bitmapTag->Name(), image->width, image->height, image->format, image->internalized, (void*)bitmapTag->ResourcesData(), textures[i]);
             int size = 0;
             if (image->format == BITM_FORMAT_DXT1) {
                 format = GL_RGB;

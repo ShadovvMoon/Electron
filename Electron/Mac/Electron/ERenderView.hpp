@@ -8,14 +8,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+
 @interface ERenderView : NSOpenGLView
 {
     double totalTime;
     int frames;
     id delegate;
     
+    void *renderer;
+    void *controls;
+    
     CVDisplayLinkRef displayLink; //display link for managing rendering thread
-    //NSTimer *drawTimer;
 }
 -(void*)renderer;
 -(void)setDelegate:(id)del;

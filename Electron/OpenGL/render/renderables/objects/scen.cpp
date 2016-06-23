@@ -111,7 +111,7 @@ void ScenClass::write(ProtonMap *map, ProtonTag *scenario) {
     HaloScenarioTag *tag = (HaloScenarioTag *)scenario->Data();
 
     // Remove the old scenery spawn reflexive data
-    printf("writing scenery %d %d\n", tag->scen.count, objects.size());
+    printf("writing scenery %d %ld\n", tag->scen.count, objects.size());
     uint32_t offset = scenario->PointerToOffset(tag->scen.address);
     scenario->DeleteData(offset, tag->scen.count * SCENERY_SPAWN_CHUNK);
     

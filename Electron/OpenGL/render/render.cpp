@@ -185,7 +185,10 @@ void ERenderer::read(ProtonMap *map) {
 double cotan(double i) { return(1 / tan(i)); }
 
 void ERenderer::resize(float width, float height) {
-
+    if (!ready) {
+        return;
+    }
+    
     // Viewport
     glViewport(0,0,width,height);
     
@@ -193,7 +196,7 @@ void ERenderer::resize(float width, float height) {
     double aspect = width / height;
     double znear = 0.1f;
     double zfar = 500.0f;
-    double f = cotan((fovy / 2.0)); //tan(M_PI_2 - (fovy / 2.0));
+    //double f = cotan((fovy / 2.0)); //tan(M_PI_2 - (fovy / 2.0));
     float ymax = znear * tan(fovy * M_PI/360.0);
     float ymin = -ymax;
     float xmax = ymax * aspect;
@@ -300,7 +303,7 @@ void ERenderer::applyControl(Control *control){
     }
     
     milliseconds current = now();
-    double seconds = (current.count() - tick.count()) / 1000.0;
+    //double seconds = (current.count() - tick.count()) / 1000.0;
     double forward_seconds = (current.count() - forward_tick.count()) / 1000.0;
     double  strafe_seconds = (current.count() -  strafe_tick.count()) / 1000.0;
     
@@ -332,7 +335,7 @@ void ERenderer::renderScene(bool fast, bool reflect) {
     uint16_t scenarioTag = map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
-        HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
+        //HaloScenarioTag *scenario = (HaloScenarioTag *)(scenarioTag->Data());
         
         
         if (reflect) {
@@ -548,14 +551,14 @@ void ERenderer::render() {
         glLoadIdentity();
         glOrtho(0,m_width,0,m_height,0.1f,2);
         
+        
+        /*
         double left = 0;
         double right = m_width;
         double bottom = 0;
         double top = m_height;
         double nearVal = 0.1;
         double farVal = 2;
-        
-        /*
         options->perspective[0] = 2 / (right - left);
         options->perspective[1] = 0.0;
         options->perspective[2] = 0.0;

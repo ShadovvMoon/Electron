@@ -193,8 +193,8 @@ vector3d *leafTest(ProtonTag *b, CollisionBSP *c, vector3d *p, vector3d *q, uint
         
         // Test the 2d bsp
         vector3d *Tp = project(nN, T);
-        float distanceS = sqrtf(powf(S->x-p->x, 2) + powf(S->y-p->y, 2) + powf(S->z-p->z, 2));
-        float distanceT = sqrtf(powf(T->x-p->x, 2) + powf(T->y-p->y, 2) + powf(T->z-p->z, 2));
+        //float distanceS = sqrtf(powf(S->x-p->x, 2) + powf(S->y-p->y, 2) + powf(S->z-p->z, 2));
+        //float distanceT = sqrtf(powf(T->x-p->x, 2) + powf(T->y-p->y, 2) + powf(T->z-p->z, 2));
         if (bsp2dTest(b,c,ref->bsp2DNode,T,Tp, output)) {
             S->set(T);
         }

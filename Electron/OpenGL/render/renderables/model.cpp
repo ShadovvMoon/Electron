@@ -263,7 +263,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             render++;
         }
     }
-    printf("geometries %d\n", geometries.size());
+    printf("geometries %ld\n", geometries.size());
     
     // Read regions
     int LOD = 4;
@@ -273,7 +273,7 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
         printf("region %d %d\n", i, region->Permutations.count);
         for (p=0; p < region->Permutations.count; p++) {
             MODEL_REGION_PERMUTATION *permutation = (MODEL_REGION_PERMUTATION *)(modelTag->Data() + modelTag->PointerToOffset(region->Permutations.address) + 88 * p);
-            printf("permutation %d\n", i, permutation->LOD_MeshIndex[LOD]);
+            printf("permutation %d, %d\n", i, permutation->LOD_MeshIndex[LOD]);
             if ((permutation->Flags[0] & 0xFF) != 1) {
                 renderIndices.push_back(permutation->LOD_MeshIndex[LOD]);
             }
@@ -287,7 +287,6 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
 }
 
 void Model::render(ShaderType pass) {
-    if (this == NULL) return;
     if (!ready) return;
     
     //glEnable(GL_TEXTURE_2D);

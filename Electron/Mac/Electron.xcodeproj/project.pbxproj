@@ -20,9 +20,7 @@
 		142158371AE4FA170068557B /* singlecolourfit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1421582B1AE4FA170068557B /* singlecolourfit.cpp */; };
 		142158381AE4FA170068557B /* singlecolourlookup.inl in Resources */ = {isa = PBXBuildFile; fileRef = 1421582D1AE4FA170068557B /* singlecolourlookup.inl */; };
 		142158391AE4FA170068557B /* squish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1421582E1AE4FA170068557B /* squish.cpp */; };
-		142322CF1AFA0719004A7E0D /* client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 142322C81AFA0719004A7E0D /* client.cpp */; };
 		142322D01AFA0719004A7E0D /* game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 142322CA1AFA0719004A7E0D /* game.cpp */; };
-		142322D11AFA0719004A7E0D /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 142322CC1AFA0719004A7E0D /* md5.c */; };
 		142322D21AFA0719004A7E0D /* research in Resources */ = {isa = PBXBuildFile; fileRef = 142322CE1AFA0719004A7E0D /* research */; };
 		14272D041AE5B05B002A64A5 /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CDE1AE5B05B002A64A5 /* camera.cpp */; };
 		14272D051AE5B05B002A64A5 /* vector3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE01AE5B05B002A64A5 /* vector3d.cpp */; };
@@ -48,8 +46,6 @@
 		145A96C91AE79E55001CCEBA /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 145A96C71AE79E55001CCEBA /* null.cpp */; };
 		146BB44E1C1D1D7600308B25 /* deff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146BB44C1C1D1D7600308B25 /* deff.cpp */; };
 		146BB4511C1D40FE00308B25 /* ssao.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146BB44F1C1D40FE00308B25 /* ssao.cpp */; };
-		146D80371B5DC9410075F708 /* ai.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80351B5DC9410075F708 /* ai.cpp */; };
-		146D803B1B5DC9AB0075F708 /* ai_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80391B5DC9AB0075F708 /* ai_test.cpp */; };
 		146D803C1B5DCBCE0075F708 /* ai_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80391B5DC9AB0075F708 /* ai_test.cpp */; };
 		1472F8581AEE1A3A00FE64DC /* sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1472F8561AEE1A3A00FE64DC /* sky.cpp */; };
 		1480D0771C1D68E000266496 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1480D0751C1D68E000266496 /* blur.cpp */; };
@@ -110,7 +106,6 @@
 		14DA18BD1AEBA9A60064D9B6 /* swat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BB1AEBA9A60064D9B6 /* swat.cpp */; };
 		14DA18C01AEBA9AD0064D9B6 /* sgla.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BE1AEBA9AD0064D9B6 /* sgla.cpp */; };
 		14DA18D11AEBB25E0064D9B6 /* scex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18D01AEBB25E0064D9B6 /* scex.cpp */; };
-		14F4716A1C2A52F90004285C /* ai_wyvern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14F471681C2A52F90004285C /* ai_wyvern.cpp */; };
 		14F4716B1C2A52F90004285C /* ai_wyvern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14F471681C2A52F90004285C /* ai_wyvern.cpp */; };
 		14F471741C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */ = {isa = PBXBuildFile; fileRef = 14F471721C2A534A0004285C /* ZZTHaloDataTypes.c */; };
 		14F471751C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */ = {isa = PBXBuildFile; fileRef = 14F471721C2A534A0004285C /* ZZTHaloDataTypes.c */; };
@@ -258,7 +253,7 @@
 		14ADF3E31AE32FC700818134 /* HaloData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = HaloData.cpp; path = ../../../HaloData.cpp; sourceTree = "<group>"; };
 		14ADF3E41AE32FC700818134 /* HaloData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HaloData.h; path = ../../../HaloData.h; sourceTree = "<group>"; };
 		14ADF3E61AE32FCF00818134 /* BitmSndMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BitmSndMap.h; path = ../../../BitmSndMap.h; sourceTree = "<group>"; };
-		14ADF3EE1AE3312D00818134 /* ERenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ERenderView.h; sourceTree = "<group>"; };
+		14ADF3EE1AE3312D00818134 /* ERenderView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ERenderView.hpp; sourceTree = "<group>"; };
 		14ADF3EF1AE3312D00818134 /* ERenderView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ERenderView.mm; sourceTree = "<group>"; };
 		14ADF3F51AE3367000818134 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		14DA18BB1AEBA9A60064D9B6 /* swat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = swat.cpp; sourceTree = "<group>"; };
@@ -656,7 +651,7 @@
 		14ADF3EB1AE330E100818134 /* Render */ = {
 			isa = PBXGroup;
 			children = (
-				14ADF3EE1AE3312D00818134 /* ERenderView.h */,
+				14ADF3EE1AE3312D00818134 /* ERenderView.hpp */,
 				14ADF3EF1AE3312D00818134 /* ERenderView.mm */,
 			);
 			name = Render;
@@ -911,7 +906,6 @@
 			files = (
 				146BB44E1C1D1D7600308B25 /* deff.cpp in Sources */,
 				144B3DD31AFB473700536206 /* gui.cpp in Sources */,
-				142322D11AFA0719004A7E0D /* md5.c in Sources */,
 				14272D121AE5B05B002A64A5 /* schi.cpp in Sources */,
 				14272D0A1AE5B05B002A64A5 /* scen.cpp in Sources */,
 				14272D051AE5B05B002A64A5 /* vector3d.cpp in Sources */,
@@ -928,7 +922,6 @@
 				14F471741C2A534A0004285C /* ZZTHaloDataTypes.c in Sources */,
 				14ADF3B61AE32F9000818134 /* Document.m in Sources */,
 				14272D151AE5B05B002A64A5 /* bitmaps.cpp in Sources */,
-				14F4716A1C2A52F90004285C /* ai_wyvern.cpp in Sources */,
 				14272D161AE5B05B002A64A5 /* texture.cpp in Sources */,
 				14272D091AE5B05B002A64A5 /* object.cpp in Sources */,
 				142158391AE4FA170068557B /* squish.cpp in Sources */,
@@ -950,14 +943,11 @@
 				146BB4511C1D40FE00308B25 /* ssao.cpp in Sources */,
 				145A96C61AE79A97001CCEBA /* itmc.cpp in Sources */,
 				1480D0771C1D68E000266496 /* blur.cpp in Sources */,
-				146D803B1B5DC9AB0075F708 /* ai_test.cpp in Sources */,
 				144506581C1D940700287700 /* senv_reflect.cpp in Sources */,
 				14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */,
-				142322CF1AFA0719004A7E0D /* client.cpp in Sources */,
 				142158321AE4FA170068557B /* colourblock.cpp in Sources */,
 				14DA18C01AEBA9AD0064D9B6 /* sgla.cpp in Sources */,
 				14ADF3E01AE32FC200818134 /* ProtonTag.cpp in Sources */,
-				146D80371B5DC9410075F708 /* ai.cpp in Sources */,
 				14ADF3DF1AE32FC200818134 /* ProtonMap.cpp in Sources */,
 				140293F31AE634EE004BD9B9 /* vehi.cpp in Sources */,
 			);
