@@ -11,7 +11,6 @@
 
 #include "defines.h"
 #include "vector3d.h"
-#include "../shader/shader.h"
 
 class Camera {
 public:

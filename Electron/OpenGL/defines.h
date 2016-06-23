@@ -92,6 +92,19 @@ typedef enum {
     reflection_sky = 1,
 } Reflection;
 
+// Camera
+typedef struct {
+    GLfloat fogr, fogg, fogb;
+    GLfloat fogdist, fogcut, foglegacy;
+    
+    GLfloat perspective[16];
+    GLfloat modelview[16];
+    GLfloat position[3];
+    GLfloat rotation[3];
+    
+    GLfloat camera[3];
+} shader_options;
+
 // VBO
 #define INDEX_BUFFER 0
 #define POS_VB 1

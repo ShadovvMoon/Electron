@@ -713,7 +713,7 @@ void BSP::render(ShaderType pass) {
                 #endif
             }
         }
-        break;
+        //break;
     }
 #ifdef RENDER_VAO_NORMAL
 	glBindVertexArray(0);

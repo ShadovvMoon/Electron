@@ -9,20 +9,85 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>Electron copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>Electron.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>Metallic.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>147A0ADA1D1B8BB8009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0AF91D1B8BB8009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0B041D1B8BB8009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0B181D1B8DC3009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0B271D1B8E56009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0B6A1D1B8E73009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0B821D1B8E73009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>147A0B8D1D1B8E73009EA4FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1482BEE81AFE20D600FA8140</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>1482BEFA1AFE20D600FA8140</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>148AE7091D1B88560083967D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>148AE7211D1B88560083967D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>148AE72C1D1B88560083967D</key>
 		<dict>
 			<key>primary</key>
 			<true/>

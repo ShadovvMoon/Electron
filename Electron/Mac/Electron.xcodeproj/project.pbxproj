@@ -48,6 +48,27 @@
 		146BB4511C1D40FE00308B25 /* ssao.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146BB44F1C1D40FE00308B25 /* ssao.cpp */; };
 		146D803C1B5DCBCE0075F708 /* ai_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 146D80391B5DC9AB0075F708 /* ai_test.cpp */; };
 		1472F8581AEE1A3A00FE64DC /* sky.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1472F8561AEE1A3A00FE64DC /* sky.cpp */; };
+		147A0B6F1D1B8E73009EA4FC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 147A0B6E1D1B8E73009EA4FC /* AppDelegate.m */; };
+		147A0B721D1B8E73009EA4FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 147A0B711D1B8E73009EA4FC /* main.m */; };
+		147A0B751D1B8E73009EA4FC /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 147A0B741D1B8E73009EA4FC /* Document.m */; };
+		147A0B781D1B8E73009EA4FC /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = 147A0B761D1B8E73009EA4FC /* Document.xib */; };
+		147A0B7A1D1B8E73009EA4FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 147A0B791D1B8E73009EA4FC /* Assets.xcassets */; };
+		147A0B7D1D1B8E73009EA4FC /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 147A0B7B1D1B8E73009EA4FC /* MainMenu.xib */; };
+		147A0B881D1B8E73009EA4FC /* MetallicTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 147A0B871D1B8E73009EA4FC /* MetallicTests.m */; };
+		147A0B931D1B8E73009EA4FC /* MetallicUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 147A0B921D1B8E73009EA4FC /* MetallicUITests.m */; };
+		147A0B9E1D1B8EAE009EA4FC /* MRenderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 147A0AEB1D1B8BB8009EA4FC /* MRenderView.mm */; };
+		147A0BE61D1B8EFE009EA4FC /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147A0ADD1D1B8BB8009EA4FC /* Metal.framework */; };
+		147A0BE71D1B8F00009EA4FC /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147A0ADF1D1B8BB8009EA4FC /* MetalKit.framework */; };
+		147A0BE81D1B8F02009EA4FC /* ModelIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 147A0AE11D1B8BB8009EA4FC /* ModelIO.framework */; };
+		147A0BEA1D1B8F45009EA4FC /* HaloData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3E31AE32FC700818134 /* HaloData.cpp */; };
+		147A0BEB1D1B8F48009EA4FC /* ProtonCacheFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D41AE32FC200818134 /* ProtonCacheFile.cpp */; };
+		147A0BEC1D1B8F49009EA4FC /* ProtonMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D61AE32FC200818134 /* ProtonMap.cpp */; };
+		147A0BED1D1B8F4A009EA4FC /* ProtonTag.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3D81AE32FC200818134 /* ProtonTag.cpp */; };
+		147A0BEE1D1B8F4B009EA4FC /* ProtonTagArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DA1AE32FC200818134 /* ProtonTagArray.cpp */; };
+		147A0BEF1D1B8F4D009EA4FC /* ProtonTagDependency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */; };
+		147A0BF91D1BB2E5009EA4FC /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 147A0BF81D1BB2E5009EA4FC /* Shaders.metal */; };
+		147A0BFB1D1BB988009EA4FC /* camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CDE1AE5B05B002A64A5 /* camera.cpp */; };
+		147A0BFC1D1BB98A009EA4FC /* vector3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272CE01AE5B05B002A64A5 /* vector3d.cpp */; };
 		1480D0771C1D68E000266496 /* blur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1480D0751C1D68E000266496 /* blur.cpp */; };
 		1482BEEF1AFE20D600FA8140 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1482BEEE1AFE20D600FA8140 /* AppDelegate.mm */; };
 		1482BEF11AFE20D600FA8140 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1482BEF01AFE20D600FA8140 /* main.m */; };
@@ -102,6 +123,7 @@
 		14ADF3E21AE32FC200818134 /* ProtonTagDependency.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3DC1AE32FC200818134 /* ProtonTagDependency.cpp */; };
 		14ADF3F01AE3312D00818134 /* ERenderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3EF1AE3312D00818134 /* ERenderView.mm */; };
 		14ADF3F61AE3367000818134 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 14ADF3F51AE3367000818134 /* OpenGL.framework */; };
+		14C9E4051D1BD15A00F0885F /* bitmaps.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14272D001AE5B05B002A64A5 /* bitmaps.cpp */; };
 		14CAB2131AE35FD30093603A /* HaloData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14ADF3E31AE32FC700818134 /* HaloData.cpp */; };
 		14DA18BD1AEBA9A60064D9B6 /* swat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BB1AEBA9A60064D9B6 /* swat.cpp */; };
 		14DA18C01AEBA9AD0064D9B6 /* sgla.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 14DA18BE1AEBA9AD0064D9B6 /* sgla.cpp */; };
@@ -113,6 +135,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		147A0B841D1B8E73009EA4FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 14ADF3A21AE32F9000818134 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 147A0B6A1D1B8E73009EA4FC;
+			remoteInfo = Metallic;
+		};
+		147A0B8F1D1B8E73009EA4FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 14ADF3A21AE32F9000818134 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 147A0B6A1D1B8E73009EA4FC;
+			remoteInfo = Metallic;
+		};
 		1482BEFC1AFE20D600FA8140 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 14ADF3A21AE32F9000818134 /* Project object */;
@@ -187,8 +223,8 @@
 		14272CFC1AE5B05B002A64A5 /* senv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = senv.h; sourceTree = "<group>"; };
 		14272CFD1AE5B05B002A64A5 /* soso.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soso.cpp; sourceTree = "<group>"; };
 		14272CFE1AE5B05B002A64A5 /* soso.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soso.h; sourceTree = "<group>"; };
-		14272D001AE5B05B002A64A5 /* bitmaps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bitmaps.cpp; sourceTree = "<group>"; };
-		14272D011AE5B05B002A64A5 /* bitmaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitmaps.h; sourceTree = "<group>"; };
+		14272D001AE5B05B002A64A5 /* bitmaps.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bitmaps.cpp; path = ../OpenGL/render/texture/bitmaps.cpp; sourceTree = "<group>"; };
+		14272D011AE5B05B002A64A5 /* bitmaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bitmaps.h; path = ../OpenGL/render/texture/bitmaps.h; sourceTree = "<group>"; };
 		14272D021AE5B05B002A64A5 /* texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = texture.cpp; sourceTree = "<group>"; };
 		14272D031AE5B05B002A64A5 /* texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
 		14272D181AE5BA30002A64A5 /* ZZTHaloObjectTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZTHaloObjectTag.h; sourceTree = "<group>"; };
@@ -213,6 +249,29 @@
 		146D803A1B5DC9AB0075F708 /* ai_test.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ai_test.hpp; sourceTree = "<group>"; };
 		1472F8561AEE1A3A00FE64DC /* sky.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sky.cpp; sourceTree = "<group>"; };
 		1472F8571AEE1A3A00FE64DC /* sky.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sky.h; sourceTree = "<group>"; };
+		147A0ADD1D1B8BB8009EA4FC /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		147A0ADF1D1B8BB8009EA4FC /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		147A0AE11D1B8BB8009EA4FC /* ModelIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ModelIO.framework; path = System/Library/Frameworks/ModelIO.framework; sourceTree = SDKROOT; };
+		147A0AEA1D1B8BB8009EA4FC /* MRenderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRenderView.h; sourceTree = "<group>"; };
+		147A0AEB1D1B8BB8009EA4FC /* MRenderView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MRenderView.mm; sourceTree = "<group>"; };
+		147A0B6B1D1B8E73009EA4FC /* Metallic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Metallic.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		147A0B6D1D1B8E73009EA4FC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		147A0B6E1D1B8E73009EA4FC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		147A0B711D1B8E73009EA4FC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		147A0B731D1B8E73009EA4FC /* Document.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
+		147A0B741D1B8E73009EA4FC /* Document.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
+		147A0B771D1B8E73009EA4FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/Document.xib; sourceTree = "<group>"; };
+		147A0B791D1B8E73009EA4FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		147A0B7C1D1B8E73009EA4FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		147A0B7E1D1B8E73009EA4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		147A0B831D1B8E73009EA4FC /* MetallicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetallicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		147A0B871D1B8E73009EA4FC /* MetallicTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetallicTests.m; sourceTree = "<group>"; };
+		147A0B891D1B8E73009EA4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		147A0B8E1D1B8E73009EA4FC /* MetallicUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MetallicUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		147A0B921D1B8E73009EA4FC /* MetallicUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MetallicUITests.m; sourceTree = "<group>"; };
+		147A0B941D1B8E73009EA4FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		147A0BF81D1BB2E5009EA4FC /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; name = Shaders.metal; path = ../Metallic/Shaders.metal; sourceTree = "<group>"; };
+		147A0BFA1D1BB30B009EA4FC /* SharedStructures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SharedStructures.h; path = Metallic/SharedStructures.h; sourceTree = SOURCE_ROOT; };
 		1480D0751C1D68E000266496 /* blur.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = blur.cpp; sourceTree = "<group>"; };
 		1480D0761C1D68E000266496 /* blur.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = blur.hpp; sourceTree = "<group>"; };
 		1482BEE91AFE20D600FA8140 /* Dragon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dragon.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,6 +333,30 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		147A0B681D1B8E73009EA4FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147A0BE61D1B8EFE009EA4FC /* Metal.framework in Frameworks */,
+				147A0BE71D1B8F00009EA4FC /* MetalKit.framework in Frameworks */,
+				147A0BE81D1B8F02009EA4FC /* ModelIO.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147A0B801D1B8E73009EA4FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147A0B8B1D1B8E73009EA4FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1482BEE61AFE20D600FA8140 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -337,13 +420,12 @@
 				1421582F1AE4FA170068557B /* squish.h */,
 			);
 			name = squish;
-			path = ../../OpenGL/squish;
+			path = ../OpenGL/squish;
 			sourceTree = "<group>";
 		};
 		14272CDC1AE5B05B002A64A5 /* render */ = {
 			isa = PBXGroup;
 			children = (
-				14272CDD1AE5B05B002A64A5 /* camera */,
 				14272CE21AE5B05B002A64A5 /* render.cpp */,
 				144B3DD01AFB473700536206 /* gui */,
 				14272CE41AE5B05B002A64A5 /* renderables */,
@@ -363,7 +445,8 @@
 				14272CE11AE5B05B002A64A5 /* vector3d.h */,
 				14272CE31AE5B05B002A64A5 /* render.h */,
 			);
-			path = camera;
+			name = camera;
+			path = ../OpenGL/render/camera;
 			sourceTree = "<group>";
 		};
 		14272CE41AE5B05B002A64A5 /* renderables */ = {
@@ -447,8 +530,6 @@
 		14272CFF1AE5B05B002A64A5 /* texture */ = {
 			isa = PBXGroup;
 			children = (
-				14272D001AE5B05B002A64A5 /* bitmaps.cpp */,
-				14272D011AE5B05B002A64A5 /* bitmaps.h */,
 				14272D021AE5B05B002A64A5 /* texture.cpp */,
 				14272D031AE5B05B002A64A5 /* texture.h */,
 			);
@@ -462,7 +543,7 @@
 				14272D191AE5BA30002A64A5 /* ZZTHaloScenarioTag.h */,
 			);
 			name = tags;
-			path = ../../OpenGL/tags;
+			path = ../OpenGL/tags;
 			sourceTree = "<group>";
 		};
 		144B3DD01AFB473700536206 /* gui */ = {
@@ -493,6 +574,122 @@
 			children = (
 			);
 			name = Scripting;
+			path = Electron;
+			sourceTree = "<group>";
+		};
+		147A0ADC1D1B8BB8009EA4FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				147A0ADD1D1B8BB8009EA4FC /* Metal.framework */,
+				147A0ADF1D1B8BB8009EA4FC /* MetalKit.framework */,
+				147A0AE11D1B8BB8009EA4FC /* ModelIO.framework */,
+			);
+			name = Frameworks;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		147A0B261D1B8E17009EA4FC /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				147A0BFA1D1BB30B009EA4FC /* SharedStructures.h */,
+				147A0BF81D1BB2E5009EA4FC /* Shaders.metal */,
+			);
+			name = Metal;
+			path = ../Electron;
+			sourceTree = "<group>";
+		};
+		147A0B6C1D1B8E73009EA4FC /* Metallic */ = {
+			isa = PBXGroup;
+			children = (
+				147A0BE91D1B8F1F009EA4FC /* Render */,
+				147A0B911D1B8E73009EA4FC /* MetallicUITests */,
+				147A0B861D1B8E73009EA4FC /* MetallicTests */,
+				147A0ADC1D1B8BB8009EA4FC /* Frameworks */,
+				147A0B6D1D1B8E73009EA4FC /* AppDelegate.h */,
+				147A0B6E1D1B8E73009EA4FC /* AppDelegate.m */,
+				147A0B731D1B8E73009EA4FC /* Document.h */,
+				147A0B741D1B8E73009EA4FC /* Document.m */,
+				147A0B761D1B8E73009EA4FC /* Document.xib */,
+				147A0B791D1B8E73009EA4FC /* Assets.xcassets */,
+				147A0B7B1D1B8E73009EA4FC /* MainMenu.xib */,
+				147A0B7E1D1B8E73009EA4FC /* Info.plist */,
+				147A0B701D1B8E73009EA4FC /* Supporting Files */,
+			);
+			path = Metallic;
+			sourceTree = "<group>";
+		};
+		147A0B701D1B8E73009EA4FC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				147A0B711D1B8E73009EA4FC /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		147A0B861D1B8E73009EA4FC /* MetallicTests */ = {
+			isa = PBXGroup;
+			children = (
+				147A0B871D1B8E73009EA4FC /* MetallicTests.m */,
+				147A0B891D1B8E73009EA4FC /* Info.plist */,
+			);
+			path = MetallicTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		147A0B911D1B8E73009EA4FC /* MetallicUITests */ = {
+			isa = PBXGroup;
+			children = (
+				147A0B921D1B8E73009EA4FC /* MetallicUITests.m */,
+				147A0B941D1B8E73009EA4FC /* Info.plist */,
+			);
+			path = MetallicUITests;
+			sourceTree = SOURCE_ROOT;
+		};
+		147A0BE91D1B8F1F009EA4FC /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				147A0B261D1B8E17009EA4FC /* Metal */,
+				147A0AEA1D1B8BB8009EA4FC /* MRenderView.h */,
+				147A0AEB1D1B8BB8009EA4FC /* MRenderView.mm */,
+			);
+			name = Render;
+			sourceTree = "<group>";
+		};
+		147A0BF01D1B8F5F009EA4FC /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				147A0BF11D1B92F6009EA4FC /* Halo */,
+				1476B1B71B05E29400B68017 /* Scripting */,
+				142158171AE4FA170068557B /* squish */,
+				14ADF3D31AE32FAE00818134 /* Proton */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
+		147A0BF11D1B92F6009EA4FC /* Halo */ = {
+			isa = PBXGroup;
+			children = (
+				147A0BF31D1B97C9009EA4FC /* texture */,
+				147A0BF21D1B97C2009EA4FC /* bsp */,
+				14272CDD1AE5B05B002A64A5 /* camera */,
+				14272D171AE5BA30002A64A5 /* tags */,
+			);
+			name = Halo;
+			sourceTree = "<group>";
+		};
+		147A0BF21D1B97C2009EA4FC /* bsp */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = bsp;
+			sourceTree = "<group>";
+		};
+		147A0BF31D1B97C9009EA4FC /* texture */ = {
+			isa = PBXGroup;
+			children = (
+				14272D001AE5B05B002A64A5 /* bitmaps.cpp */,
+				14272D011AE5B05B002A64A5 /* bitmaps.h */,
+			);
+			name = texture;
 			sourceTree = "<group>";
 		};
 		148065521AF62BF500FD5AFC /* game */ = {
@@ -513,6 +710,7 @@
 		1482BEEA1AFE20D600FA8140 /* Dragon */ = {
 			isa = PBXGroup;
 			children = (
+				1482BEFE1AFE20D600FA8140 /* DragonTests */,
 				1482BEED1AFE20D600FA8140 /* AppDelegate.h */,
 				1482BEEE1AFE20D600FA8140 /* AppDelegate.mm */,
 				1482BEF21AFE20D600FA8140 /* Images.xcassets */,
@@ -539,7 +737,7 @@
 				1482BEFF1AFE20D600FA8140 /* Supporting Files */,
 			);
 			path = DragonTests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		1482BEFF1AFE20D600FA8140 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -563,10 +761,10 @@
 			children = (
 				1436196E1AE3982200D82AC8 /* GLUT.framework */,
 				14ADF3F51AE3367000818134 /* OpenGL.framework */,
+				147A0BF01D1B8F5F009EA4FC /* Library */,
 				14ADF3AC1AE32F9000818134 /* Electron */,
-				14ADF3C61AE32F9000818134 /* ElectronTests */,
 				1482BEEA1AFE20D600FA8140 /* Dragon */,
-				1482BEFE1AFE20D600FA8140 /* DragonTests */,
+				147A0B6C1D1B8E73009EA4FC /* Metallic */,
 				14ADF3AB1AE32F9000818134 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -578,6 +776,9 @@
 				14ADF3C31AE32F9000818134 /* ElectronTests.xctest */,
 				1482BEE91AFE20D600FA8140 /* Dragon.app */,
 				1482BEFB1AFE20D600FA8140 /* DragonTests.xctest */,
+				147A0B6B1D1B8E73009EA4FC /* Metallic.app */,
+				147A0B831D1B8E73009EA4FC /* MetallicTests.xctest */,
+				147A0B8E1D1B8E73009EA4FC /* MetallicUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -585,11 +786,8 @@
 		14ADF3AC1AE32F9000818134 /* Electron */ = {
 			isa = PBXGroup;
 			children = (
-				1476B1B71B05E29400B68017 /* Scripting */,
-				142158171AE4FA170068557B /* squish */,
+				14ADF3C61AE32F9000818134 /* ElectronTests */,
 				14ADF3EB1AE330E100818134 /* Render */,
-				14ADF3F91AE3371D00818134 /* OpenGL */,
-				14ADF3D31AE32FAE00818134 /* Proton */,
 				14ADF3AF1AE32F9000818134 /* AppDelegate.h */,
 				14ADF3B01AE32F9000818134 /* AppDelegate.mm */,
 				14ADF3B41AE32F9000818134 /* Document.h */,
@@ -618,7 +816,7 @@
 				14ADF3C71AE32F9100818134 /* Supporting Files */,
 			);
 			path = ElectronTests;
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		14ADF3C71AE32F9100818134 /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -646,11 +844,13 @@
 				14ADF3DD1AE32FC200818134 /* ProtonTagDependency.h */,
 			);
 			name = Proton;
+			path = Electron;
 			sourceTree = "<group>";
 		};
 		14ADF3EB1AE330E100818134 /* Render */ = {
 			isa = PBXGroup;
 			children = (
+				14ADF3F91AE3371D00818134 /* OpenGL */,
 				14ADF3EE1AE3312D00818134 /* ERenderView.hpp */,
 				14ADF3EF1AE3312D00818134 /* ERenderView.mm */,
 			);
@@ -662,7 +862,6 @@
 			children = (
 				143619771AE39B3C00D82AC8 /* defines.h */,
 				148065521AF62BF500FD5AFC /* game */,
-				14272D171AE5BA30002A64A5 /* tags */,
 				14272CDC1AE5B05B002A64A5 /* render */,
 			);
 			name = OpenGL;
@@ -685,6 +884,59 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		147A0B6A1D1B8E73009EA4FC /* Metallic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 147A0B951D1B8E73009EA4FC /* Build configuration list for PBXNativeTarget "Metallic" */;
+			buildPhases = (
+				147A0B671D1B8E73009EA4FC /* Sources */,
+				147A0B681D1B8E73009EA4FC /* Frameworks */,
+				147A0B691D1B8E73009EA4FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Metallic;
+			productName = Metallic;
+			productReference = 147A0B6B1D1B8E73009EA4FC /* Metallic.app */;
+			productType = "com.apple.product-type.application";
+		};
+		147A0B821D1B8E73009EA4FC /* MetallicTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 147A0B981D1B8E73009EA4FC /* Build configuration list for PBXNativeTarget "MetallicTests" */;
+			buildPhases = (
+				147A0B7F1D1B8E73009EA4FC /* Sources */,
+				147A0B801D1B8E73009EA4FC /* Frameworks */,
+				147A0B811D1B8E73009EA4FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				147A0B851D1B8E73009EA4FC /* PBXTargetDependency */,
+			);
+			name = MetallicTests;
+			productName = MetallicTests;
+			productReference = 147A0B831D1B8E73009EA4FC /* MetallicTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		147A0B8D1D1B8E73009EA4FC /* MetallicUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 147A0B9B1D1B8E73009EA4FC /* Build configuration list for PBXNativeTarget "MetallicUITests" */;
+			buildPhases = (
+				147A0B8A1D1B8E73009EA4FC /* Sources */,
+				147A0B8B1D1B8E73009EA4FC /* Frameworks */,
+				147A0B8C1D1B8E73009EA4FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				147A0B901D1B8E73009EA4FC /* PBXTargetDependency */,
+			);
+			name = MetallicUITests;
+			productName = MetallicUITests;
+			productReference = 147A0B8E1D1B8E73009EA4FC /* MetallicUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		1482BEE81AFE20D600FA8140 /* Dragon */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1482BF071AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "Dragon" */;
@@ -764,6 +1016,26 @@
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = Samuco;
 				TargetAttributes = {
+					147A0B6A1D1B8E73009EA4FC = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 9292N2XG2F;
+						DevelopmentTeamName = "Stephen Colbran";
+						ProvisioningStyle = Automatic;
+					};
+					147A0B821D1B8E73009EA4FC = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 9292N2XG2F;
+						DevelopmentTeamName = "Stephen Colbran";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 147A0B6A1D1B8E73009EA4FC;
+					};
+					147A0B8D1D1B8E73009EA4FC = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 9292N2XG2F;
+						DevelopmentTeamName = "Stephen Colbran";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 147A0B6A1D1B8E73009EA4FC;
+					};
 					1482BEE81AFE20D600FA8140 = {
 						CreatedOnToolsVersion = 6.3;
 					};
@@ -797,11 +1069,38 @@
 				14ADF3C21AE32F9000818134 /* ElectronTests */,
 				1482BEE81AFE20D600FA8140 /* Dragon */,
 				1482BEFA1AFE20D600FA8140 /* DragonTests */,
+				147A0B6A1D1B8E73009EA4FC /* Metallic */,
+				147A0B821D1B8E73009EA4FC /* MetallicTests */,
+				147A0B8D1D1B8E73009EA4FC /* MetallicUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		147A0B691D1B8E73009EA4FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147A0B7A1D1B8E73009EA4FC /* Assets.xcassets in Resources */,
+				147A0B781D1B8E73009EA4FC /* Document.xib in Resources */,
+				147A0B7D1D1B8E73009EA4FC /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147A0B811D1B8E73009EA4FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147A0B8C1D1B8E73009EA4FC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1482BEE71AFE20D600FA8140 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -844,6 +1143,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		147A0B671D1B8E73009EA4FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147A0BEA1D1B8F45009EA4FC /* HaloData.cpp in Sources */,
+				147A0BEB1D1B8F48009EA4FC /* ProtonCacheFile.cpp in Sources */,
+				147A0B751D1B8E73009EA4FC /* Document.m in Sources */,
+				14C9E4051D1BD15A00F0885F /* bitmaps.cpp in Sources */,
+				147A0BEC1D1B8F49009EA4FC /* ProtonMap.cpp in Sources */,
+				147A0B721D1B8E73009EA4FC /* main.m in Sources */,
+				147A0BEE1D1B8F4B009EA4FC /* ProtonTagArray.cpp in Sources */,
+				147A0BED1D1B8F4A009EA4FC /* ProtonTag.cpp in Sources */,
+				147A0BFC1D1BB98A009EA4FC /* vector3d.cpp in Sources */,
+				147A0BFB1D1BB988009EA4FC /* camera.cpp in Sources */,
+				147A0B6F1D1B8E73009EA4FC /* AppDelegate.m in Sources */,
+				147A0BF91D1BB2E5009EA4FC /* Shaders.metal in Sources */,
+				147A0BEF1D1B8F4D009EA4FC /* ProtonTagDependency.cpp in Sources */,
+				147A0B9E1D1B8EAE009EA4FC /* MRenderView.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147A0B7F1D1B8E73009EA4FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147A0B881D1B8E73009EA4FC /* MetallicTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		147A0B8A1D1B8E73009EA4FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				147A0B931D1B8E73009EA4FC /* MetallicUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1482BEE51AFE20D600FA8140 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -964,6 +1300,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		147A0B851D1B8E73009EA4FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 147A0B6A1D1B8E73009EA4FC /* Metallic */;
+			targetProxy = 147A0B841D1B8E73009EA4FC /* PBXContainerItemProxy */;
+		};
+		147A0B901D1B8E73009EA4FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 147A0B6A1D1B8E73009EA4FC /* Metallic */;
+			targetProxy = 147A0B8F1D1B8E73009EA4FC /* PBXContainerItemProxy */;
+		};
 		1482BEFD1AFE20D600FA8140 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1482BEE81AFE20D600FA8140 /* Dragon */;
@@ -977,6 +1323,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		147A0B761D1B8E73009EA4FC /* Document.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				147A0B771D1B8E73009EA4FC /* Base */,
+			);
+			name = Document.xib;
+			sourceTree = "<group>";
+		};
+		147A0B7B1D1B8E73009EA4FC /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				147A0B7C1D1B8E73009EA4FC /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 		1482BEF41AFE20D600FA8140 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1004,6 +1366,103 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		147A0B961D1B8E73009EA4FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = Metallic/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = net.samuco.Metallic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		147A0B971D1B8E73009EA4FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Metallic/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = net.samuco.Metallic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		147A0B991D1B8E73009EA4FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = MetallicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = net.samuco.MetallicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Metallic.app/Contents/MacOS/Metallic";
+			};
+			name = Debug;
+		};
+		147A0B9A1D1B8E73009EA4FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MetallicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = net.samuco.MetallicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Metallic.app/Contents/MacOS/Metallic";
+			};
+			name = Release;
+		};
+		147A0B9C1D1B8E73009EA4FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = MetallicUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = net.samuco.MetallicUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Metallic;
+			};
+			name = Debug;
+		};
+		147A0B9D1D1B8E73009EA4FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MetallicUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				PRODUCT_BUNDLE_IDENTIFIER = net.samuco.MetallicUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = Metallic;
+			};
+			name = Release;
+		};
 		1482BF031AFE20D600FA8140 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1232,6 +1691,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		147A0B951D1B8E73009EA4FC /* Build configuration list for PBXNativeTarget "Metallic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				147A0B961D1B8E73009EA4FC /* Debug */,
+				147A0B971D1B8E73009EA4FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		147A0B981D1B8E73009EA4FC /* Build configuration list for PBXNativeTarget "MetallicTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				147A0B991D1B8E73009EA4FC /* Debug */,
+				147A0B9A1D1B8E73009EA4FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		147A0B9B1D1B8E73009EA4FC /* Build configuration list for PBXNativeTarget "MetallicUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				147A0B9C1D1B8E73009EA4FC /* Debug */,
+				147A0B9D1D1B8E73009EA4FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1482BF071AFE20D600FA8140 /* Build configuration list for PBXNativeTarget "Dragon" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

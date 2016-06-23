@@ -16,12 +16,12 @@ Camera::Camera () {
     //up       = new vector3d(0.0, 0.0, 1.0);
     
     
-    //position = new vector3d(76.658791, -113.148872, 7.970234);
-    //view     = new vector3d(71.658791, -118.148872, 2.970234);
+    position = new vector3d(76.658791, -113.148872, 7.970234);
+    view     = new vector3d(71.658791, -118.148872, 2.970234);
     //up       = new vector3d(0.0, 0.0, 1.0);
     
-    position = new vector3d(131.793106, -194.661621, 29.700350);
-    view     = new vector3d(126.509056, -188.770096, 26.183468);
+    //position = new vector3d(0.0, 0.0, 1.0);
+    //view     = new vector3d(0.0, 0.0, 2.0);
     up       = new vector3d(0.0, 0.0, 1.0);
     vstrafe  = new vector3d(0.0, 0.0, 0.0);
 }
@@ -101,7 +101,7 @@ void Camera::look(shader_options *options) {
     vstrafe->cross(up);
     vstrafe->norm();
 
-    //#ifdef RENDER_CORE_32
+    #ifdef RENDER_CORE_32
     vector3d *f = new vector3d(view);
     f->sub(position);
     f->norm();
@@ -137,11 +137,11 @@ void Camera::look(shader_options *options) {
     delete f;
     delete s;
     delete u;
-    //#else
+    #else
     gluLookAt(position->x, position->y, position->z,
               view->x,	   view->y,     view->z,
               up->x,       up->y,       up->z);
-    //#endif
+    #endif
     
     options->camera[0] = position->x;
     options->camera[1] = position->y;
