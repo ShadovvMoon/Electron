@@ -7,7 +7,7 @@
 //
 
 #import "ERenderView.hpp"
-#import "../../OpenGL/render/render.h"
+#import "render.h"
 
 #include <mutex>          // std::mutex
 std::mutex mtx;           // mutex for critical section

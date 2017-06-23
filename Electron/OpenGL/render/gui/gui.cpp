@@ -22,15 +22,18 @@ GUI::GUI() {
 #define TEXT_HEIGHT 18.0
 
 void renderString(char *str, float x, float y) {
+#ifndef RENDER_PIPELINE
     glColor4f(1.0, 1.0, 1.0, 1.0);
     glRasterPos3f(x, y, 0.0);
     int i;
     for (i=0; i < strlen(str); i++) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, str[i]);
     }
+#endif
 }
 
 void renderRawBox(float x, float y, float w, float h) {
+#ifndef RENDER_PIPELINE
     glBegin(GL_TRIANGLES);
     glVertex3f(x,  y+h, 0.0);
     glVertex3f(x,  y, 0.0);
@@ -39,18 +42,23 @@ void renderRawBox(float x, float y, float w, float h) {
     glVertex3f(x+w,y, 0.0);
     glVertex3f(x,  y, 0.0);
     glEnd();
+#endif
 }
 void renderBox(float x, float y, float w, float h) {
+#ifndef RENDER_PIPELINE
     glColor4f(SIDE_BAR_COLOUR, SIDE_BAR_COLOUR, SIDE_BAR_COLOUR, SIDE_BAR_ALPHA);
     renderRawBox(x,y,w,h);
     glColor4f(1.0, 1.0, 1.0, 1.0);
+#endif
 }
 void renderStrokeBox(float x, float y, float w, float h, float width, float height) {
+#ifndef RENDER_PIPELINE
     glColor4f(0.5, 0.5, 0.5, 0.5);
     float xstroke = (STROKE_SIZE/width);
     float ystroke = (STROKE_SIZE/height);
     renderRawBox(x-xstroke,y-ystroke,w+2*xstroke,h+2*ystroke);
     renderBox(x,y,w,h);
+#endif
 }
 void renderTextField(char *content, float x, float y, float w, float width, float height) {
     float xpadding = SMALL_PADDING / width;
@@ -100,6 +108,7 @@ void GUI::render(float width, float height) {
     width  /= 2;
     height /= 2;
     
+    #ifndef RENDER_PIPELINE
     // Render the side bar
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -110,7 +119,8 @@ void GUI::render(float width, float height) {
     // Enable blending for transparency
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    #endif
+    
     // Draw the bar background
     /*
     float barWidth = SIDE_WIDTH / width;

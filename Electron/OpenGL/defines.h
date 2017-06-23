@@ -15,10 +15,13 @@
 #define RENDER_SENV_REFLECTION
 
 // Force hardware acceleration
+#define RENDER_PIPELINE
 #define RENDER_GPU
-//#define RENDER_CORE_32
-//#define GL_VALIDATE
+#ifdef RENDER_PIPELINE
+    //#define RENDER_CORE_32
+#endif
 
+//#define GL_VALIDATE
 // Render using vertex array objects (if false, use arrays or vbos)
 #define RENDER_VAO
 #define RENDER_VBO
@@ -94,15 +97,13 @@ typedef enum {
 
 // Camera
 typedef struct {
-    GLfloat fogr, fogg, fogb;
-    GLfloat fogdist, fogcut, foglegacy;
-    
-    GLfloat perspective[16];
-    GLfloat modelview[16];
-    GLfloat position[3];
-    GLfloat rotation[3];
-    
-    GLfloat camera[3];
+    float fogr, fogg, fogb;
+    float fogdist, fogcut, foglegacy;
+    float perspective[16];
+    float modelview[16];
+    float position[3];
+    float rotation[3];
+    float camera[3];
 } shader_options;
 
 // VBO

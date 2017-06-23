@@ -6,6 +6,7 @@
 //  Copyright (c) 2016 Samuco. All rights reserved.
 //
 
+#define RENDER_CORE_32 // Disables camera gl operations
 #import "MRenderView.h"
 #import "SharedStructures.h"
 #import "ProtonMap.h"
@@ -20,7 +21,7 @@
 static const NSUInteger kMaxInflightBuffers = 3;
 
 // Max API memory buffer size.
-static const size_t kMaxBytesPerFrame = 1024*1024;
+static const size_t kMaxBytesPerFrame = sizeof(float) * 256;
 
 // Controls
 typedef struct {
@@ -32,7 +33,6 @@ typedef struct {
     bool shift;
     bool control;
 } Control;
-
 
 #pragma mark Textures
 #define BITM_FORMAT_A8			0x00
@@ -245,8 +245,6 @@ void DecodeLinearA8R8G8B8 (int width, int height, const char *texdata, unsigned 
 }
 @end
 
-
-
 #pragma mark Shaders
 @interface Shader : NSObject
 -(id)initWithMap:(ProtonMap*)map tag:(HaloTagDependency)shader;
@@ -273,9 +271,6 @@ void DecodeLinearA8R8G8B8 (int width, int height, const char *texdata, unsigned 
     return self;
 }
 @end
-
-
-
 
 #pragma mark Renderer
 @implementation MRenderView
@@ -410,8 +405,6 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
     return object;
 }
 
-
-
 -(void)loadMap {
     if (map == NULL) {
         return;
@@ -420,11 +413,7 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
     // Load the map
     uint16_t scenarioTag = map->principal_tag;
     if (scenarioTag != NULLED_TAG_ID) {
-        
         ProtonTag *scenarioTag = map->tags.at(map->principal_tag).get();
-        
-        
-        
         ProtonTag *scenario = scenarioTag;
         HaloTagReflexive bsp = ((HaloScenarioTag*)scenario->Data())->bsp;
 
@@ -510,19 +499,14 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
                     // Create the shader
                     HaloTagDependency shader = material->ShaderTag;
                     
-                    
-                    
                     // Create the index mesh
                     NSData *index = [[NSData alloc] initWithBytes:vertIndexOffset length:indexCount * sizeof(uint16_t)];
                     uint16_t *bytePtr = (uint16_t *)[index bytes];
                     for (int v = 0; v < indexCount; v++) {
                         bytePtr[v] += vertices;
                     }
-                    
                     MDLMeshBufferData *indexData = [allocator newBufferWithData:index type:MDLMeshBufferTypeIndex];
                     MDLSubmesh *submesh = [[MDLSubmesh alloc] initWithIndexBuffer:indexData indexCount:indexCount indexType:MDLIndexBitDepthUint16 geometryType:MDLGeometryTypeTriangles material:NULL];
-                    
-                    
                     
                     // Append the vertex mesh
                     NSData *verts = [[NSData alloc] initWithBytes:PcVertexDataOffset length:material->VertexCount1 * sizeof(UNCOMPRESSED_BSP_VERT)];
@@ -567,14 +551,13 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
 - (void)_loadAssets
 {
     // Generate meshes
-    MDLMesh *mdl = [MDLMesh newBoxWithDimensions:(vector_float3){2,2,2} segments:(vector_uint3){1,1,1}
-                                    geometryType:MDLGeometryTypeTriangles inwardNormals:NO
-                                       allocator:[[MTKMeshBufferAllocator alloc] initWithDevice: _device]];
     [self loadMap];
     
     if (!_boxMesh) {
         //mdl = [[MDLMesh alloc] initMeshBySubdividingMesh:mdl submeshIndex:0 subdivisionLevels:1 allocator:mdl.allocator];
-        
+        MDLMesh *mdl = [MDLMesh newBoxWithDimensions:(vector_float3){1,1,1} segments:(vector_uint3){1,1,1}
+                                        geometryType:MDLGeometryTypeTriangles inwardNormals:NO
+                                           allocator:[[MTKMeshBufferAllocator alloc] initWithDevice: _device]];
         
         NSError *err = nil;
         _boxMesh = [[MTKMesh alloc] initWithMesh:mdl device:_device error:&err];
@@ -640,7 +623,6 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
     
     // Obtain a renderPassDescriptor generated from the view's drawable textures
     MTLRenderPassDescriptor* renderPassDescriptor = _view.currentRenderPassDescriptor;
-
     if(renderPassDescriptor != nil) // If we have a valid drawable, begin the commands to render into it
     {
         // Create a render command encoder so we can render into something
@@ -668,6 +650,8 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
         
         // Schedule a present once the framebuffer is complete using the current drawable
         [commandBuffer presentDrawable:_view.currentDrawable];
+    } else {
+        std::cout << "missing render pass descriptor" << std::endl;
     }
 
     // The render assumes it can now increment the buffer index and that the previous index won't be touched until we cycle back around to the same index
@@ -748,7 +732,6 @@ milliseconds now() {
     _rotation = 106.198952f;
     
     
-    #define RENDER_CORE_32 // Disables camera gl operations
     camera->look(options);
     */
     
@@ -789,7 +772,7 @@ milliseconds now() {
     //matrix_float4x4 base_model = matrix_multiply(matrix_from_translation(0.0f, 0.0f, 5.0f), matrix_from_rotation(_rotation, 0.0f, 1.0f, 0.0f));
     //matrix_float4x4 base_mv = matrix_multiply(_viewMatrix, base_model);
     matrix_float4x4 modelViewMatrix = look; //matrix_multiply(base_mv, look);
-    
+    //modelViewMatrix = matrix_identity_float4x4;
     
     //m.columns[3] = (vector_float4) { x, y, z, 1.0 };
     //return m;
@@ -798,10 +781,8 @@ milliseconds now() {
     
     // Load constant buffer data into appropriate buffer at current index
     uniforms_t *uniforms = &((uniforms_t *)[_dynamicConstantBuffer contents])[_constantDataBufferIndex];
-
     uniforms->normal_matrix = matrix_invert(matrix_transpose(modelViewMatrix));
     uniforms->modelview_projection_matrix = matrix_multiply(_projectionMatrix, modelViewMatrix);
-    
     _rotation = 106.198952f;
 }
 

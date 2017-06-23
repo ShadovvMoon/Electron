@@ -61,7 +61,7 @@ vector3d* vector3d::mul(float delta) {
 float vector3d::distance(vector3d* vector) {
     return sqrtf(pow(vector->x - x, 2) + pow(vector->y - y, 2) + pow(vector->z - z, 2));
 }
-GLfloat vector3d::get(int index) {
+float vector3d::get(int index) {
     switch (index) {
         case 0:
             return x;

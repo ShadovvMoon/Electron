@@ -13,7 +13,7 @@
 
 class vector3d {
 public:
-    GLfloat x, y, z;
+    float x, y, z;
     vector3d (vector3d *old);
     vector3d (float sx, float sy, float sz);
     vector3d* add(vector3d* vector);
@@ -22,7 +22,7 @@ public:
     vector3d* cross(vector3d* vector);
     vector3d* norm();
     vector3d* mul(float delta);
-    GLfloat get(int index);
+    float get(int index);
     float distance(vector3d* vector);
     float dot(vector3d *o);
     float mag();
