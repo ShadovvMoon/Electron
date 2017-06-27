@@ -544,7 +544,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario, Pipeline *pipeline) {
                     index_offset += 3;
                 }
                 
-                if (renderer->shader->is(shader_SWAT)) {
+                if (renderer->shader && renderer->shader->is(shader_SWAT)) {
                     shaders->set_reflection_height(vao->vertex_array[(vertex_offset-1)*3 + 2]);
                 }
                 
@@ -564,7 +564,7 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario, Pipeline *pipeline) {
     
     // Shift these to vertex buffers
 #ifdef RENDER_PIPELINE
-    mesh = pipeline->createMesh(7);
+    mesh = pipeline->createMesh(VBCount, vertex_size);
     if (!mesh) {
         std::cerr << "Unable to create BSP pipeline mesh" << std::endl;
         return;
@@ -572,12 +572,12 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario, Pipeline *pipeline) {
     
     // Write buffers
     mesh->writeIndexData(INDEX_BUFFER,  vao->index_array, index_size);
-    mesh->writeVertexData(POS_VB,      0,                     3, vao->vertex_array, vertex_size);
-    mesh->writeVertexData(TEXCOORD_VB, texCoord_buffer,       2, vao->texture_uv,   vertex_size);
-    mesh->writeVertexData(NORMAL_VB,   normals_buffer,        3, vao->normals,      vertex_size);
-    mesh->writeVertexData(LIGHT_VB,    texCoord_buffer_light, 2, vao->light_uv,     vertex_size);
-    mesh->writeVertexData(BINORMAL_VB, binormals_buffer,      3, vao->binormals,    vertex_size);
-    mesh->writeVertexData(TANGENT_VB,  tangents_buffer,       3, vao->tangents,     vertex_size);
+    mesh->writeVertexData(VBPosition, 0, 3, vao->vertex_array, vertex_size);
+    mesh->writeVertexData(VBTextureCoordinate, texCoord_buffer, 2, vao->texture_uv, vertex_size);
+    mesh->writeVertexData(VBNormal, normals_buffer, 3, vao->normals, vertex_size);
+    mesh->writeVertexData(VBLightCoordinate, texCoord_buffer_light, 2, vao->light_uv, vertex_size);
+    mesh->writeVertexData(VBBinormal, binormals_buffer, 3, vao->binormals, vertex_size);
+    mesh->writeVertexData(VBTangent, tangents_buffer, 3, vao->tangents, vertex_size);
     
     // Write submesh boundaries
     for (int i = 0; i < renderables.size(); i++) {
@@ -659,13 +659,13 @@ void BSP::setup(ProtonMap *map, ProtonTag *scenario, Pipeline *pipeline) {
 #endif
 }
 
-void BSP::render(ShaderType pass) {
+void BSP::render(ShaderType pass, Pipeline *pipeline) {
 #ifdef RENDER_PIPELINE
     if (!mesh) {
         std::cerr << "no BSP mesh to draw" << std::endl;
         return;
     }
-    mesh->render(pass);
+    mesh->render(pass, pipeline);
 #else
     //glEnable(GL_TEXTURE_2D);
     //glEnableClientState(GL_VERTEX_ARRAY);
@@ -718,7 +718,7 @@ void BSP::render(ShaderType pass) {
                     (submesh->shader != nullptr && submesh->shader->is(pass))) {
                     if (submesh->shader != nullptr && submesh->shader != previous_shader) {
                         submesh->shader->setBaseUV(1.0, 1.0);
-                        if (!submesh->shader->render(pass)) {
+                        if (!submesh->shader->render(pass, pipeline)) {
                             continue;
                         }
                         previous_shader = submesh->shader;
@@ -744,7 +744,7 @@ void BSP::render(ShaderType pass) {
                     #endif
                     
                     glActiveTexture(GL_TEXTURE3);
-                    mesh->lightTexture->bind(submesh->lightmap);
+                    mesh->lightTexture->bind(submesh->lightmap, pipeline);
                     
                     #ifdef RENDER_VBO
                     glDrawRangeElementsBaseVertex(GL_TRIANGLES, submesh->vertexOffset, submesh->vertexOffset+submesh->vertCount, submesh->indexCount, GL_UNSIGNED_INT, (void*)(submesh->indexOffset * sizeof(GLuint)), submesh->vertexOffset);

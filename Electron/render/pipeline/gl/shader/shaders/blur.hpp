@@ -28,7 +28,7 @@ class blur_object : public shader_object {
 private:
 public:
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    bool render(ShaderType type);
+    bool render(ShaderType type, Pipeline *pipeline);
     void setBaseUV(float u, float v);
     void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);

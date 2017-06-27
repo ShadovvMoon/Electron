@@ -135,7 +135,7 @@ bool schi_object::is(ShaderType type) {
     return (type == shader_SCHI);
 }
 
-bool schi_object::render(ShaderType type) {
+bool schi_object::render(ShaderType type, Pipeline *pipeline) {
     
     #ifndef RENDER_CORE_32
     // Blending
@@ -166,7 +166,7 @@ bool schi_object::render(ShaderType type) {
         }
         
         Stage4Renderable *renderable = stage4Maps[i];
-        renderable->map->bind();
+        renderable->map->bind(nullptr);
         
         // Update the tick
         std::chrono::milliseconds now = timems();

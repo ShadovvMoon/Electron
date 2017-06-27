@@ -121,26 +121,26 @@ void soso_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool soso_object::is(ShaderType type) {
     return (type == shader_SOSO);
 }
-bool soso_object::render(ShaderType type) {
+bool soso_object::render(ShaderType type, Pipeline *pipeline) {
     
     // Texturing
     //glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
-    baseMap->bind();
+    baseMap->bind(nullptr);
     
     glActiveTexture(GL_TEXTURE1);
     if (useDetail) {
-        detailMap->bind();
+        detailMap->bind(nullptr);
     }
     
     glActiveTexture(GL_TEXTURE2);
     if (useMulti) {
-        multipurposeMap->bind();
+        multipurposeMap->bind(nullptr);
     }
     
     glActiveTexture(GL_TEXTURE3);
     if (useCube) {
-        cubeMap->bind();
+        cubeMap->bind(nullptr);
     }
     
     // Blending

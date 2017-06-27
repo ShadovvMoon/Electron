@@ -9,24 +9,24 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>Electron copy.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
 		<key>Electron.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>Metallic.xcscheme</key>
+		<key>Gallium.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1414F2ED1EFDC96200567820</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>147A0ADA1D1B8BB8009EA4FC</key>
 		<dict>
 			<key>primary</key>

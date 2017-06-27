@@ -129,34 +129,34 @@ bool senv_object::is(ShaderType type) {
     return (type == shader_SENV || type == shader_SENV_REFLECT);
 }
 
-bool senv_object::render(ShaderType type) {
+bool senv_object::render(ShaderType type, Pipeline *pipeline) {
 
     // Texturing
     //glEnable(GL_TEXTURE_2D);
     glActiveTexture(GL_TEXTURE0);
-    baseMap->bind();
+    baseMap->bind(nullptr);
     
     glActiveTexture(GL_TEXTURE1);
     if (usePrimary) {
-        primaryDetailMap->bind();
+        primaryDetailMap->bind(nullptr);
     }
     
     glActiveTexture(GL_TEXTURE2);
     if (useSecondary) {
-        secondaryDetailMap->bind();
+        secondaryDetailMap->bind(nullptr);
     }
     
   
     if (type == shader_SENV) {
         glActiveTexture(GL_TEXTURE4);
         if (useCube) {
-            cubeMap->bind();
+            cubeMap->bind(nullptr);
         }
         
         
         glActiveTexture(GL_TEXTURE5);
         if (useBump) {
-            bumpMap->bind();
+            bumpMap->bind(nullptr);
         }
         
     // Blending

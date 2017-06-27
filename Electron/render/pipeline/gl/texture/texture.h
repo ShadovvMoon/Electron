@@ -15,14 +15,14 @@
 
 class texture {
 public:
-    virtual void bind() = 0;
-    virtual void bind(int index) = 0;
+    virtual void bind(Pipeline *pipeline) = 0;
+    virtual void bind(int index, Pipeline *pipeline) = 0;
 };
 
 class texture_cubemap {
 public:
     virtual void load_side(uint side_target, uint i, ProtonTag *bitmapTag) = 0;
-    virtual void bind() = 0;
+    virtual void bind(Pipeline *pipeline) = 0;
 };
 
 class TextureManager {
@@ -41,15 +41,15 @@ public:
     std::vector<uint>textures;
     uint tex = 0;
     gltexture(ProtonMap *map, HaloTagDependency bitm);
-    void bind();
-    void bind(int index);
+    void bind(Pipeline *pipeline);
+    void bind(int index, Pipeline *pipeline);
 };
 
 class gltexture_cubemap: public texture_cubemap {
 public:
     uint tex;
     void load_side(uint side_target, uint i, ProtonTag *bitmapTag);
-    void bind();
+    void bind(Pipeline *pipeline);
     gltexture_cubemap(ProtonMap *map, HaloTagDependency bitm);
 };
 

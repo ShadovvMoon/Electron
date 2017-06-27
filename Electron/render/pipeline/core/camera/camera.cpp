@@ -101,7 +101,7 @@ void Camera::look(shader_options *options) {
     vstrafe->cross(up);
     vstrafe->norm();
 
-    #ifdef RENDER_CORE_32
+    
     vector3d *f = new vector3d(view);
     f->sub(position);
     f->norm();
@@ -137,7 +137,8 @@ void Camera::look(shader_options *options) {
     delete f;
     delete s;
     delete u;
-    #else
+    
+    #ifndef RENDER_CORE_32
     gluLookAt(position->x, position->y, position->z,
               view->x,	   view->y,     view->z,
               up->x,       up->y,       up->z);

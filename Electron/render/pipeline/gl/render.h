@@ -17,7 +17,7 @@
 #include "object.h"
 #include "sky.h"
 #include "gui.h"
-#include "metal.hpp"
+
 
 #include <chrono>
 using namespace std::chrono;
@@ -94,7 +94,7 @@ public:
     void rightMouseDrag(float dx, float dy);
     
     // Pipeline
-    Mesh *createMesh(int count);
+    Mesh *createMesh(int count, int verts);
 };
 
 #endif /* defined(____render__) */

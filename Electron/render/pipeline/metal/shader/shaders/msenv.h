@@ -10,10 +10,14 @@
 #define msenv_hpp
 
 #include "../mshader.hpp"
+#include "SharedStructures.h"
+
 class msenv : public shader {
 private:
+    id <MTLRenderPipelineState> _pipelineState;
 public:
-    void setup(id <MTLLibrary> library);
+    id <MTLBuffer> _dynamicConstantBuffer;
+    void setup(id <MTLDevice> device, MTKView *view, id <MTLLibrary> library);
     void start(shader_options *options);
     void update(shader_options *options);
     void stop();
@@ -21,27 +25,17 @@ public:
 
 class msenv_object : public shader_object {
 private:
-    float uscale = 1.0;
-    float vscale = 1.0;
+    msenv *shader;
+    senv_options options;
     texture *baseMap = nullptr;
-    bool useBlend = false;
-    bool usePrimary = false;
-    float primaryScale;
     texture *primaryDetailMap = nullptr;
-    bool useSecondary = false;
-    float secondaryScale;
     texture *secondaryDetailMap;
-    bool useBump = false;
-    float bumpScale;
     texture *bumpMap;
-    bool useCube = false;
     texture_cubemap *cubeMap = nullptr;
-    float reflectionPerpendicular;
-    float reflectionParallel;
 public:
     bool useLight = false;
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    bool render(ShaderType type);
+    bool render(ShaderType type, Pipeline *pipeline);
     void setBaseUV(float u, float v);
     void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);

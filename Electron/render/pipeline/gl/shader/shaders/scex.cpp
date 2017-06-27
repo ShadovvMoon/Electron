@@ -146,7 +146,7 @@ void scex_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool scex_object::is(ShaderType type) {
     return (type == shader_SCEX);
 }
-bool scex_object::render(ShaderType type) {
+bool scex_object::render(ShaderType type, Pipeline *pipeline) {
     if (skip) {
         return false;
     }
@@ -180,7 +180,7 @@ bool scex_object::render(ShaderType type) {
         }
         
         Stage4Renderable *renderable = stage4Maps[i];
-        renderable->map->bind();
+        renderable->map->bind(nullptr);
         
         // Update the tick
         std::chrono::milliseconds now = timems();

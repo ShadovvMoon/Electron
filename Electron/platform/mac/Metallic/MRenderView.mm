@@ -458,7 +458,6 @@ NSMutableDictionary *shaders = [[NSMutableDictionary alloc] init];
     // When reshape is called, update the view and projection matricies since this means the view orientation or size changed
     float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
     _projectionMatrix = matrix_from_perspective_fov_aspectLH(65.0f * (M_PI / 180.0f), aspect, 0.1f, 1000.0f);
-    
     _viewMatrix = matrix_identity_float4x4;
 }
 

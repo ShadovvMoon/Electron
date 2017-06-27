@@ -50,6 +50,6 @@ void blur_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool blur_object::is(ShaderType type) {
     return (type == shader_DEFF);
 }
-bool blur_object::render(ShaderType type) {
+bool blur_object::render(ShaderType type, Pipeline *pipeline) {
     return true;
 }

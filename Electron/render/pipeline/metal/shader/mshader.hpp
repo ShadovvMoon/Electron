@@ -31,7 +31,7 @@ private:
     bool reflecting = false;
     float reflect_height = 0.0;
 public:
-    MetalShaderManager(id <MTLLibrary> library);
+    MetalShaderManager(id <MTLDevice> device, id <MTLCommandQueue> queue, MTKView *view, id <MTLLibrary> library);
     TextureManager *texture_manager();
     shader *get_shader(ShaderType pass);
     

@@ -82,15 +82,15 @@ void sgla_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool sgla_object::is(ShaderType type) {
     return (type == shader_SGLA);
 }
-bool sgla_object::render(ShaderType type) {
+bool sgla_object::render(ShaderType type, Pipeline *pipeline) {
     glActiveTexture(GL_TEXTURE0);
     if (useMulti) {
-        multipurposeMap->bind();
+        multipurposeMap->bind(nullptr);
     }
     
     glActiveTexture(GL_TEXTURE1);
     if (useCube) {
-        cubeMap->bind();
+        cubeMap->bind(nullptr);
     }
     
     // Blending

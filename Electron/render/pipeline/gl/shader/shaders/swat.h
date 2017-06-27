@@ -44,7 +44,7 @@ public:
     
     float fogr = 0.0, fogg = 0.0, fogb = 0.0, fogdist = 1.0, fogcut = 0.0;
     void setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shaderTag);
-    bool render(ShaderType type);
+    bool render(ShaderType type, Pipeline *pipeline);
     void setBaseUV(float u, float v);
     void setFogSettings(float r, float g, float b, float distance, float cutoff);
     bool is(ShaderType type);

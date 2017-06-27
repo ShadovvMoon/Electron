@@ -62,6 +62,6 @@ void deff_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool deff_object::is(ShaderType type) {
     return (type == shader_DEFF);
 }
-bool deff_object::render(ShaderType type) {
+bool deff_object::render(ShaderType type, Pipeline *pipeline) {
     return true;
 }

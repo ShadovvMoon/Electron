@@ -139,7 +139,7 @@ class BSP {
 public:
     BSP(ShaderManager* manager);
     void setup(ProtonMap *map, ProtonTag *scenario, Pipeline *pipeline);
-    void render(ShaderType pass);
+    void render(ShaderType pass, Pipeline *pipeline);
     void generate_lightmap(vector3d *sun, ProtonMap *map, ProtonTag *scenario);
     
     vector3d *intersect_vision(vector3d *p, vector3d *q, ProtonMap *map, ProtonTag *scenario);

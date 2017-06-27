@@ -11,7 +11,7 @@
 
 
 // -- PIPELINE --
-Mesh *ERenderer::createMesh(int count) {
+Mesh *ERenderer::createMesh(int count, int verts) {
     return new GLMesh(count);
 }
 
@@ -373,7 +373,7 @@ void ERenderer::renderScene(bool fast, bool reflect) {
             // Render reflection shaders
             shader *senv_reflect = shaders->get_shader(shader_SENV_REFLECT);
             senv_reflect->start(options);
-            bsp->render(shader_SENV_REFLECT);
+            bsp->render(shader_SENV_REFLECT, nullptr);
             senv_reflect->stop();
             
             glActiveTexture(GL_TEXTURE4);
@@ -421,7 +421,7 @@ void ERenderer::renderScene(bool fast, bool reflect) {
             ShaderType type = static_cast<ShaderType>(pass);
             shader *shader = shaders->get_shader(type);
             shader->start(options);
-            bsp->render(type);
+            bsp->render(type, nullptr);
             if (render_objects) {
                 GLuint number = 0;
                 objects->render(&number, nullptr, type, options);

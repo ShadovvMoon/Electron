@@ -96,6 +96,7 @@ typedef enum {
 } Reflection;
 
 // Camera
+class Pipeline;
 typedef struct {
     float fogr, fogg, fogb;
     float fogdist, fogcut, foglegacy;
@@ -104,6 +105,7 @@ typedef struct {
     float position[3];
     float rotation[3];
     float camera[3];
+    Pipeline *pipeline;
 } shader_options;
 
 // VBO

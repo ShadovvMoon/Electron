@@ -57,11 +57,11 @@ private:
     void unbind();
 public:
     GLMesh(int count);
-    void render(ShaderType pass);
+    void render(ShaderType pass, Pipeline *pipeline);
     
     Submesh* addSubmesh(shader_object *shader, int vertexOffset, int vertexCount, int indexOffset, int indexCount);
     void writeIndexData(int buffer, void *array, int vertices);
-    void writeVertexData(int buffer, int uniform, int count, void *array, int vertices);
+    void writeVertexData(VertexBuffer buffer, int uniform, int count, void *array, int vertices);
 };
 
 #endif /* opengl_hpp */

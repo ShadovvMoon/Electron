@@ -79,7 +79,7 @@ void swat_object::setup(ShaderManager *manager, ProtonMap *map, ProtonTag *shade
 bool swat_object::is(ShaderType type) {
     return (type == shader_SWAT);
 }
-bool swat_object::render(ShaderType type) {
+bool swat_object::render(ShaderType type, Pipeline *pipeline) {
     // Update the tick
     std::chrono::milliseconds now = timems();
     double seconds = (now.count() - prev.count()) / 1000.0;
@@ -93,7 +93,7 @@ bool swat_object::render(ShaderType type) {
     
     // Enable the bump texture
     glActiveTexture(GL_TEXTURE1);
-    bumpMap->bind();
+    bumpMap->bind(nullptr);
     
     // Update the uniforms
     GLint viewport[4];

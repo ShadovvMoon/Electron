@@ -141,7 +141,6 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             
             uint8_t *vertIndexOffset    = (uint8_t *)(modelTag->ResourcesData() + part->indexPointer1);
             uint8_t *PcVertexDataOffset = (uint8_t *)(modelTag->ResourcesData() + part->vertPointer1);
-            
             int vertex_number = part->vertCount;
             int indexSize     = part->indexCount + 2;
             
@@ -159,7 +158,6 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             renderer->normals         = (float*)malloc(vertex_number   * 3 * sizeof(float)); // cleaned
             renderer->tangents        = (float*)malloc(vertex_number   * 3 * sizeof(float));
             renderer->binormals       = (float*)malloc(vertex_number   * 3 * sizeof(float));
-            
             renderer->index_array     = (int*)  malloc(indexSize * sizeof(int)); // cleaned
             
             int v;
@@ -197,58 +195,63 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
             #define binormals_buffer 5
             #define tangents_buffer 6
             
+            #ifdef RENDER_PIPELINE
             
-#ifdef RENDER_CORE_32
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->vertex_array, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(vertex_buffer);
-            glVertexAttribPointer(vertex_buffer, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-#else
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
-            GLvoid* my_vertex_pointer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-            memcpy(my_vertex_pointer, renderer->vertex_array, vertex_number * 3 * sizeof(GLfloat));
-            glUnmapBuffer(GL_ARRAY_BUFFER);
-            glEnableVertexAttribArray(0);
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-#endif
-
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[TEXCOORD_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 2 * sizeof(GLfloat), renderer->texture_uv, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(texCoord_buffer);
-            glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
+                // TODO
             
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[NORMAL_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->normals, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(normals_buffer);
-            glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            #else
+                #ifdef RENDER_CORE_32
+                    glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
+                    glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->vertex_array, GL_STATIC_DRAW);
+                    glEnableVertexAttribArray(vertex_buffer);
+                    glVertexAttribPointer(vertex_buffer, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+                #else
+                    glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[POS_VB]);
+                    glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), NULL, GL_STATIC_DRAW);
+                    GLvoid* my_vertex_pointer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+                    memcpy(my_vertex_pointer, renderer->vertex_array, vertex_number * 3 * sizeof(GLfloat));
+                    glUnmapBuffer(GL_ARRAY_BUFFER);
+                    glEnableVertexAttribArray(0);
+                    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                #endif
             
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer->m_Buffers[INDEX_BUFFER]);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * sizeof(GLint), renderer->index_array, GL_STATIC_DRAW);
+                glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[TEXCOORD_VB]);
+                glBufferData(GL_ARRAY_BUFFER, vertex_number * 2 * sizeof(GLfloat), renderer->texture_uv, GL_STATIC_DRAW);
+                glEnableVertexAttribArray(texCoord_buffer);
+                glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
             
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[LIGHT_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 2 * sizeof(GLfloat), renderer->light_uv, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(texCoord_buffer_light);
-            glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
+                glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[NORMAL_VB]);
+                glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->normals, GL_STATIC_DRAW);
+                glEnableVertexAttribArray(normals_buffer);
+                glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
             
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[BINORMAL_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->binormals, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(binormals_buffer);
-            glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderer->m_Buffers[INDEX_BUFFER]);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexSize * sizeof(GLint), renderer->index_array, GL_STATIC_DRAW);
             
-            glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[TANGENT_VB]);
-            glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->tangents, GL_STATIC_DRAW);
-            glEnableVertexAttribArray(tangents_buffer);
-            glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[LIGHT_VB]);
+                glBufferData(GL_ARRAY_BUFFER, vertex_number * 2 * sizeof(GLfloat), renderer->light_uv, GL_STATIC_DRAW);
+                glEnableVertexAttribArray(texCoord_buffer_light);
+                glVertexAttribPointer(texCoord_buffer_light, 2, GL_FLOAT, GL_FALSE, 0, 0);
             
-		#ifdef RENDER_VAO_NORMAL
-			glBindVertexArray(0);
-		#else
-			glBindVertexArrayAPPLE(0);
-		#endif
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+                glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[BINORMAL_VB]);
+                glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->binormals, GL_STATIC_DRAW);
+                glEnableVertexAttribArray(binormals_buffer);
+                glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            
+                glBindBuffer(GL_ARRAY_BUFFER, renderer->m_Buffers[TANGENT_VB]);
+                glBufferData(GL_ARRAY_BUFFER, vertex_number * 3 * sizeof(GLfloat), renderer->tangents, GL_STATIC_DRAW);
+                glEnableVertexAttribArray(tangents_buffer);
+                glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+            
+                #ifdef RENDER_VAO_NORMAL
+                    glBindVertexArray(0);
+                #else
+                    glBindVertexArrayAPPLE(0);
+                #endif
+            
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            #endif
             
             // Clean up
             #ifdef RENDER_VBO
@@ -290,107 +293,108 @@ Model::Model(ModelManager *manager, ProtonMap *map, HaloTagDependency tag) {
 
 void Model::render(ShaderType pass) {
     if (!ready) return;
+    #ifdef RENDER_PIPELINE
     
-    //glEnable(GL_TEXTURE_2D);
-    //glEnable(GL_TEXTURE_CUBE_MAP);
-    //glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        // TODO
     
-#ifndef RENDER_VAO
-    glEnableVertexAttribArray(texCoord_buffer);
-    glEnableVertexAttribArray(normals_buffer);
-    glEnableVertexAttribArray(binormals_buffer);
-    glEnableVertexAttribArray(tangents_buffer);
-#endif
+    #else
+        #ifndef RENDER_VAO
+            glEnableVertexAttribArray(texCoord_buffer);
+            glEnableVertexAttribArray(normals_buffer);
+            glEnableVertexAttribArray(binormals_buffer);
+            glEnableVertexAttribArray(tangents_buffer);
+        #endif
     
-    shader_object *previous_shader = nullptr;
-    if (renderIndices.size() == 0) return; //wtf
+            shader_object *previous_shader = nullptr;
+            if (renderIndices.size() == 0) return; //wtf
     
-    int r, i;
-    for (r=0; r < renderIndices.size(); r++) {
-        uint8_t renderIndex = renderIndices[r];
-        //std::vector<ModelRenderMesh*>renderables = geometries[renderIndex];
-        
-        ModelRenderMesh **renderables = geom[renderIndex];
-        for (i=0; i < /*renderables.size()*/geomCount[renderIndex]; i++) {
-            ModelRenderMesh *mesh = renderables[i];
-            if ((mesh->shader == nullptr && pass == shader_NULL) ||
-                (mesh->shader != nullptr && mesh->shader->is(pass))) {
-#ifdef RENDER_VAO
-			#ifdef RENDER_VAO_NORMAL
-				glBindVertexArray(mesh->geometryVAO);
-			#else
-				glBindVertexArrayAPPLE(mesh->geometryVAO);
-			#endif
-#elif defined(RENDER_VBO)
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[POS_VB]);
-                glVertexPointer(3, GL_FLOAT, 0, 0);
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TEXCOORD_VB]);
-                glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[NORMAL_VB]);
-                glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[BINORMAL_VB]);
-                glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
-                glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TANGENT_VB]);
-                glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
-                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
-#else
-                glVertexPointer(3, GL_FLOAT, 0, mesh->vertex_array);
-                glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, mesh->texture_uv);
-                glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->normals);
-                glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->binormals);
-                glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->tangents);
-#endif
-                if (mesh->shader != nullptr) {
-                    if (mesh->shader != previous_shader) {
-                        if (!mesh->shader->render(pass)) {
-                            continue;
+            int r, i;
+            for (r=0; r < renderIndices.size(); r++) {
+                uint8_t renderIndex = renderIndices[r];
+                //std::vector<ModelRenderMesh*>renderables = geometries[renderIndex];
+                
+                ModelRenderMesh **renderables = geom[renderIndex];
+                for (i=0; i < /*renderables.size()*/geomCount[renderIndex]; i++) {
+                    ModelRenderMesh *mesh = renderables[i];
+                    if ((mesh->shader == nullptr && pass == shader_NULL) ||
+                        (mesh->shader != nullptr && mesh->shader->is(pass))) {
+        #ifdef RENDER_VAO
+                    #ifdef RENDER_VAO_NORMAL
+                        glBindVertexArray(mesh->geometryVAO);
+                    #else
+                        glBindVertexArrayAPPLE(mesh->geometryVAO);
+                    #endif
+        #elif defined(RENDER_VBO)
+                        glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[POS_VB]);
+                        glVertexPointer(3, GL_FLOAT, 0, 0);
+                        glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TEXCOORD_VB]);
+                        glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, 0);
+                        glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[NORMAL_VB]);
+                        glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                        glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[BINORMAL_VB]);
+                        glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                        glBindBufferARB(GL_ARRAY_BUFFER_ARB, mesh->m_Buffers[TANGENT_VB]);
+                        glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, 0);
+                        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->m_Buffers[INDEX_BUFFER]);
+        #else
+                        glVertexPointer(3, GL_FLOAT, 0, mesh->vertex_array);
+                        glVertexAttribPointer(texCoord_buffer, 2, GL_FLOAT, GL_FALSE, 0, mesh->texture_uv);
+                        glVertexAttribPointer(normals_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->normals);
+                        glVertexAttribPointer(binormals_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->binormals);
+                        glVertexAttribPointer(tangents_buffer, 3, GL_FLOAT, GL_FALSE, 0, mesh->tangents);
+        #endif
+                        if (mesh->shader != nullptr) {
+                            if (mesh->shader != previous_shader) {
+                                if (!mesh->shader->render(pass, nullptr)) {
+                                    continue;
+                                }
+                                previous_shader = mesh->shader;
+                            }
+                            mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
                         }
-                        previous_shader = mesh->shader;
+                        
+                    #ifdef GL_VALIDATE
+                        GLint program;
+                        glGetIntegerv(GL_CURRENT_PROGRAM, &program);
+                        glValidateProgram(program);
+                        
+                        int bufflen = 1024;
+                        int validate = 0;
+                        
+                        glGetProgramiv(program, GL_VALIDATE_STATUS, &validate);
+                        if(validate == GL_FALSE) {
+                            printf("validation failed model %d %d\n", program, pass);
+                            glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufflen);
+                            if (bufflen > 1) {
+                                GLchar* log_string = new char[bufflen + 1];
+                                glGetProgramInfoLog(program, bufflen, 0, log_string);
+                                printf("LOG: %s\n", log_string);
+                            }
+                        }
+                    #endif
+                        
+                    #ifdef RENDER_VBO
+                        glDrawRangeElements(GL_TRIANGLE_STRIP, 0, mesh->vertCount, mesh->indexCount, GL_UNSIGNED_INT, 0);
+                    #else
+                        glDrawRangeElements(GL_TRIANGLE_STRIP, 0, mesh->vertCount, mesh->indexCount, GL_UNSIGNED_INT, mesh->index_array);
+                    #endif
+                        
+                    #ifdef RENDER_VAO_NORMAL
+                        glBindVertexArray(0);
+                    #else
+                        glBindVertexArrayAPPLE(0);
+                    #endif
                     }
-                    mesh->shader->setBaseUV(mesh->base_u, mesh->base_v);
                 }
-                
-            #ifdef GL_VALIDATE
-                GLint program;
-                glGetIntegerv(GL_CURRENT_PROGRAM, &program);
-                glValidateProgram(program);
-                
-                int bufflen = 1024;
-                int validate = 0;
-                
-                glGetProgramiv(program, GL_VALIDATE_STATUS, &validate);
-                if(validate == GL_FALSE) {
-                    printf("validation failed model %d %d\n", program, pass);
-                    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &bufflen);
-                    if (bufflen > 1) {
-                        GLchar* log_string = new char[bufflen + 1];
-                        glGetProgramInfoLog(program, bufflen, 0, log_string);
-                        printf("LOG: %s\n", log_string);
-                    }
-                }
-            #endif
-                
-            #ifdef RENDER_VBO
-                glDrawRangeElements(GL_TRIANGLE_STRIP, 0, mesh->vertCount, mesh->indexCount, GL_UNSIGNED_INT, 0);
-            #else
-                glDrawRangeElements(GL_TRIANGLE_STRIP, 0, mesh->vertCount, mesh->indexCount, GL_UNSIGNED_INT, mesh->index_array);
-            #endif
-                
-			#ifdef RENDER_VAO_NORMAL
-				glBindVertexArray(0);
-			#else
-				glBindVertexArrayAPPLE(0);
-			#endif
             }
-        }
-    }
     
-#ifndef RENDER_VAO
-    glDisableVertexAttribArray(texCoord_buffer);
-    glDisableVertexAttribArray(normals_buffer);
-    glDisableVertexAttribArray(binormals_buffer);
-    glDisableVertexAttribArray(tangents_buffer);
-#endif
+        #ifndef RENDER_VAO
+            glDisableVertexAttribArray(texCoord_buffer);
+            glDisableVertexAttribArray(normals_buffer);
+            glDisableVertexAttribArray(binormals_buffer);
+            glDisableVertexAttribArray(tangents_buffer);
+        #endif
+    #endif
 }
 
 Model *ModelManager::create_model(ProtonMap *map, HaloTagDependency mod2) {

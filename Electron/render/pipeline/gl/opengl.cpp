@@ -34,7 +34,7 @@ GLMesh::GLMesh(int count) {
 #endif
     
     bind();
-    m_Buffers = (GLuint*) malloc(sizeof(GLuint) * count);
+    m_Buffers = (GLuint*) malloc(sizeof(GLuint) * count + 1);
     glGenBuffers(count, m_Buffers);
     unbind();
 }
@@ -47,9 +47,9 @@ void GLMesh::writeIndexData(int buffer, void *array, int vertices) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void GLMesh::writeVertexData(int buffer, int uniform, int count, void *array, int vertices){
+void GLMesh::writeVertexData(VertexBuffer buffer, int uniform, int count, void *array, int vertices){
     bind();
-    glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[buffer]);
+    glBindBuffer(GL_ARRAY_BUFFER, m_Buffers[buffer + 1]);
     glBufferData(GL_ARRAY_BUFFER, count * vertices * sizeof(GLfloat), array, GL_STATIC_DRAW);
     glEnableVertexAttribArray(uniform);
     glVertexAttribPointer(uniform, count, GL_FLOAT, GL_FALSE, 0, 0);
@@ -98,7 +98,7 @@ Submesh* GLMesh::addSubmesh(shader_object *shader, int vertexOffset, int vertexC
     return mesh;
 }
 
-void GLMesh::render(ShaderType pass) {
+void GLMesh::render(ShaderType pass, Pipeline *pipeline) {
     errorCheck();
     bind();
     shader_object *previous_shader = nullptr;
@@ -114,7 +114,7 @@ void GLMesh::render(ShaderType pass) {
         // Set up shader if necessary
         if (sub->shader && sub->shader != previous_shader) {
             sub->shader->setBaseUV(1.0, 1.0);
-            if (!sub->shader->render(pass)) {
+            if (!sub->shader->render(pass, pipeline)) {
                 continue;
             }
             previous_shader = sub->shader;
@@ -132,7 +132,7 @@ void GLMesh::render(ShaderType pass) {
                 continue;
             }
             glActiveTexture(tex->index);
-            tex->texture->bind(tex->mipmap);
+            tex->texture->bind(tex->mipmap, pipeline);
         }
 
         // Draw the mesh

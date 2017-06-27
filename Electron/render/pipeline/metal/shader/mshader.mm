@@ -7,30 +7,18 @@
 //
 
 #include "mshader.hpp"
-#include "texture.h"
+#include "mtexture.h"
 #include "shaders/msenv.h"
 
-MetalShaderManager::MetalShaderManager(id <MTLLibrary> library) {
+MetalShaderManager::MetalShaderManager(id <MTLDevice> device, id <MTLCommandQueue> queue, MTKView *view, id <MTLLibrary> library) {
     printf("shader manager setup\n");
     
-    // Create the reflection
-    reflections.resize(Reflections);
-    int i;
-    for (i=0; i < Reflections; i++) {
-        glDeleteTextures(1, &reflections[i]);
-        glGenTextures(1, &reflections[i]);
-        glBindTexture(GL_TEXTURE_2D, reflections[i]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
-    
     // Create a texture manager
-    //textures = new MetalTextureManager;
+    textures = new MetalTextureManager(device, queue);
     
     // Setup our shader types
     msenv *senv_shader = new msenv;
-    senv_shader->setup(library);
+    senv_shader->setup(device, view, library);
     shaders[shader_SENV] = (shader*)senv_shader;
 }
 

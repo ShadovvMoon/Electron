@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "bitmaps.h"
+#include <iostream>
 
 void *bitmaps;
 bool load_bitmaps(const char *bitmap_file) {
@@ -28,6 +29,7 @@ bool load_bitmaps(const char *bitmap_file) {
         fclose (f);
         return true;
     }
+    std::cerr << "bitmaps file '" << bitmap_file << "' does not exist" << std::endl;
     return false;
 }
 
